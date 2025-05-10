@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partime | Work Your Way</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-ku9kS2VvHGKcSJklbSTxNfZb6buYsQZfVjWLUYl0F2pZ+UcQZ+g9Unu9cxUQD+XbJz5W4KczWcKyPNij1hYyKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header id="header">
+    <div class="container header-container">
+      <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-briefcase logo-icon"></i>
+        Partime
+      </div>
+      <nav>
+        <div class="nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Features</div>
+        <div class="nav-link" onclick="document.getElementById('testimonials').scrollIntoView({behavior:'smooth'})">Testimonials</div>
+        <div class="nav-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get Started</div>
+        <div class="nav-link" onclick="location.href='register.html'">Register</div>
+      </nav>
+      <button class="btn btn-primary" onclick="location.href='register.html'">
+        <i class="fas fa-user-plus"></i>
+        Sign Up
+      </button>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Work On Your Terms</h1>
+        <p class="hero-subtitle">Discover flexible, campus-based and local part-time jobs that fit your schedule. Apply instantly and connect directly with employers.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary" onclick="location.href='register.html'">
+            <i class="fas fa-rocket"></i>
+            Start Now
+          </button>
+          <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-info-circle"></i>
+            Learn More
+          </button>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" alt="Students working on campus">
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Smart Features For Smart Students</h2>
+      <p class="section-subtitle">Everything you need to find and manage part-time work while focusing on your studies</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h3 class="feature-title">Easy Sign Up</h3>
+          <p class="feature-desc">Create your student profile in minutes and start discovering jobs tailored to your skills and availability.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="feature-title">Discover Jobs</h3>
+          <p class="feature-desc">Browse verified on-campus and local positions that match your schedule and academic interests.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <h3 class="feature-title">Direct Chat</h3>
+          <p class="feature-desc">Communicate with employers in real-time and schedule interviews without leaving the app.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3 class="feature-title">Fast Payments</h3>
+          <p class="feature-desc">Track hours and get paid securely through our integrated payment system with no delays.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3 class="feature-title">Smart Scheduling</h3>
+          <p class="feature-desc">Integrate with your class schedule to find work opportunities during your free time.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Earnings Tracker</h3>
+          <p class="feature-desc">Monitor your income, working hours, and progress toward financial goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="job-preview">
+    <div class="container">
+      <h2 class="section-title">Find Jobs That Match Your Skills</h2>
+      <p class="section-subtitle">Here are some of the most popular positions on campus</p>
+      
+      <div class="job-cards">
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Library Assistant</h3>
+            <div class="job-company">University Library</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $15/hour</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 10-15 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">Apply Now</button>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Research Assistant</h3>
+            <div class="job-company">Department of Science</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $18/hour</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 15-20 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">Apply Now</button>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Café Barista</h3>
+            <div class="job-company">Campus Coffee</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $16/hour + tips</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 10-25 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">Apply Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Students Say</h2>
+      <p class="section-subtitle">Hear from students who have found their perfect campus job</p>
+      
+      <div class="testimonial-wrapper">
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"Partime helped me find a job at the campus library that perfectly fits around my schedule. The application process was super easy!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Jessica Miller</h4>
+              <p>Biology Major, Junior</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"I was able to find a research assistant position in my department through Partime. It's relevant to my major and the flexible hours are perfect!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Michael Johnson</h4>
+              <p>Computer Science, Senior</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container">
+      <h2 class="cta-title">Ready to Start Earning?</h2>
+      <p class="cta-subtitle">Join thousands of students who are balancing studies and work on their own terms</p>
+      <button class="btn btn-cta" onclick="location.href='register.html'">
+        <i class="fas fa-rocket"></i>
+        Get Started Now
+      </button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-briefcase logo-icon"></i>
+            Partime
+          </div>
+          <p class="footer-desc">
+            Partime helps students find flexible part-time work that fits their schedule, connecting them directly with employers on campus and in their local communities.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">About Us</a></li>
+            <li><a href="#" class="footer-menu-item">Careers</a></li>
+            <li><a href="#" class="footer-menu-item">Blog</a></li>
+            <li><a href="#" class="footer-menu-item">Press</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Help Center</a></li>
+            <li><a href="#" class="footer-menu-item">Student Guide</a></li>
+            <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
+            <li><a href="register.html" class="footer-menu-item">Register Now</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Terms of Service</a></li>
+            <li><a href="#" class="footer-menu-item">Privacy Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Cookie Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Partime. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/firebase-config.js"></script>
+  <script>
+    // Initialize Firebase
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate feature cards on scroll
+      const featureCards = document.querySelectorAll('.feature-card');
+      
+      // Function to check if element is in viewport
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+          rect.bottom >= 0
+        );
+      }
+      
+      // Function to add animation classes when scrolling
+      function animateOnScroll() {
+        featureCards.forEach((card, index) => {
+          if (isInViewport(card)) {
+            // Add a delay based on index
+            setTimeout(() => {
+              card.classList.add('animate');
+            }, index * 100);
+          }
+        });
+      }
+      
+      // Run on scroll
+      window.addEventListener('scroll', animateOnScroll);
+      // Initial check
+      setTimeout(animateOnScroll, 500);
+      
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+          document.body.classList.toggle('mobile-menu-open');
+          
+          // Create mobile menu if it doesn't exist
+          if (!document.querySelector('.mobile-menu')) {
+            const mobileMenu = document.createElement('div');
+            mobileMenu.className = 'mobile-menu';
+            
+            const mobileMenuContent = document.createElement('div');
+            mobileMenuContent.className = 'mobile-menu-content';
+            
+            // Clone nav links
+            const navLinks = document.querySelectorAll('nav .nav-link');
+            navLinks.forEach(link => {
+              const clonedLink = link.cloneNode(true);
+              mobileMenuContent.appendChild(clonedLink);
+            });
+            
+            // Add sign up button
+            const signUpBtn = document.createElement('button');
+            signUpBtn.className = 'btn btn-primary';
+            signUpBtn.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
+            signUpBtn.onclick = function() {
+              location.href = 'register.html';
+            };
+            mobileMenuContent.appendChild(signUpBtn);
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'mobile-menu-close';
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            closeBtn.onclick = function() {
+              document.body.classList.remove('mobile-menu-open');
+            };
+            mobileMenuContent.appendChild(closeBtn);
+            
+            mobileMenu.appendChild(mobileMenuContent);
+            document.body.appendChild(mobileMenu);
+          }
+        });
+      }
+    });
+  </script>
+  
+  <style>
+    /* Additional styles for new sections */
+    .job-preview {
+      background-color: var(--gray-100);
+      padding: 5rem 0;
+    }
+    
+    .job-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .job-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      transition: var(--transition);
+    }
+    
+    .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .job-header {
+      margin-bottom: 1rem;
+    }
+    
+    .job-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+    
+    .job-company {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    
+    .job-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .job-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    
+    .job-detail i {
+      color: var(--primary);
+    }
+    
+    .job-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: var(--white);
+    }
+    
+    .testimonial-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .testimonial {
+      background: var(--gray-100);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: var(--transition);
+    }
+    
+    .testimonial:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .testimonial-quote {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .testimonial-quote i {
+      color: var(--primary-lighter);
+      font-size: 2rem;
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      opacity: 0.5;
+    }
+    
+    .testimonial-quote p {
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+      line-height: 1.7;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      background: var(--primary-lighter);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .author-info h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .author-info p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 80%;
+      max-width: 300px;
+      background: var(--white);
+      z-index: 2000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .mobile-menu-content {
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .mobile-menu-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    
+    body.mobile-menu-open::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1999;
+    }
+    
+    body.mobile-menu-open .mobile-menu {
+      transform: translateX(0);
+    }
+    
+    @media (max-width: 768px) {
+      .job-cards, .testimonial-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</body>
+</html>
