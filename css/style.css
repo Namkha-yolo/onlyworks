@@ -1,11 +1,11 @@
 /* Main styles for Partime website */
 
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --primary-light: #3b82f6;
-  --primary-lighter: #bfdbfe;
-  --secondary: #f97316;
+  --primary: #00AFF0;             
+  --primary-dark: #0095CC;         
+  --primary-light: #33BFFF;       
+  --primary-lighter: #B3E7FF;     
+  --secondary: #f97316;           
   --secondary-dark: #ea580c;
   --secondary-light: #fb923c;
   --text: #334155;
