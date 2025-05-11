@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register | OnlyWork</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-ku9kS2VvHGKcSJklbSTxNfZb6buYsQZfVjWLUYl0F2pZ+UcQZ+g9Unu9cxUQD+XbJz5W4KczWcKyPNij1hYyKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <!-- Firebase SDKs -->
@@ -26,6 +25,7 @@
       --white: #fff;
       --success-color: #28a745;
       --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+      --monospace-font: 'Courier New', Courier, monospace;
     }
     
     * {
@@ -35,7 +35,7 @@
     }
     
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--monospace-font);
       line-height: 1.6;
       color: var(--text-color);
       background-color: var(--dark-bg);
@@ -214,6 +214,7 @@
       margin-bottom: 2rem;
       animation: fadeIn 0.8s ease forwards;
       font-size: 1.1rem;
+      font-family: var(--monospace-font);
     }
     
     /* Section styling */
@@ -267,6 +268,7 @@
       font-weight: 500;
       margin-bottom: 0.5rem;
       color: var(--primary-purple);
+      font-family: var(--monospace-font);
     }
     
     /* Form inputs - update to match landing page */
@@ -282,12 +284,14 @@
       border: 1px solid #333;
       border-radius: 0.25rem;
       transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      font-family: var(--monospace-font);
     }
     
     .form-input::placeholder, 
     .form-textarea::placeholder {
       color: var(--primary-purple);
       opacity: 0.7;
+      font-family: var(--monospace-font);
     }
     
     .form-input:focus, 
@@ -322,6 +326,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       color: #333;
+      font-family: var(--monospace-font);
     }
     
     .day-label:hover {
@@ -411,6 +416,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       color: #333;
+      font-family: var(--monospace-font);
     }
     
     .form-check-label i {
@@ -504,6 +510,7 @@
       border-radius: 0.5rem;
       transition: all 0.3s ease;
       border: none;
+      font-family: var(--monospace-font);
     }
     
     .btn-primary {
@@ -595,6 +602,7 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      font-family: var(--monospace-font);
     }
     
     .success-buttons {
@@ -636,6 +644,7 @@
       color: var(--text-muted);
       margin-bottom: 1.5rem;
       font-size: 0.95rem;
+      font-family: var(--monospace-font);
     }
     
     .footer-social {
@@ -688,6 +697,7 @@
     .footer-menu-item {
       color: var(--text-muted);
       transition: all 0.3s ease;
+      font-family: var(--monospace-font);
     }
     
     .footer-menu-item:hover {
@@ -701,16 +711,18 @@
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       color: var(--text-muted);
       font-size: 0.875rem;
+      font-family: var(--monospace-font);
     }
     
-    /* Typewriter effect */
-    .typewriter-text {
+   /* /* Typewriter effect */
+  /*  .typewriter-text {
       overflow: hidden;
       border-right: 2px solid var(--primary-purple);
       white-space: nowrap;
       margin: 0 auto;
       letter-spacing: 0.1em;
       animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+      font-family: var(--monospace-font);
     }
     
     @keyframes typing {
@@ -720,7 +732,7 @@
     
     @keyframes blink-caret {
       from, to { border-color: transparent }
-      50% { border-color: var(--primary-purple) }
+      50% { border-color: var(--primary-purple) } */
     }
     
     /* Animations */
@@ -1115,11 +1127,11 @@
     
     // Add typewriter effect to dynamic elements
     function setupTypewriterElements() {
-      const elements = document.querySelectorAll('.form-section h2, .form-label');
+      const elements = document.querySelectorAll('.form-section h2, .form-label, .day-label, .form-check-label');
       
       elements.forEach((element, index) => {
         // Only apply to a subset of elements for better performance
-        if (index % 3 === 0) {
+        if (index % 4 === 0) {
           element.style.opacity = '0';
           setTimeout(() => {
             element.style.opacity = '1';
@@ -1128,8 +1140,36 @@
             setTimeout(() => {
               element.classList.remove('typewriter-text');
             }, 3500);
-          }, index * 500);
+          }, index * 300);
         }
+      });
+      
+      // Add special typing effect to all input placeholders
+      const inputs = document.querySelectorAll('.form-input, .form-textarea');
+      inputs.forEach(input => {
+        const originalPlaceholder = input.placeholder;
+        input.placeholder = '';
+        
+        let i = 0;
+        const typeWriter = () => {
+          if (i < originalPlaceholder.length) {
+            input.placeholder += originalPlaceholder.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+          }
+        };
+        
+        // Start typing effect when input is in viewport
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setTimeout(typeWriter, 500);
+              observer.unobserve(input);
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        observer.observe(input);
       });
     }
     
