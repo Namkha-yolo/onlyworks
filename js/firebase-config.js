@@ -30,9 +30,6 @@ console.error('Firebase connection failed:', error);
 });
 
 
-firebase.initializeApp(firebaseConfig);
-
-
 // Initialize Firestore database
 const db = firebase.firestore();
 
