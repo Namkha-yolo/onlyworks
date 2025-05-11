@@ -1,4 +1,8 @@
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Import Firebase (if using modules / bundler)
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBjuFREFHDRe70efEwp-8RHRN0atLp6gjo",
   authDomain: "partime-389b2.firebaseapp.com",
@@ -9,33 +13,15 @@ const firebaseConfig = {
   measurementId: "G-V1WY1KYZYL"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase (only once)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-// Initialize Firestore database
+// Firestore reference
 const db = firebase.firestore();
 
-console.log("Firebase initialized successfully!");
-
-// Add to the end of your firebase-config.js file
-db.collection('test').add({
-message: 'Firebase connection test',
-timestamp: new Date()
-})
-.then(() => {
-console.log('Firebase connection successful!');
-})
-.catch((error) => {
-console.error('Firebase connection failed:', error);
-});
-
-
-// Initialize Firestore database
-const db = firebase.firestore();
-
-console.log("Firebase initialized successfully!");
-
-// Add to the end of your firebase-config.js file
+// Test Firestore connection
 db.collection('test').add({
   message: 'Firebase connection test',
   timestamp: new Date()
