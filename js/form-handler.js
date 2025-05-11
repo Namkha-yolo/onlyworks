@@ -17,12 +17,82 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Handle form submission
-  const registrationForm = document.getElementById('registration-form');
-  if (registrationForm) {
-    registrationForm.addEventListener('submit', handleFormSubmit);
+// Handle form submission
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  
+  // Validate the form
+  if (!validateForm()) {
+    showNotification('Please fill in all required fields', 'error');
+    return;
   }
-});
+  
+  // Show loading state
+  const submitButton = document.querySelector('.btn-submit');
+  const originalButtonText = submitButton.innerHTML;
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+  submitButton.disabled = true;
+  
+  try {
+    console.log("Starting form submission to Firebase...");
+    
+    // Collect form data
+    const formData = {
+      personalInfo: {
+        name: document.getElementById('fullname').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        university: document.getElementById('university').value,
+        fieldOfStudy: document.getElementById('field-of-study').value
+      },
+      availability: {
+        days: Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value),
+        hoursPerWeek: document.getElementById('hours-per-week').value,
+        locations: Array.from(document.querySelectorAll('input[name="location"]:checked')).map(input => input.value)
+      },
+      jobInterests: Array.from(document.querySelectorAll('input[name="job-types"]:checked')).map(input => input.value),
+      additionalInfo: document.getElementById('career-goals').value,
+      timestamp: new Date()
+    };
+    
+    console.log("Form data collected:", formData);
+    
+    // Test if Firebase is properly initialized
+    if (!firebase || !firebase.firestore) {
+      throw new Error("Firebase is not properly initialized");
+    }
+    
+    console.log("Firebase is initialized, attempting to save...");
+    
+    // Save to Firebase with explicit error handling
+    try {
+      const docRef = await firebase.firestore().collection('registrations').add(formData);
+      console.log("Document written with ID: ", docRef.id);
+      
+      // Show success message with animation
+      document.getElementById('form-container').style.display = 'none';
+      
+      const successMessage = document.getElementById('success-message');
+      successMessage.style.display = 'block';
+      showConfetti();
+    } catch (firebaseError) {
+      console.error("Firebase error details:", firebaseError.code, firebaseError.message);
+      throw firebaseError;
+    }
+    
+  } catch (error) {
+    console.error("Error saving data:", error);
+    console.error("Error type:", error.name);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
+    
+    showNotification('Error submitting form: ' + error.message, 'error');
+    
+    // Reset button
+    submitButton.innerHTML = originalButtonText;
+    submitButton.disabled = false;
+  }
+}
 
 // Format phone number as (xxx) xxx-xxxx
 function formatPhoneNumber(e) {
