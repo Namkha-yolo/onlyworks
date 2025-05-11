@@ -1,7 +1,4 @@
 // js/firebase-config.js
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-
 const firebaseConfig = {
   apiKey: "AIzaSyBjuFREFHDRe70efEwp-8RHRN0atLp6gjo",
   authDomain: "partime-389b2.firebaseapp.com",
@@ -13,26 +10,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 // Initialize Firestore database
-const db = getFirestore(app);
+const db = firebase.firestore();
 
 console.log("Firebase initialized successfully!");
 
-// Test the connection (remove this for production)
-const testConnection = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "test"), {
-      message: "Firebase connection test",
-      timestamp: new Date()
-    });
-    console.log("Firebase connection successful!", docRef.id);
-  } catch (error) {
-    console.error("Firebase connection failed:", error);
-  }
-};
-
-testConnection();
-
-export { db };
+// Test the connection
+db.collection('test').add({
+  message: 'Firebase connection test',
+  timestamp: new Date()
+})
+.then(() => {
+  console.log('Firebase connection successful!');
+})
+.catch((error) => {
+  console.error('Firebase connection failed:', error);
+});
