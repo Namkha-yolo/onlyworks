@@ -742,16 +742,20 @@
 <body>
   <header id="header">
     <div class="container header-container">
-      <div class="logo" onclick="location.href='index.html'">
+      <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <i class="fas fa-briefcase logo-icon"></i>
         OnlyWork
       </div>
       <nav>
-        <div class="nav-link" onclick="location.href='index.html#features'">Features</div>
-        <div class="nav-link" onclick="location.href='index.html#testimonials'">Testimonials</div>
-        <div class="nav-link" onclick="location.href='index.html'">Home</div>
-        <div class="nav-link active">Register</div>
+        <div class="nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Features</div>
+        <div class="nav-link" onclick="document.getElementById('testimonials').scrollIntoView({behavior:'smooth'})">Testimonials</div>
+        <div class="nav-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get Started</div>
+        <div class="nav-link" onclick="location.href='register.html'">Register</div>
       </nav>
+      <button class="btn btn-primary" onclick="location.href='register.html'">
+        <i class="fas fa-user-plus"></i>
+        Sign Up
+      </button>
       <div class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
       </div>
