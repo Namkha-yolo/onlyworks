@@ -26,6 +26,7 @@
       --success-color: #28a745;
       --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
       --monospace-font: 'Courier New', Courier, monospace;
+      --heading-font: 'Inter', Arial, sans-serif;
     }
     
     * {
@@ -92,6 +93,7 @@
       text-decoration: none;
       display: flex;
       align-items: center;
+      font-family: var(--heading-font);
     }
     
     .logo-icon {
@@ -205,14 +207,13 @@
       background-clip: text;
       color: transparent;
       margin-bottom: 1rem;
-      animation: fadeIn 0.8s ease forwards;
+      font-family: var(--heading-font);
     }
     
     .page-subtitle {
       text-align: center;
       color: var(--text-muted);
       margin-bottom: 2rem;
-      animation: fadeIn 0.8s ease forwards;
       font-size: 1.1rem;
       font-family: var(--monospace-font);
     }
@@ -222,13 +223,7 @@
       margin-bottom: 2rem;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeIn 0.5s ease forwards;
     }
-    
-    .form-section:nth-child(1) { animation-delay: 0.1s; }
-    .form-section:nth-child(2) { animation-delay: 0.3s; }
-    .form-section:nth-child(3) { animation-delay: 0.5s; }
     
     .form-section:last-child {
       border-bottom: none;
@@ -243,6 +238,7 @@
       color: transparent;
       margin-bottom: 1.5rem;
       display: inline-block;
+      font-family: var(--heading-font);
     }
     
     /* Form inputs */
@@ -324,7 +320,7 @@
       border: 1px solid #333;
       border-radius: 50px;
       cursor: pointer;
-      /*transition: all 0.3s ease;*/
+      transition: all 0.3s ease;
       color: #333;
       font-family: var(--monospace-font);
     }
@@ -538,23 +534,6 @@
       padding: 1rem 1.5rem;
       font-size: 1.125rem;
       font-weight: 600;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn-submit::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: all 0.5s ease;
-    }
-    
-    .btn-submit:hover::after {
-      left: 100%;
     }
     
     .btn i {
@@ -577,13 +556,6 @@
       font-size: 4rem;
       color: var(--success-color);
       margin-bottom: 1.5rem;
-      animation: pulseIcon 2s infinite;
-    }
-    
-    @keyframes pulseIcon {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
     }
     
     .success-title {
@@ -714,36 +686,15 @@
       font-family: var(--monospace-font);
     }
     
-   /* /* Typewriter effect */
-  /*  .typewriter-text {
-      overflow: hidden;
-      border-right: 2px solid var(--primary-purple);
-      white-space: nowrap;
-      margin: 0 auto;
-      letter-spacing: 0.1em;
-      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    /* Remove typewriter effects */
+    .typewriter-text {
       font-family: var(--monospace-font);
     }
     
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: var(--primary-purple) } */
-    }
-    
     /* Animations */
-   /* @keyframes fadeIn {
+    @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
-    }
-    
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
     }
     
     /* Responsive */
@@ -789,7 +740,7 @@
     <div class="container header-container">
       <div class="logo" onclick="location.href='index.html'">
         <i class="fas fa-briefcase logo-icon"></i>
-        <span class="typewriter-text">OnlyWork</span>
+        OnlyWork
       </div>
       <nav>
         <div class="nav-link" onclick="location.href='index.html#features'">Features</div>
@@ -806,7 +757,7 @@
   <section class="page-content">
     <div class="container">
       <div class="form-container" id="form-container">
-        <h1 class="page-title typewriter-text">Join OnlyWork</h1>
+        <h1 class="page-title">Join OnlyWork</h1>
         <p class="page-subtitle">Register to find part-time jobs that fit your schedule</p>
         
         <form id="registration-form" class="registration-form">
@@ -1001,7 +952,7 @@
       <div class="success-message" id="success-message" style="display: none;">
         <i class="fas fa-check-circle success-icon"></i>
         <h2 class="success-title">Application Submitted!</h2>
-        <p class="success-text typewriter-text">Thank you for registering with OnlyWork! We'll start matching you with job opportunities that fit your schedule and interests.</p>
+        <p class="success-text">Thank you for registering with OnlyWork! We'll start matching you with job opportunities that fit your schedule and interests.</p>
         <div class="success-buttons">
           <button class="btn btn-primary" onclick="location.href='index.html'">
             <i class="fas fa-home"></i>
@@ -1125,55 +1076,7 @@
       document.querySelector('.range-value').textContent = `${this.value} hours/week`;
     });
     
-    // Add typewriter effect to dynamic elements
-    function setupTypewriterElements() {
-      const elements = document.querySelectorAll('.form-section h2, .form-label, .day-label, .form-check-label');
-      
-      elements.forEach((element, index) => {
-        // Only apply to a subset of elements for better performance
-        if (index % 4 === 0) {
-          element.style.opacity = '0';
-          setTimeout(() => {
-            element.style.opacity = '1';
-            element.classList.add('typewriter-text');
-            // Remove the class after animation completes
-            setTimeout(() => {
-              element.classList.remove('typewriter-text');
-            }, 3500);
-          }, index * 300);
-        }
-      });
-      
-      // Add special typing effect to all input placeholders
-      const inputs = document.querySelectorAll('.form-input, .form-textarea');
-      inputs.forEach(input => {
-        const originalPlaceholder = input.placeholder;
-        input.placeholder = '';
-        
-        let i = 0;
-        const typeWriter = () => {
-          if (i < originalPlaceholder.length) {
-            input.placeholder += originalPlaceholder.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-          }
-        };
-        
-        // Start typing effect when input is in viewport
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              setTimeout(typeWriter, 500);
-              observer.unobserve(input);
-            }
-          });
-        }, { threshold: 0.1 });
-        
-        observer.observe(input);
-      });
-    }
-    
-    // Form submission with enhanced effects
+    // Form submission
     const form = document.getElementById('registration-form');
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
@@ -1222,30 +1125,11 @@
         
         // Save data and show success message
         saveToFirebase().then(() => {
-          setTimeout(() => {
-            if (formContainer) formContainer.style.display = 'none';
-            if (successMessage) successMessage.style.display = 'block';
-            
-            // Animate success elements
-            const successElements = successMessage.querySelectorAll('h2, p, .btn');
-            successElements.forEach((el, index) => {
-              el.style.opacity = '0';
-              el.style.transform = 'translateY(20px)';
-              setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-                el.style.transition = 'all 0.5s ease';
-              }, 300 * index);
-            });
-          }, 600);
+          if (formContainer) formContainer.style.display = 'none';
+          if (successMessage) successMessage.style.display = 'block';
         });
       });
     }
-    
-    // Initialize typewriter effects when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      setupTypewriterElements();
-    });
   </script>
 </body>
 </html>
