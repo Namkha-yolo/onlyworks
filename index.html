@@ -265,14 +265,14 @@
     <div id="roastResults" class="roast-results" style="display:none;">
       <h3>Your Resume Roast</h3>
       <div class="roast-content">
-        <div class="score-container">
+        <div class="score-section">
           <div class="score-circle">
             <span id="resumeScore">0</span>/10
           </div>
           <p id="scoreVerdict">Loading verdict...</p>
         </div>
         
-        <div class="feedback-container">
+        <div class="feedback-section">
           <h4>Brutal Feedback</h4>
           <div id="brutalFeedback" class="feedback-box"></div>
           
@@ -288,6 +288,17 @@
     </div>
   </div>
 </section>
+
+<div style="margin: 50px; padding: 20px; border: 2px solid red;">
+  <h3>Test File Upload</h3>
+  <input type="file" id="testFileInput">
+  <script>
+    document.getElementById('testFileInput').addEventListener('change', function() {
+      console.log("Test file selected:", this.files[0]);
+      alert("File selected: " + this.files[0].name);
+    });
+  </script>
+</div>
 
 <footer>
     <div class="container">
@@ -340,6 +351,7 @@
         <p>&copy; 2025 OnlyWork All rights reserved.</p>
       </div>
     </div>
+
   </footer>
   <!-- JavaScript -->
   <script src="js/firebase-config.js"></script>
