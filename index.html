@@ -222,35 +222,33 @@
     </div>
   </section>
 
-  <!-- Resume Roaster Section -->
-<section id="resume-roaster" class="section">
+<!-- Resume Roaster Section -->
+<section class="resume-roaster" id="resume-roaster">
   <div class="container">
-    <div class="section-header">
-      <h2>Resume Roaster</h2>
-      <p>Get brutally honest feedback on your resume. We don't sugarcoat.</p>
-    </div>
+    <h2 class="section-title">Resume Roaster</h2>
+    <p class="section-subtitle">Get brutally honest feedback on your resume. We don't sugarcoat.</p>
     
-    <div class="resume-upload-container">
+    <div class="resume-roaster-grid">
       <div class="upload-area" id="uploadArea">
         <i class="fas fa-file-upload"></i>
         <h3>Drag & Drop your resume here</h3>
         <p>or</p>
-        <label for="resumeUpload" class="upload-btn">Browse Files</label>
+        <label for="resumeUpload" class="btn btn-secondary btn-sm">Browse Files</label>
         <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden>
         <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
       </div>
       
-      <div class="resume-options">
-        <h4>Roasting Options</h4>
-        <div class="option">
+      <div class="roast-options">
+        <h3>Roasting Options</h3>
+        <div class="option-item">
           <input type="checkbox" id="brutalMode" checked>
           <label for="brutalMode">Brutal Mode (No mercy)</label>
         </div>
-        <div class="option">
+        <div class="option-item">
           <input type="checkbox" id="improveSuggestions" checked>
           <label for="improveSuggestions">Include improvement suggestions</label>
         </div>
-        <div class="option">
+        <div class="option-item">
           <input type="checkbox" id="professionalRewrite">
           <label for="professionalRewrite">Request professional rewrite ($29.99)</label>
         </div>
@@ -259,30 +257,30 @@
       </div>
     </div>
     
-    <div id="loadingRoast" class="loading-container" style="display:none;">
-      <div class="loading-spinner"></div>
+    <div id="loadingRoast" class="loading-roast">
+      <div class="spinner"></div>
       <p>Preparing your roast... This could take a minute. Our AI is sharpening its wit.</p>
     </div>
     
-    <div id="roastResults" class="roast-results" style="display:none;">
+    <div id="roastResults" class="roast-results">
       <h3>Your Resume Roast</h3>
       <div class="roast-content">
-        <div class="score-section">
+        <div class="score-container">
           <div class="score-circle">
             <span id="resumeScore">0</span>/10
           </div>
           <p id="scoreVerdict">Loading verdict...</p>
         </div>
         
-        <div class="feedback-section">
+        <div class="feedback-container">
           <h4>Brutal Feedback</h4>
-          <div id="brutalFeedback" class="feedback-content"></div>
+          <div id="brutalFeedback" class="feedback-box"></div>
           
           <h4>Areas to Improve</h4>
-          <div id="improvementAreas" class="feedback-content"></div>
+          <div id="improvementAreas" class="feedback-box"></div>
         </div>
         
-        <div class="action-buttons">
+        <div class="roast-actions">
           <button id="downloadReport" class="btn btn-secondary">Download Full Report</button>
           <button id="requestRewrite" class="btn btn-primary">Get Professional Rewrite</button>
         </div>
