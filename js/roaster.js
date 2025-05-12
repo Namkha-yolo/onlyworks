@@ -1,9 +1,11 @@
 /**
- * Resume Roaster - Front-end logic
- * Handles file uploads, UI interactions, and communication with the backend
+ * Resume Roaster - Front-end logic for OnlyWork
+ * Compatible with Firebase Cloud Functions
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+  console.log("Resume Roaster JS loading...");
+  
   // DOM Elements
   const uploadArea = document.getElementById('uploadArea');
   const resumeUpload = document.getElementById('resumeUpload');
@@ -19,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const brutalMode = document.getElementById('brutalMode');
   const improveSuggestions = document.getElementById('improveSuggestions');
   const professionalRewrite = document.getElementById('professionalRewrite');
+  
+  // Check if all necessary elements exist
+  if (!uploadArea || !resumeUpload || !roastBtn) {
+    console.error("Missing essential elements for Resume Roaster");
+    return;
+  }
+  
+  console.log("Resume Roaster elements found");
   
   // State
   let selectedFile = null;
@@ -64,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Handle file selection via input
   resumeUpload.addEventListener('change', function(e) {
+    console.log("File input changed:", this.files);
+    
     if (this.files.length) {
       handleFiles(this.files);
     }
@@ -72,6 +84,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function handleFiles(files) {
     const file = files[0];
     const fileType = file.type;
+    
+    console.log("Handling file:", file.name, "Type:", fileType);
     
     // Check if file type is allowed
     if (fileType === 'application/pdf' || 
@@ -86,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <i class="fas fa-file-alt"></i>
         <h3>${fileName}</h3>
         <p class="file-size">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-        <button id="changeFile" class="upload-btn">Change File</button>
+        <button id="changeFile" class="btn btn-secondary btn-sm">Change File</button>
       `;
       
       document.getElementById('changeFile').addEventListener('click', function() {
@@ -110,22 +124,40 @@ document.addEventListener('DOMContentLoaded', function() {
       <i class="fas fa-file-upload"></i>
       <h3>Drag & Drop your resume here</h3>
       <p>or</p>
-      <label for="resumeUpload" class="upload-btn">Browse Files</label>
+      <label for="resumeUpload" class="btn btn-secondary btn-sm">Browse Files</label>
       <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden>
       <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
     `;
     
     // Re-attach event listener to the new input
-    document.getElementById('resumeUpload').addEventListener('change', function(e) {
+    const newResumeUpload = document.getElementById('resumeUpload');
+    newResumeUpload.addEventListener('change', function(e) {
       if (this.files.length) {
         handleFiles(this.files);
       }
     });
+    
+    // Re-attach drop events
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    uploadArea.addEventListener('drop', handleDrop, false);
   }
   
   // Handle roast button click
   roastBtn.addEventListener('click', function() {
     if (!selectedFile) return;
+    
+    console.log("Roast button clicked, processing file:", selectedFile.name);
     
     // Show loading
     loadingRoast.style.display = 'block';
@@ -138,18 +170,27 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('improveSuggestions', improveSuggestions.checked);
     formData.append('professionalRewrite', professionalRewrite.checked);
     
+    // Get the Firebase function URL
+    // Replace 'your-project-id' with your actual Firebase project ID
+    const functionUrl = 'https://us-central1-partime-389b2.cloudfunctions.net/roast';
+    
+    console.log("Sending request to:", functionUrl);
+    
     // Send to backend
-    fetch('/roast', {
+    fetch(functionUrl, {
       method: 'POST',
       body: formData
     })
     .then(response => {
+      console.log("Response received:", response.status);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Network response was not ok: ${response.status}`);
       }
       return response.json();
     })
     .then(data => {
+      console.log("Analysis data received:", data);
+      
       // Store the response data
       roastData = data;
       
@@ -164,9 +205,11 @@ document.addEventListener('DOMContentLoaded', function() {
       roastResults.scrollIntoView({ behavior: 'smooth' });
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.error("Error:", error);
       loadingRoast.style.display = 'none';
-      alert('Something went wrong. Please try again later.');
+      
+      // Show an error message to the user
+      showNotification(`Error: ${error.message}. Please try again later.`, 'error');
     });
   });
   
@@ -272,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Please select the "Request professional rewrite" option and try again.');
       
       // Scroll back to options
-      document.querySelector('.resume-options').scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('.roast-options').scrollIntoView({ behavior: 'smooth' });
       
       // Highlight the option
       professionalRewrite.parentElement.classList.add('highlight');
@@ -281,4 +324,48 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 3000);
     }
   });
+  
+  // Show notification function
+  function showNotification(message, type = 'info') {
+    // Create notification element if it doesn't exist
+    let notification = document.querySelector('.notification');
+    
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.className = 'notification';
+      document.body.appendChild(notification);
+    }
+    
+    // Set message and type
+    notification.textContent = message;
+    notification.className = 'notification ' + type;
+    
+    // Add icon based on type
+    let icon = '';
+    switch (type) {
+      case 'success':
+        icon = 'fas fa-check-circle';
+        break;
+      case 'error':
+        icon = 'fas fa-exclamation-circle';
+        break;
+      case 'warning':
+        icon = 'fas fa-exclamation-triangle';
+        break;
+      default:
+        icon = 'fas fa-info-circle';
+    }
+    
+    notification.innerHTML = `<i class="${icon}"></i> ${message}`;
+    
+    // Show notification
+    notification.classList.add('show');
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 5000);
+  }
+  
+  console.log("Resume Roaster initialization complete");
 });

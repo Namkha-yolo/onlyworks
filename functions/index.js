@@ -1,14 +1,13 @@
 /**
- * Cloud Function for Resume Roaster
- * With .env support
+ * Cloud Functions for Resume Roaster
  */
 
-// Load environment variables from .env file
+// Load environment variables
 require('dotenv').config();
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const cors = require('cors')({ origin: true });
+const cors = require('cors')({origin: true});
 const Busboy = require('busboy');
 const path = require('path');
 const os = require('os');
@@ -18,30 +17,28 @@ const pdf = require('pdf-parse');
 const mammoth = require('mammoth');
 const { Configuration, OpenAIApi } = require('openai');
 
+// Initialize Firebase Admin
 admin.initializeApp();
 
-// Initialize OpenAI with the API key from .env
+// Initialize OpenAI with API key
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
-// Log the API key (first few characters only) for debugging
-console.log("API Key loaded (first 5 chars):", process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.substring(0, 5) + "..." : "NOT FOUND");
-
-// Cloud Function for resume roasting
+// Cloud Function for resume analysis
 exports.roast = functions.https.onRequest((req, res) => {
   // Enable CORS
   return cors(req, res, async () => {
-    console.log("Roast function called with method:", req.method);
+    console.log("Roast function called");
     
-    // Verify method is POST
+    // Check if method is POST
     if (req.method !== 'POST') {
       return res.status(405).send({ error: 'Method Not Allowed' });
     }
     
     try {
-      // Parse form data using Busboy
+      // Process form data with Busboy
       const busboy = new Busboy({ headers: req.headers });
       const fields = {};
       const fileWrites = [];
@@ -53,7 +50,7 @@ exports.roast = functions.https.onRequest((req, res) => {
         fields[fieldname] = val === 'true';
       });
       
-      // Process file
+      // Process file upload
       busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
         console.log(`Processing file: ${filename} (${mimetype})`);
         
@@ -79,8 +76,8 @@ exports.roast = functions.https.onRequest((req, res) => {
       // When all uploads are processed
       busboy.on('finish', async () => {
         try {
-          console.log("All uploads processed, waiting for file writes to complete");
-          // Wait for all files to be written
+          console.log("File upload complete, waiting for writes to finish");
+          // Wait for files to be written
           await Promise.all(fileWrites);
           
           if (!fileData) {
@@ -89,15 +86,19 @@ exports.roast = functions.https.onRequest((req, res) => {
           }
           
           console.log("Extracting text from file");
-          // Extract text from the file
+          // Extract text from file
           const resumeText = await extractTextFromFile(fileData);
           
+          if (!resumeText || resumeText.trim() === '') {
+            return res.status(422).send({ error: 'Could not extract text from file' });
+          }
+          
           console.log("Analyzing resume with OpenAI");
-          // Analyze the resume
+          // Analyze with OpenAI
           const analysis = await analyzeResume(resumeText, fields);
           
           console.log("Analysis complete, sending response");
-          // Send back the analysis
+          // Send analysis to client
           return res.status(200).send(analysis);
           
         } catch (error) {
@@ -105,7 +106,7 @@ exports.roast = functions.https.onRequest((req, res) => {
           return res.status(500).send({ error: 'Failed to process resume: ' + error.message });
         } finally {
           // Clean up temp files
-          if (fileData) {
+          if (fileData && fileData.filepath) {
             fs.unlinkSync(fileData.filepath);
             console.log("Temporary file deleted");
           }
@@ -122,39 +123,43 @@ exports.roast = functions.https.onRequest((req, res) => {
   });
 });
 
-// Function to extract text from different file types
+// Extract text from different file types
 async function extractTextFromFile(fileData) {
   const { filepath, mimetype } = fileData;
   
   console.log(`Extracting text from ${mimetype} file`);
   
-  // Handle different file types
-  if (mimetype === 'application/pdf') {
-    // Extract text from PDF
-    console.log("Processing PDF file");
-    const dataBuffer = fs.readFileSync(filepath);
-    const data = await pdf(dataBuffer);
-    return data.text;
-    
-  } else if (mimetype === 'application/msword' || 
-             mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-    // Extract text from DOC/DOCX
-    console.log("Processing Word document");
-    const result = await mammoth.extractRawText({ path: filepath });
-    return result.value;
-    
-  } else {
-    throw new Error('Unsupported file type: ' + mimetype);
+  try {
+    // Handle PDF files
+    if (mimetype === 'application/pdf') {
+      console.log("Processing PDF file");
+      const dataBuffer = fs.readFileSync(filepath);
+      const data = await pdf(dataBuffer);
+      return data.text;
+      
+    // Handle Word docs
+    } else if (mimetype === 'application/msword' || 
+               mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      console.log("Processing Word document");
+      const result = await mammoth.extractRawText({ path: filepath });
+      return result.value;
+      
+    } else {
+      throw new Error('Unsupported file type: ' + mimetype);
+    }
+  } catch (error) {
+    console.error("Error extracting text:", error);
+    throw error;
   }
 }
 
-// Function to analyze resume using OpenAI
+// Analyze resume with OpenAI
 async function analyzeResume(resumeText, options) {
   const { brutalMode = true, improveSuggestions = true } = options;
   
   console.log("Analyzing resume with options:", options);
   
-  // Prepare a prompt for OpenAI based on options
+  // Prepare prompt for OpenAI
   let prompt = `Analyze the following resume critically and provide honest feedback. `;
   
   if (brutalMode) {
@@ -219,7 +224,7 @@ async function analyzeResume(resumeText, options) {
   } catch (error) {
     console.error('OpenAI API error:', error);
     
-    // Fallback response in case of API error
+    // Fallback response
     return {
       score: 5,
       feedback: [
