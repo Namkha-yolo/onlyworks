@@ -1,0 +1,12 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "installCommand": "npm install",
+  "framework": null,
+  "functions": {
+    "api/roast.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
+}
