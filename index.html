@@ -644,5 +644,15 @@
       }
     }
   </style>
+  <script src="js/roaster.js"></script>
+
+<script>
+  console.log("Document ready state:", document.readyState);
+  window.addEventListener('load', function() {
+    console.log("Window fully loaded");
+    console.log("Resume upload element:", document.getElementById('resumeUpload'));
+    console.log("Test upload element:", document.getElementById('testFileInput'));
+  });
+</script>
 </body>
 </html>
