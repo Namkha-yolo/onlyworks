@@ -1,8 +1,8 @@
-import formidable from 'formidable';
-import { Configuration, OpenAIApi } from 'openai';
-import fs from 'fs';
-import pdfParse from 'pdf-parse';
-import mammoth from 'mammoth';
+const formidable = require('formidable');
+const { Configuration, OpenAIApi } = require('openai');
+const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const mammoth = require('mammoth');
 
 // Disable body parser to handle file uploads
 export const config = {
