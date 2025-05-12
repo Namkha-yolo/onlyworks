@@ -701,6 +701,105 @@
       to { opacity: 1; }
     }
     
+    /* Error styling */
+    .error {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    /* Notification styling */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      max-width: 400px;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      background-color: #1e1e1e;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .notification i {
+      margin-right: 10px;
+      font-size: 1.25rem;
+    }
+
+    .notification.success {
+      background-color: #10b981;
+    }
+
+    .notification.error {
+      background-color: #ef4444;
+    }
+
+    .notification.warning {
+      background-color: #f97316;
+    }
+
+    .notification.info {
+      background-color: #3b82f6;
+    }
+
+    /* Confetti animation */
+    .confetti {
+      position: fixed;
+      top: -20px;
+      width: 10px;
+      height: 10px;
+      background-color: #3b82f6;
+      will-change: transform;
+      z-index: 9000;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Pulse animation for range slider */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+        color: var(--primary-purple);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 0.3s ease;
+    }
+    
     /* Responsive */
     @media (max-width: 992px) {
       .footer-content {
@@ -841,7 +940,7 @@
                 <input type="range" id="hours-per-week" class="form-slider" min="5" max="40" step="5" value="20">
                 <div class="range-value">20 hours/week</div>
                 <div class="range-labels">
-                  <span>5</span>
+<span>5</span>
                   <span>10</span>
                   <span>15</span>
                   <span>20</span>
@@ -1027,10 +1126,315 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="js/firebase-config.js"></script>
-  <script src="js/form-handler.js"></script>
-  <script src="js/animations.js"></script>
+  <!-- Firebase SDKs first -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   
+  <!-- Firebase configuration -->
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBjuFREFHDRe70efEwp-8RHRN0atLp6gjo",
+      authDomain: "partime-389b2.firebaseapp.com",
+      projectId: "partime-389b2",
+      storageBucket: "partime-389b2.appspot.com",
+      messagingSenderId: "481270697427",
+      appId: "1:481270697427:web:a4c357f69fd5d5f8257326",
+      measurementId: "G-V1WY1KYZYL"
+    };
+
+    // Initialize Firebase
+    try {
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized successfully!");
+      
+      // Test the connection
+      firebase.firestore().collection('test').add({
+        message: 'Firebase connection test',
+        timestamp: new Date()
+      })
+      .then(() => {
+        console.log('Firebase connection successful!');
+      })
+      .catch((error) => {
+        console.error('Firebase connection failed:', error);
+      });
+    } catch (error) {
+      console.error("Error initializing Firebase:", error);
+    }
+  </script>
+  
+  <!-- Form handler script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Format phone numbers as user types
+      const phoneInput = document.getElementById('phone');
+      if (phoneInput) {
+        phoneInput.addEventListener('input', formatPhoneNumber);
+      }
+      
+      // Handle hours per week slider
+      const hoursRange = document.getElementById('hours-per-week');
+      const hoursValue = document.querySelector('#hours-per-week + .range-value');
+      if (hoursRange && hoursValue) {
+        hoursRange.addEventListener('input', function() {
+          hoursValue.textContent = `${this.value} hours/week`;
+          hoursValue.classList.add('pulse');
+          setTimeout(() => hoursValue.classList.remove('pulse'), 300);
+        });
+      }
+      
+      // Add event listener to form
+      const registrationForm = document.getElementById('registration-form');
+      if (registrationForm) {
+        registrationForm.addEventListener('submit', handleFormSubmit);
+        console.log("Form submission event listener attached");
+      } else {
+        console.error("Registration form element not found");
+      }
+    });
+
+    // Format phone number as (xxx) xxx-xxxx
+    function formatPhoneNumber(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 0) {
+        if (value.length <= 3) {
+          value = `(${value}`;
+        } else if (value.length <= 6) {
+          value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+        } else {
+          value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+        }
+      }
+      e.target.value = value;
+    }
+
+    // Handle form submission
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      console.log("Form submission started");
+      
+      // Validate the form
+      if (!validateForm()) {
+        showNotification('Please fill in all required fields', 'error');
+        return;
+      }
+      
+      // Show loading state
+      const submitButton = document.querySelector('.btn-submit');
+      const originalButtonText = submitButton.innerHTML;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      submitButton.disabled = true;
+      
+      try {
+        console.log("Starting form submission to Firebase...");
+        
+        // Verify Firebase is initialized
+        if (!firebase || !firebase.firestore) {
+          throw new Error("Firebase is not properly initialized");
+        }
+        
+        // Collect form data
+        const formData = {
+          personalInfo: {
+            name: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            university: document.getElementById('university').value,
+            fieldOfStudy: document.getElementById('field-of-study').value
+          },
+          availability: {
+            days: Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value),
+            hoursPerWeek: document.getElementById('hours-per-week').value,
+            locations: Array.from(document.querySelectorAll('input[name="location"]:checked')).map(input => input.value)
+          },
+          jobInterests: Array.from(document.querySelectorAll('input[name="job-types"]:checked')).map(input => input.value),
+          additionalInfo: document.getElementById('career-goals').value,
+          timestamp: new Date()
+        };
+        
+        console.log("Form data collected:", formData);
+        
+        // Save to Firebase
+        const docRef = await firebase.firestore().collection('registrations').add(formData);
+        console.log("Document written with ID:", docRef.id);
+        
+        // Show success message with animation
+        document.getElementById('form-container').style.display = 'none';
+        
+        const successMessage = document.getElementById('success-message');
+        successMessage.style.display = 'block';
+        showConfetti();
+        
+      } catch (error) {
+        console.error("Error saving data:", error);
+        console.error("Error type:", error.name);
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+        
+        showNotification('Error submitting form: ' + error.message, 'error');
+        
+        // Reset button
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+      }
+    }
+
+    // Validate the form
+    function validateForm() {
+      let isValid = true;
+      
+      // Check required fields
+      const requiredFields = document.querySelectorAll('[required]');
+      requiredFields.forEach(field => {
+        // Remove any existing error classes
+        field.classList.remove('error');
+        const errorMessage = field.parentNode.querySelector('.error-message');
+        if (errorMessage) {
+          errorMessage.remove();
+        }
+        
+        // Check if field is empty
+        if (field.type === 'checkbox') {
+          if (!field.checked) {
+            showFieldError(field, 'This field is required');
+            isValid = false;
+          }
+        } else if (!field.value.trim()) {
+          showFieldError(field, 'This field is required');
+          isValid = false;
+        } else if (field.type === 'email' && !isValidEmail(field.value)) {
+          showFieldError(field, 'Please enter a valid email address');
+          isValid = false;
+        }
+      });
+      
+      // Check if at least one day is selected
+      const selectedDays = document.querySelectorAll('input[name="days"]:checked');
+      if (selectedDays.length === 0) {
+        const daysContainer = document.querySelector('.day-selector');
+        showContainerError(daysContainer, 'Please select at least one day');
+        isValid = false;
+      }
+      
+      // Check if at least one job type is selected
+      const selectedJobs = document.querySelectorAll('input[name="job-types"]:checked');
+      if (selectedJobs.length === 0) {
+        const jobsContainer = document.querySelector('input[name="job-types"]').closest('.form-check-group');
+        showContainerError(jobsContainer, 'Please select at least one job type');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // Show error for form field
+    function showFieldError(field, message) {
+      field.classList.add('error');
+      
+      const errorElement = document.createElement('div');
+      errorElement.className = 'error-message';
+      errorElement.textContent = message;
+      
+      field.parentNode.appendChild(errorElement);
+    }
+
+    // Show error for container
+    function showContainerError(container, message) {
+      const errorElement = document.createElement('div');
+      errorElement.className = 'error-message';
+      errorElement.textContent = message;
+      
+      container.appendChild(errorElement);
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+      // Remove existing notifications
+      const existingNotifications = document.querySelectorAll('.notification');
+      existingNotifications.forEach(n => n.remove());
+      
+      // Create notification
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      
+      // Add icon
+      const icon = document.createElement('i');
+      switch (type) {
+        case 'error':
+          icon.className = 'fas fa-exclamation-circle';
+          break;
+        case 'success':
+          icon.className = 'fas fa-check-circle';
+          break;
+        case 'warning':
+          icon.className = 'fas fa-exclamation-triangle';
+          break;
+        default:
+          icon.className = 'fas fa-info-circle';
+      }
+      
+      notification.appendChild(icon);
+      
+      // Add message
+      const messageSpan = document.createElement('span');
+      messageSpan.textContent = message;
+      notification.appendChild(messageSpan);
+      
+      // Add to body
+      document.body.appendChild(notification);
+      
+      // Show with animation
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
+    }
+
+    // Create confetti effect
+    function showConfetti() {
+      const colors = ['#3b82f6', '#f97316', '#10b981', '#8b5cf6', '#ef4444'];
+      
+      for (let i = 0; i < 100; i++) {
+        createConfettiPiece(colors);
+      }
+    }
+
+    function createConfettiPiece(colors) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      
+      // Random properties
+      const size = Math.random() * 10 + 5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const left = Math.random() * 100;
+      const duration = Math.random() * 3 + 2;
+      
+      confetti.style.width = `${size}px`;
+      confetti.style.height = `${size}px`;
+      confetti.style.backgroundColor = color;
+      confetti.style.left = `${left}vw`;
+      confetti.style.animationDuration = `${duration}s`;
+      
+      document.body.appendChild(confetti);
+      
+      // Remove after animation completes
+      setTimeout(() => confetti.remove(), duration * 1000);
+    }
+  </script>
+  
+  <!-- Other scripts -->
   <script>
     // Add scroll effect to header
     window.addEventListener('scroll', function() {
@@ -1075,66 +1479,6 @@
           mobileMenu.appendChild(mobileMenuContent);
           document.body.appendChild(mobileMenu);
         }
-      });
-    }
-    
-    // Handle hours slider update
-    document.getElementById('hours-per-week').addEventListener('input', function() {
-      document.querySelector('.range-value').textContent = `${this.value} hours/week`;
-    });
-    
-    // Form submission
-    const form = document.getElementById('registration-form');
-    const formContainer = document.getElementById('form-container');
-    const successMessage = document.getElementById('success-message');
-    
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Collect form data
-        const formData = {
-          personalInfo: {
-            fullName: document.getElementById('fullname').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            university: document.getElementById('university').value,
-            fieldOfStudy: document.getElementById('field-of-study').value
-          },
-          availability: {
-            days: Array.from(document.querySelectorAll('input[name="days"]:checked')).map(el => el.value),
-            hoursPerWeek: document.getElementById('hours-per-week').value,
-            locations: Array.from(document.querySelectorAll('input[name="location"]:checked')).map(el => el.value)
-          },
-          jobInterests: {
-            types: Array.from(document.querySelectorAll('input[name="job-types"]:checked')).map(el => el.value),
-            careerGoals: document.getElementById('career-goals').value
-          },
-          termsAgreed: document.getElementById('terms').checked
-        };
-        
-        console.log('Form data collected:', formData);
-        
-        // Simulate API call or Firebase save
-        const saveToFirebase = () => {
-          return new Promise((resolve) => {
-            // This would be replaced with actual Firebase code
-            console.log('Saving to Firebase:', formData);
-            setTimeout(resolve, 1000);
-          });
-        };
-        
-        // Show loading state
-        const submitBtn = document.querySelector('.btn-submit');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        submitBtn.disabled = true;
-        
-        // Save data and show success message
-        saveToFirebase().then(() => {
-          if (formContainer) formContainer.style.display = 'none';
-          if (successMessage) successMessage.style.display = 'block';
-        });
       });
     }
   </script>
