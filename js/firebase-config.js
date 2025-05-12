@@ -10,21 +10,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Initialize Firestore database
-const db = firebase.firestore();
-
-console.log("Firebase initialized successfully!");
-
-// Test the connection
-db.collection('test').add({
-  message: 'Firebase connection test',
-  timestamp: new Date()
-})
-.then(() => {
-  console.log('Firebase connection successful!');
-})
-.catch((error) => {
-  console.error('Firebase connection failed:', error);
-});
+try {
+  firebase.initializeApp(firebaseConfig);
+  console.log("Firebase initialized successfully!");
+  
+  // Test the connection
+  firebase.firestore().collection('test').add({
+    message: 'Firebase connection test',
+    timestamp: new Date()
+  })
+  .then(() => {
+    console.log('Firebase connection successful!');
+  })
+  .catch((error) => {
+    console.error('Firebase connection failed:', error);
+  });
+} catch (error) {
+  console.error("Error initializing Firebase:", error);
+}
