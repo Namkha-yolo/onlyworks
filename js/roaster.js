@@ -1,138 +1,75 @@
 /**
- * Resume Roaster - Front-end logic for OnlyWork
- * Updated version with improved file handling
+ * Resume Roaster - Simplified version that WILL work
  */
 
+// Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("Resume Roaster JS loaded");
+  console.log("Roaster.js loaded");
   
-  // DOM Elements
+  // Direct DOM element references
   const uploadArea = document.getElementById('uploadArea');
-  const resumeUpload = document.getElementById('resumeUpload');
+  const fileInput = document.getElementById('resumeUpload');
   const roastBtn = document.getElementById('roastBtn');
-  const loadingRoast = document.getElementById('loadingRoast');
-  const roastResults = document.getElementById('roastResults');
-  const resumeScore = document.getElementById('resumeScore');
-  const scoreVerdict = document.getElementById('scoreVerdict');
-  const brutalFeedback = document.getElementById('brutalFeedback');
-  const improvementAreas = document.getElementById('improvementAreas');
-  const downloadReport = document.getElementById('downloadReport');
-  const requestRewrite = document.getElementById('requestRewrite');
-  const brutalMode = document.getElementById('brutalMode');
-  const improveSuggestions = document.getElementById('improveSuggestions');
-  const professionalRewrite = document.getElementById('professionalRewrite');
+  const loadingEl = document.getElementById('loadingRoast');
+  const resultsEl = document.getElementById('roastResults');
   
-  // Check if elements exist
-  if (!uploadArea) console.error("Missing uploadArea element");
-  if (!resumeUpload) console.error("Missing resumeUpload element");
-  if (!roastBtn) console.error("Missing roastBtn element");
-  if (!loadingRoast) console.error("Missing loadingRoast element");
-  if (!roastResults) console.error("Missing roastResults element");
+  // Print out if we found the elements
+  console.log("Upload area found:", !!uploadArea);
+  console.log("File input found:", !!fileInput);
+  console.log("Roast button found:", !!roastBtn);
   
-  // State
-  let selectedFile = null;
-  let roastData = null;
+  // If any essential element is missing, stop execution
+  if (!uploadArea || !fileInput || !roastBtn) {
+    console.error("Critical elements missing");
+    return;
+  }
   
-  // Ensure file input is clickable
-  const browseLabel = document.querySelector('label[for="resumeUpload"]');
+  // Add a click handler to the Browse Files button
+  const browseLabel = uploadArea.querySelector('label[for="resumeUpload"]');
   if (browseLabel) {
-    browseLabel.addEventListener('click', function(e) {
-      // Prevent the default to manually handle the click
-      e.preventDefault(); 
-      e.stopPropagation();
-      
-      // Manually trigger click on the file input
-      resumeUpload.click();
-      
-      console.log("Browse button clicked, triggering file input");
-    });
+    console.log("Browse label found");
+    browseLabel.onclick = function(e) {
+      console.log("Browse label clicked");
+      // Don't prevent default - let the label trigger the file input
+    };
   }
   
-  // Event Listeners for Drag & Drop
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, preventDefaults, false);
-  });
+  // State variable to track the selected file
+  let selectedFile = null;
   
-  function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-  
-  ['dragenter', 'dragover'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, highlight, false);
-  });
-  
-  ['dragleave', 'drop'].forEach(eventName => {
-    uploadArea.addEventListener(eventName, unhighlight, false);
-  });
-  
-  function highlight() {
-    uploadArea.classList.add('dragover');
-  }
-  
-  function unhighlight() {
-    uploadArea.classList.remove('dragover');
-  }
-  
-  // Handle file drop
-  uploadArea.addEventListener('drop', handleDrop, false);
-  
-  function handleDrop(e) {
-    console.log("File dropped");
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    
-    if (files.length) {
-      handleFiles(files);
-    }
-  }
-  
-  // Handle file selection via input
-  resumeUpload.addEventListener('change', function(e) {
-    console.log("File input changed", this.files);
-    
-    if (this.files.length) {
-      handleFiles(this.files);
+  // Listen for file selection
+  fileInput.addEventListener('change', function() {
+    console.log("File input changed, files:", this.files);
+    if (this.files.length > 0) {
+      handleFile(this.files[0]);
     }
   });
   
-  function handleFiles(files) {
-    const file = files[0];
-    const fileType = file.type;
+  // Function to handle the selected file
+  function handleFile(file) {
+    console.log("Handling file:", file.name);
+    selectedFile = file;
     
-    console.log("Handling file:", file.name, "Type:", fileType);
+    // Update the UI to show the selected file
+    uploadArea.innerHTML = `
+      <i class="fas fa-file-alt"></i>
+      <h3>${file.name}</h3>
+      <p>${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+      <button id="changeFileBtn" class="btn btn-secondary btn-sm">Change File</button>
+    `;
     
-    // Check if file type is allowed
-    if (fileType === 'application/pdf' || 
-        fileType === 'application/msword' || 
-        fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      
-      selectedFile = file;
-      
-      // Update UI to show selected file
-      const fileName = file.name;
-      uploadArea.innerHTML = `
-        <i class="fas fa-file-alt"></i>
-        <h3>${fileName}</h3>
-        <p class="file-size">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-        <button id="changeFile" class="btn btn-secondary btn-sm">Change File</button>
-      `;
-      
-      document.getElementById('changeFile').addEventListener('click', function() {
-        resetUploadArea();
-      });
-      
-      // Enable roast button
-      roastBtn.disabled = false;
-      
-    } else {
-      alert('Please upload a PDF, DOC, or DOCX file.');
-    }
+    // Enable the roast button
+    roastBtn.disabled = false;
+    
+    // Add click handler to the change file button
+    document.getElementById('changeFileBtn').addEventListener('click', resetUploadArea);
   }
   
+  // Function to reset the upload area
   function resetUploadArea() {
+    console.log("Resetting upload area");
     selectedFile = null;
-    resumeUpload.value = '';
+    fileInput.value = '';
     roastBtn.disabled = true;
     
     uploadArea.innerHTML = `
@@ -144,140 +81,113 @@ document.addEventListener('DOMContentLoaded', function() {
       <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
     `;
     
-    // Re-attach event listener to the new input
-    const newResumeUpload = document.getElementById('resumeUpload');
-    if (newResumeUpload) {
-      newResumeUpload.addEventListener('change', function(e) {
-        if (this.files.length) {
-          handleFiles(this.files);
-        }
-      });
-      
-      // Re-attach event to the browse label
-      const newBrowseLabel = document.querySelector('label[for="resumeUpload"]');
-      if (newBrowseLabel) {
-        newBrowseLabel.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          newResumeUpload.click();
-        });
+    // Re-initialize the file input
+    const newFileInput = document.getElementById('resumeUpload');
+    newFileInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        handleFile(this.files[0]);
       }
-    }
-    
-    // Re-attach drop events
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, preventDefaults, false);
     });
-    
-    ['dragenter', 'dragover'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, highlight, false);
-    });
-    
-    ['dragleave', 'drop'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, unhighlight, false);
-    });
-    
-    uploadArea.addEventListener('drop', handleDrop, false);
   }
   
-  // Handle roast button click
+  // Drag and drop functionality
+  uploadArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.add('dragover');
+  });
+  
+  uploadArea.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.remove('dragover');
+  });
+  
+  uploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.remove('dragover');
+    
+    console.log("File dropped");
+    if (e.dataTransfer.files.length > 0) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  });
+  
+  // Handle the Roast button click
   roastBtn.addEventListener('click', function() {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      console.log("No file selected");
+      return;
+    }
     
-    console.log("Roast button clicked, processing file:", selectedFile.name);
+    console.log("Roasting file:", selectedFile.name);
     
-    // Show loading
-    loadingRoast.style.display = 'block';
-    roastResults.style.display = 'none';
+    // Show loading spinner
+    loadingEl.style.display = 'block';
+    resultsEl.style.display = 'none';
     
-    // Prepare form data
-    const formData = new FormData();
-    formData.append('resume', selectedFile);
-    formData.append('brutalMode', brutalMode.checked);
-    formData.append('improveSuggestions', improveSuggestions.checked);
-    formData.append('professionalRewrite', professionalRewrite.checked);
-    
-    // Get the Vercel function URL
-    const functionUrl = 'https://partime-landing-page-phi-three.vercel.app/api/roast';
-    
-    console.log("Sending request to:", functionUrl);
-    
-    // For debugging first, let's use a mock response
-    // This will help verify if the frontend is working correctly
-    setTimeout(() => {
+    // Mock data for testing
+    setTimeout(function() {
+      // Hide loading spinner
+      loadingEl.style.display = 'none';
+      
+      // Show results with mock data
+      resultsEl.style.display = 'block';
+      
+      // Update the UI with mock data
       const mockData = {
         score: 7,
         feedback: [
-          { section: "Contact Information", comment: "Your contact section lacks professional email and LinkedIn URL. Use a professional email instead of a personal one." },
-          { section: "Summary", comment: "Your summary is too generic and doesn't highlight your unique value proposition. It reads like every other resume." },
-          { section: "Experience", comment: "Your experience bullets focus too much on responsibilities rather than achievements. No quantifiable metrics are provided." },
-          { section: "Skills", comment: "Your skills section is a boring list without organization or proficiency levels." },
-          { section: "Education", comment: "Your education section lacks relevant coursework or academic achievements that would set you apart." }
+          {section: "Contact Information", comment: "Your contact section lacks a professional email and LinkedIn URL. Use a professional email instead of a personal one."},
+          {section: "Summary", comment: "Your summary is too generic and doesn't highlight your unique value proposition."},
+          {section: "Experience", comment: "Your experience bullets focus too much on responsibilities rather than achievements. No quantifiable metrics."},
+          {section: "Skills", comment: "Your skills section is a boring list without organization or proficiency levels."}
         ],
         improvements: [
-          { title: "Add Metrics and Results", description: "Include specific numbers and percentages to quantify your achievements. For example, 'Increased sales by 25%' instead of 'Increased sales'." },
-          { title: "Use Action Verbs", description: "Start bullet points with strong action verbs like 'Implemented', 'Developed', or 'Managed' instead of passive language." },
-          { title: "Customize for Job Descriptions", description: "Tailor your resume for specific job postings by incorporating relevant keywords from the job description." },
-          { title: "Improve Formatting", description: "Use consistent formatting throughout your resume. Ensure proper alignment, spacing, and font usage." }
+          {title: "Add Metrics", description: "Include specific numbers and percentages to quantify your achievements."},
+          {title: "Use Action Verbs", description: "Start bullet points with strong action verbs like 'Implemented' or 'Developed'."},
+          {title: "Customize for Job Descriptions", description: "Tailor your resume for specific job postings by incorporating relevant keywords."}
         ]
       };
       
-      // Store the response data
-      roastData = mockData;
-      
-      // Hide loading, show results
-      loadingRoast.style.display = 'none';
-      roastResults.style.display = 'block';
-      
-      // Update UI with roast data
-      updateRoastResults(mockData);
+      updateResults(mockData);
       
       // Scroll to results
-      roastResults.scrollIntoView({ behavior: 'smooth' });
-      
-      console.log("Mock response processed successfully");
-      
-      // After confirming frontend works, uncomment this real API call
-      /*
-      fetch(functionUrl, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        console.log("Response received:", response.status);
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("Data received:", data);
-        
-        // Store the response data
-        roastData = data;
-        
-        // Hide loading, show results
-        loadingRoast.style.display = 'none';
-        roastResults.style.display = 'block';
-        
-        // Update UI with roast data
-        updateRoastResults(data);
-        
-        // Scroll to results
-        roastResults.scrollIntoView({ behavior: 'smooth' });
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        loadingRoast.style.display = 'none';
-        alert(`Error: ${error.message}. Please try again later.`);
-      });
-      */
-    }, 2000); // Simulate 2 second API call
+      resultsEl.scrollIntoView({behavior: 'smooth'});
+    }, 2000);
+    
+    /*
+    // This would be the actual API call to Vercel
+    const formData = new FormData();
+    formData.append('resume', selectedFile);
+    formData.append('brutalMode', document.getElementById('brutalMode').checked);
+    formData.append('improveSuggestions', document.getElementById('improveSuggestions').checked);
+    formData.append('professionalRewrite', document.getElementById('professionalRewrite').checked);
+    
+    fetch('https://partime-landing-page-phi-three.vercel.app/api/roast', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      loadingEl.style.display = 'none';
+      resultsEl.style.display = 'block';
+      updateResults(data);
+      resultsEl.scrollIntoView({behavior: 'smooth'});
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      loadingEl.style.display = 'none';
+      alert('Error processing resume. Please try again.');
+    });
+    */
   });
   
-  function updateRoastResults(data) {
+  // Function to update the results UI
+  function updateResults(data) {
     // Update score
-    resumeScore.textContent = data.score;
+    document.getElementById('resumeScore').textContent = data.score;
     
     // Update verdict based on score
     let verdict = '';
@@ -292,27 +202,31 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       verdict = 'Excellent resume! Little to roast here.';
     }
-    scoreVerdict.textContent = verdict;
     
-    // Update feedback sections
+    document.getElementById('scoreVerdict').textContent = verdict;
+    
+    // Update feedback
+    const brutalFeedback = document.getElementById('brutalFeedback');
     brutalFeedback.innerHTML = '';
+    
     data.feedback.forEach(item => {
-      const feedbackItem = document.createElement('p');
-      feedbackItem.innerHTML = `<strong>${item.section}:</strong> ${item.comment}`;
-      brutalFeedback.appendChild(feedbackItem);
+      const p = document.createElement('p');
+      p.innerHTML = `<strong>${item.section}:</strong> ${item.comment}`;
+      brutalFeedback.appendChild(p);
     });
     
-    // Update improvement areas if available
+    // Update improvements
+    const improvementAreas = document.getElementById('improvementAreas');
+    improvementAreas.innerHTML = '';
+    
     if (data.improvements && data.improvements.length) {
-      improvementAreas.innerHTML = '';
       data.improvements.forEach(item => {
-        const improvementItem = document.createElement('div');
-        improvementItem.classList.add('improvement-item');
-        improvementItem.innerHTML = `
+        const div = document.createElement('div');
+        div.innerHTML = `
           <h5>${item.title}</h5>
           <p>${item.description}</p>
         `;
-        improvementAreas.appendChild(improvementItem);
+        improvementAreas.appendChild(div);
       });
     } else {
       improvementAreas.innerHTML = '<p>No specific improvement suggestions available.</p>';
@@ -320,70 +234,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Handle download report button
-  downloadReport.addEventListener('click', function() {
-    if (!roastData) return;
-    
-    // Create a text representation of the report
-    let reportText = `RESUME ROAST REPORT\n`;
-    reportText += `====================\n\n`;
-    reportText += `Overall Score: ${roastData.score}/10\n`;
-    reportText += `Verdict: ${scoreVerdict.textContent}\n\n`;
-    
-    reportText += `BRUTAL FEEDBACK:\n`;
-    reportText += `---------------\n`;
-    roastData.feedback.forEach(item => {
-      reportText += `${item.section}: ${item.comment}\n`;
+  const downloadBtn = document.getElementById('downloadReport');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function() {
+      alert('Download feature would be implemented here.');
     });
-    
-    reportText += `\nAREAS TO IMPROVE:\n`;
-    reportText += `----------------\n`;
-    if (roastData.improvements && roastData.improvements.length) {
-      roastData.improvements.forEach(item => {
-        reportText += `${item.title}\n`;
-        reportText += `${item.description}\n\n`;
-      });
-    } else {
-      reportText += `No specific improvement suggestions available.\n`;
-    }
-    
-    // Create a Blob from the text
-    const blob = new Blob([reportText], { type: 'text/plain' });
-    
-    // Create a download link
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = 'resume_roast_report.txt';
-    
-    // Append to body, click and remove
-    document.body.appendChild(a);
-    a.click();
-    
-    // Clean up
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
-  });
+  }
   
   // Handle request rewrite button
-  requestRewrite.addEventListener('click', function() {
-    if (professionalRewrite.checked) {
-      alert('This would navigate to a payment page in a real implementation.');
-    } else {
-      alert('Please select the "Request professional rewrite" option and try again.');
-      
-      // Scroll back to options
-      document.querySelector('.roast-options').scrollIntoView({ behavior: 'smooth' });
-      
-      // Highlight the option
-      professionalRewrite.parentElement.classList.add('highlight');
-      setTimeout(() => {
-        professionalRewrite.parentElement.classList.remove('highlight');
-      }, 3000);
-    }
-  });
+  const rewriteBtn = document.getElementById('requestRewrite');
+  if (rewriteBtn) {
+    rewriteBtn.addEventListener('click', function() {
+      if (document.getElementById('professionalRewrite').checked) {
+        alert('This would navigate to a payment page.');
+      } else {
+        alert('Please select the "Request professional rewrite" option first.');
+      }
+    });
+  }
   
-  console.log("Resume Roaster initialization complete");
+  console.log("Roaster.js initialization complete");
 });
