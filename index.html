@@ -222,6 +222,75 @@
     </div>
   </section>
 
+  <!-- Resume Roaster Section -->
+<section id="resume-roaster" class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Resume Roaster</h2>
+      <p>Get brutally honest feedback on your resume. We don't sugarcoat.</p>
+    </div>
+    
+    <div class="resume-upload-container">
+      <div class="upload-area" id="uploadArea">
+        <i class="fas fa-file-upload"></i>
+        <h3>Drag & Drop your resume here</h3>
+        <p>or</p>
+        <label for="resumeUpload" class="upload-btn">Browse Files</label>
+        <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden>
+        <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
+      </div>
+      
+      <div class="resume-options">
+        <h4>Roasting Options</h4>
+        <div class="option">
+          <input type="checkbox" id="brutalMode" checked>
+          <label for="brutalMode">Brutal Mode (No mercy)</label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="improveSuggestions" checked>
+          <label for="improveSuggestions">Include improvement suggestions</label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="professionalRewrite">
+          <label for="professionalRewrite">Request professional rewrite ($29.99)</label>
+        </div>
+        
+        <button id="roastBtn" class="btn btn-primary" disabled>Roast My Resume</button>
+      </div>
+    </div>
+    
+    <div id="loadingRoast" class="loading-container" style="display:none;">
+      <div class="loading-spinner"></div>
+      <p>Preparing your roast... This could take a minute. Our AI is sharpening its wit.</p>
+    </div>
+    
+    <div id="roastResults" class="roast-results" style="display:none;">
+      <h3>Your Resume Roast</h3>
+      <div class="roast-content">
+        <div class="score-section">
+          <div class="score-circle">
+            <span id="resumeScore">0</span>/10
+          </div>
+          <p id="scoreVerdict">Loading verdict...</p>
+        </div>
+        
+        <div class="feedback-section">
+          <h4>Brutal Feedback</h4>
+          <div id="brutalFeedback" class="feedback-content"></div>
+          
+          <h4>Areas to Improve</h4>
+          <div id="improvementAreas" class="feedback-content"></div>
+        </div>
+        
+        <div class="action-buttons">
+          <button id="downloadReport" class="btn btn-secondary">Download Full Report</button>
+          <button id="requestRewrite" class="btn btn-primary">Get Professional Rewrite</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
     <div class="container">
       <div class="footer-content">
