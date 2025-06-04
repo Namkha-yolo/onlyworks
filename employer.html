@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlyWork - Hire Talented Students</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%238a2be2'/><path d='M30 30 L45 70 L55 45 L65 70 L80 30' stroke='black' stroke-width='8' fill='none'/></svg>" type="image/svg+xml">
+    
     <style>
         * {
             margin: 0;
@@ -47,12 +54,21 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
         }
         
         .nav-links {
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
         
         .nav-links a {
@@ -64,6 +80,12 @@
         
         .nav-links a:hover {
             color: #667eea;
+        }
+        
+        .nav-links .divider {
+            width: 1px;
+            height: 20px;
+            background: #ddd;
         }
         
         .cta-button {
@@ -454,281 +476,61 @@
             color: #999;
         }
         
+        /* Font Awesome Icons */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
         
-        /* How It Works Section */
-        .how-it-works {
-            padding: 6rem 0;
-            background: linear-gradient(135deg, #f8f9ff, #e8ebff);
-        }
-        
-        .steps-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 4rem;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-        
-        .step-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 200px;
-            position: relative;
-        }
-        
-        .step-number {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-        
-        .step-content h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
+        /* Mobile responsiveness */
+        .mobile-menu-btn {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
             color: #333;
-        }
-        
-        .step-content p {
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        .step-connector {
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            position: relative;
-            margin: 0 1rem;
-        }
-        
-        .step-connector::after {
-            content: '';
-            position: absolute;
-            right: -8px;
-            top: -5px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid #667eea;
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-        }
-        
-        /* Job Categories Section */
-        .job-categories {
-            padding: 6rem 0;
-            background: white;
-        }
-        
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .category-card {
-            background: linear-gradient(135deg, #f8f9ff, #e8ebff);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
-        }
-        
-        .category-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .category-card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .category-card ul {
-            list-style: none;
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-        
-        .category-card ul li {
-            padding: 0.3rem 0;
-            color: #666;
-            position: relative;
-            padding-left: 1rem;
-        }
-        
-        .category-card ul li::before {
-            content: '•';
-            color: #667eea;
-            position: absolute;
-            left: 0;
-        }
-        
-        .category-stats {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        /* Resources Section */
-        .resources {
-            padding: 6rem 0;
-            background: #f8f9ff;
-        }
-        
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .resource-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-        }
-        
-        .resource-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .resource-card h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .resource-card p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-        
-        .resource-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        
-        .resource-link:hover {
-            color: #764ba2;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
         }
         
         @media (max-width: 768px) {
-            .steps-container {
-                flex-direction: column;
+            .nav-links {
+                display: none;
             }
             
-            .step-connector {
-                width: 3px;
-                height: 60px;
-                margin: 1rem 0;
+            .mobile-menu-btn {
+                display: block;
             }
             
-            .step-connector::after {
-                top: calc(100% - 3px);
-                left: -5px;
-                right: auto;
-                border-left: 6px solid transparent;
-                border-right: 6px solid transparent;
-                border-top: 10px solid #667eea;
-                border-bottom: none;
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid,
+            .pricing-grid,
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.popular {
+                transform: scale(1);
             }
         }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .feature-card,
-        .pricing-card,
-        .testimonial-card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-        
-        .feature-card:nth-child(2) { animation-delay: 0.1s; }
-        .feature-card:nth-child(3) { animation-delay: 0.2s; }
-        .pricing-card:nth-child(2) { animation-delay: 0.1s; }
-        .pricing-card:nth-child(3) { animation-delay: 0.2s; }
-        .testimonial-card:nth-child(2) { animation-delay: 0.1s; }
-        .testimonial-card:nth-child(3) { animation-delay: 0.2s; }
     </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">OnlyWork</div>
+            <a href="/" class="logo">
+                <i class="fas fa-briefcase"></i>
+                OnlyWork
+            </a>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#testimonials">Success Stories</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="divider"></li>
+                <li><a href="/">For Students</a></li>
+                <li><a href="/employer">For Employers</a></li>
             </ul>
-            <a href="#signup" class="cta-button">Start Hiring</a>
+            <a href="/employer-register" class="cta-button">Start Hiring</a>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
         </nav>
     </header>
 
@@ -739,7 +541,7 @@
                     <h1>Hire Talented Students Instantly</h1>
                     <p>Connect with motivated students ready to work flexible hours. Post jobs, review applications, and hire the perfect candidates for your campus or local business needs.</p>
                     <div class="hero-buttons">
-                        <a href="#signup" class="button-primary">Post Your First Job</a>
+                        <a href="/employer-register" class="button-primary">Post Your First Job</a>
                         <a href="#demo" class="button-secondary">Watch Demo</a>
                     </div>
                 </div>
@@ -831,7 +633,7 @@
                             <li>Payment processing</li>
                             <li>Email support</li>
                         </ul>
-                        <a href="#signup" class="cta-button">Get Started</a>
+                        <a href="/employer-register" class="cta-button">Get Started</a>
                     </div>
                     
                     <div class="pricing-card popular">
@@ -846,7 +648,7 @@
                             <li>Phone & email support</li>
                             <li>Custom branding</li>
                         </ul>
-                        <a href="#signup" class="cta-button">Get Started</a>
+                        <a href="/employer-register" class="cta-button">Get Started</a>
                     </div>
                     
                     <div class="pricing-card">
@@ -891,221 +693,12 @@
             </div>
         </section>
 
-        <section class="how-it-works" id="how-it-works">
-            <div class="container">
-                <h2 class="section-title">How It Works</h2>
-                <p class="section-subtitle">Get started in minutes with our simple 4-step process</p>
-                
-                <div class="steps-container">
-                    <div class="step-item">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Create Your Profile</h3>
-                            <p>Set up your employer profile with company details, verification, and hiring preferences.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-connector"></div>
-                    
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Post Your Job</h3>
-                            <p>Create detailed job postings with requirements, schedules, compensation, and specific skills needed.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-connector"></div>
-                    
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Review Applications</h3>
-                            <p>Browse matched candidates, review profiles, and communicate directly with potential hires.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-connector"></div>
-                    
-                    <div class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>Hire & Manage</h3>
-                            <p>Select your candidate, manage schedules, track hours, and process payments seamlessly.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="job-categories">
-            <div class="container">
-                <h2 class="section-title">Popular Job Categories</h2>
-                <p class="section-subtitle">Find the right students for every type of work</p>
-                
-                <div class="categories-grid">
-                    <div class="category-card">
-                        <div class="category-icon">📚</div>
-                        <h3>Academic Support</h3>
-                        <ul>
-                            <li>Research Assistants</li>
-                            <li>Tutoring Services</li>
-                            <li>Library Assistants</li>
-                            <li>Lab Technicians</li>
-                        </ul>
-                        <div class="category-stats">500+ students available</div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon">🍕</div>
-                        <h3>Food & Service</h3>
-                        <ul>
-                            <li>Campus Dining</li>
-                            <li>Baristas & Servers</li>
-                            <li>Event Catering</li>
-                            <li>Delivery Drivers</li>
-                        </ul>
-                        <div class="category-stats">1,200+ students available</div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon">💻</div>
-                        <h3>Tech & Digital</h3>
-                        <ul>
-                            <li>Web Development</li>
-                            <li>Social Media</li>
-                            <li>Data Entry</li>
-                            <li>Tech Support</li>
-                        </ul>
-                        <div class="category-stats">800+ students available</div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon">🎨</div>
-                        <h3>Creative & Marketing</h3>
-                        <ul>
-                            <li>Graphic Design</li>
-                            <li>Content Creation</li>
-                            <li>Photography</li>
-                            <li>Event Planning</li>
-                        </ul>
-                        <div class="category-stats">600+ students available</div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon">🏢</div>
-                        <h3>Administrative</h3>
-                        <ul>
-                            <li>Office Assistants</li>
-                            <li>Reception</li>
-                            <li>Filing & Organization</li>
-                            <li>Customer Service</li>
-                        </ul>
-                        <div class="category-stats">900+ students available</div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon">🌟</div>
-                        <h3>Campus Life</h3>
-                        <ul>
-                            <li>Tour Guides</li>
-                            <li>Event Staff</li>
-                            <li>Recreation Centers</li>
-                            <li>Student Activities</li>
-                        </ul>
-                        <div class="category-stats">400+ students available</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="dashboard-preview">
-            <div class="container">
-                <h2 class="section-title">Your Hiring Dashboard</h2>
-                <p class="section-subtitle">Manage everything from one intuitive dashboard</p>
-                
-                <div class="dashboard-mockup">
-                    <div class="mockup-header">
-                        <div class="mockup-nav">
-                            <div class="nav-item active">📊 Overview</div>
-                            <div class="nav-item">📝 Job Posts</div>
-                            <div class="nav-item">👥 Candidates</div>
-                            <div class="nav-item">💬 Messages</div>
-                            <div class="nav-item">💰 Payments</div>
-                        </div>
-                    </div>
-                    
-                    <div class="mockup-content">
-                        <div class="dashboard-section">
-                            <h3>Active Jobs</h3>
-                            <div class="job-cards">
-                                <div class="job-card">
-                                    <div class="job-title">Research Assistant</div>
-                                    <div class="job-stats">12 applications • 3 interviews</div>
-                                </div>
-                                <div class="job-card">
-                                    <div class="job-title">Campus Tour Guide</div>
-                                    <div class="job-stats">8 applications • Position filled</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-section">
-                            <h3>Recent Activity</h3>
-                            <div class="activity-feed">
-                                <div class="activity-item">📩 New application from Sarah K.</div>
-                                <div class="activity-item">✅ Interview scheduled with Mike R.</div>
-                                <div class="activity-item">💰 Payment processed for Emma L.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="resources">
-            <div class="container">
-                <h2 class="section-title">Hiring Resources & Support</h2>
-                <p class="section-subtitle">Everything you need to succeed with student hiring</p>
-                
-                <div class="resources-grid">
-                    <div class="resource-card">
-                        <div class="resource-icon">📖</div>
-                        <h3>Hiring Best Practices</h3>
-                        <p>Learn proven strategies for interviewing, onboarding, and managing student employees effectively.</p>
-                        <a href="#guide" class="resource-link">Read Guide →</a>
-                    </div>
-                    
-                    <div class="resource-card">
-                        <div class="resource-icon">⚖️</div>
-                        <h3>Legal Compliance</h3>
-                        <p>Understand labor laws, student work regulations, and compliance requirements for campus hiring.</p>
-                        <a href="#compliance" class="resource-link">Learn More →</a>
-                    </div>
-                    
-                    <div class="resource-card">
-                        <div class="resource-icon">💡</div>
-                        <h3>Success Stories</h3>
-                        <p>Discover how other employers have built successful student workforce programs.</p>
-                        <a href="#stories" class="resource-link">View Stories →</a>
-                    </div>
-                    
-                    <div class="resource-card">
-                        <div class="resource-icon">🎯</div>
-                        <h3>Job Posting Templates</h3>
-                        <p>Use our proven templates to create compelling job posts that attract the right candidates.</p>
-                        <a href="#templates" class="resource-link">Get Templates →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section class="final-cta">
             <div class="container">
                 <h2>Ready to Find Your Next Great Hire?</h2>
                 <p>Join thousands of employers who trust OnlyWork to connect them with talented, motivated students.</p>
-                <div class="cta-buttons">
-                    <a href="#signup" class="button-primary">Start Hiring Today</a>
+                <div class="hero-buttons">
+                    <a href="/employer-register" class="button-primary">Start Hiring Today</a>
                     <a href="#demo" class="button-secondary">Schedule a Demo</a>
                 </div>
             </div>
@@ -1118,10 +711,20 @@
                 <div class="footer-section">
                     <h3>For Employers</h3>
                     <ul>
-                        <li><a href="#post-job">Post a Job</a></li>
+                        <li><a href="/employer-register">Post a Job</a></li>
                         <li><a href="#browse-candidates">Browse Candidates</a></li>
                         <li><a href="#pricing">Pricing</a></li>
                         <li><a href="#resources">Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>For Students</h3>
+                    <ul>
+                        <li><a href="/">Student Home</a></li>
+                        <li><a href="/register">Find Jobs</a></li>
+                        <li><a href="#guide">Student Guide</a></li>
+                        <li><a href="#safety">Safety Tips</a></li>
                     </ul>
                 </div>
                 
@@ -1144,16 +747,6 @@
                         <li><a href="#blog">Blog</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#terms">Terms of Service</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#cookies">Cookie Policy</a></li>
-                        <li><a href="#compliance">Compliance</a></li>
-                    </ul>
-                </div>
             </div>
             
             <div class="footer-bottom">
@@ -1162,76 +755,48 @@
         </div>
     </footer>
 
+    <!-- Firebase configuration -->
     <script>
-        });
-    </script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjuFREFHDRe70efEwp-8RHRN0atLp6gjo",
+            authDomain: "partime-389b2.firebaseapp.com",
+            projectId: "partime-389b2",
+            storageBucket: "partime-389b2.appspot.com",
+            messagingSenderId: "481270697427",
+            appId: "1:481270697427:web:a4c357f69fd5d5f8257326",
+            measurementId: "G-V1WY1KYZYL"
+        };
 
-    <!-- Chat Widget -->
-    <div class="chat-widget">
-        <div class="chat-button" onclick="toggleChat()">💬</div>
-        <div class="chat-popup" id="chatPopup">
-            <div class="chat-header">
-                Chat with OnlyWork Support
-            </div>
-            <div class="chat-body">
-                <div class="chat-message">
-                    👋 Hi! I'm here to help you get started with hiring students. What questions do you have?
-                </div>
-            </div>
-            <div class="chat-input">
-                <input type="text" placeholder="Type your message..." id="chatInput" onkeypress="handleChatKeypress(event)">
-                <button class="chat-send" onclick="sendChatMessage()">Send</button>
-            </div>
-        </div>
-    </div>
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log("Firebase initialized successfully!");
+            
+            // Get stats from Firebase
+            updateStatsFromFirebase();
+        } catch (error) {
+            console.error("Error initializing Firebase:", error);
+        }
 
-    <script>
-        let chatOpen = false;
-        
-        function toggleChat() {
-            const popup = document.getElementById('chatPopup');
-            chatOpen = !chatOpen;
-            
-            if (chatOpen) {
-                popup.classList.add('active');
-            } else {
-                popup.classList.remove('active');
-            }
-        }
-        
-        function handleChatKeypress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-        
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                const chatBody = document.querySelector('.chat-body');
+        // Function to update stats from Firebase
+        async function updateStatsFromFirebase() {
+            try {
+                // Get student count
+                const studentsSnapshot = await firebase.firestore().collection('registrations').get();
+                const studentCount = studentsSnapshot.size;
                 
-                // Add user message
-                const userMessage = document.createElement('div');
-                userMessage.className = 'chat-message';
-                userMessage.style.background = '#667eea';
-                userMessage.style.color = 'white';
-                userMessage.style.marginLeft = '20px';
-                userMessage.textContent = message;
-                chatBody.appendChild(userMessage);
+                // Get employer count
+                const employersSnapshot = await firebase.firestore().collection('employers').get();
+                const employerCount = employersSnapshot.size;
                 
-                // Auto-reply
-                setTimeout(() => {
-                    const replyMessage = document.createElement('div');
-                    replyMessage.className = 'chat-message';
-                    replyMessage.textContent = "Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to explore our features or schedule a demo.";
-                    chatBody.appendChild(replyMessage);
-                    chatBody.scrollTop = chatBody.scrollHeight;
-                }, 1000);
+                // Update stats in UI
+                const statItems = document.querySelectorAll('.stat-item h3');
+                if (statItems[0]) statItems[0].textContent = studentCount.toLocaleString() + '+';
+                if (statItems[1]) statItems[1].textContent = employerCount.toLocaleString() + '+';
                 
-                input.value = '';
-                chatBody.scrollTop = chatBody.scrollHeight;
+            } catch (error) {
+                console.error("Error fetching stats:", error);
             }
         }
 
@@ -1248,6 +813,25 @@
                 }
             });
         });
+
+        // Header background change on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                // Implementation for mobile menu
+                console.log('Mobile menu clicked');
+            });
+        }
 
         // Intersection Observer for animations
         const observerOptions = {
@@ -1271,62 +855,6 @@
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
         });
-
-        // Stats counter animation
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNumbers = entry.target.querySelectorAll('.stat-item h3');
-                    statNumbers.forEach(stat => {
-                        const targetText = stat.textContent;
-                        const targetNumber = parseInt(targetText.replace(/[^0-9]/g, ''));
-                        if (targetNumber && !stat.classList.contains('animated')) {
-                            stat.classList.add('animated');
-                            animateCounter(stat, targetNumber, targetText);
-                        }
-                    });
-                }
-            });
-        }, observerOptions);
-
-        const statsSection = document.querySelector('.stats');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
-        }
-
-        function animateCounter(element, target, originalText) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = originalText;
-                    clearInterval(timer);
-                } else {
-                    const displayValue = Math.floor(current);
-                    if (originalText.includes('+')) {
-                        element.textContent = displayValue.toLocaleString() + '+';
-                    } else if (originalText.includes('%')) {
-                        element.textContent = displayValue + '%';
-                    } else if (originalText.includes('hrs')) {
-                        element.textContent = displayValue + 'hrs';
-                    } else {
-                        element.textContent = displayValue.toLocaleString();
-                    }
-                }
-            }, 20);
-        }
-
-        // Header background change on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-            }
-        });
     </script>
 </body>
 </html>
-
