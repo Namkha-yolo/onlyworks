@@ -10,5 +10,15 @@
       "memory": 1024,
       "maxDuration": 60
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/register",
+      "destination": "/register.html"
+    },
+    {
+      "source": "/employer",
+      "destination": "/employer.html"
+    }
+  ]
 }
