@@ -15,27 +15,25 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <header id="header">
-    <div class="container header-container">
-      <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <i class="fas fa-briefcase logo-icon"></i>
-        OnlyWork
-      </div>
-      <nav>
-        <div class="nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Features</div>
-        <div class="nav-link" onclick="document.getElementById('testimonials').scrollIntoView({behavior:'smooth'})">Testimonials</div>
-        <div class="nav-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get Started</div>
-        <div class="nav-link" onclick="location.href='register'">Register</div>
-      </nav>
-      <button class="btn btn-primary" onclick="location.href='register'">
-        <i class="fas fa-user-plus"></i>
-        Sign Up
-      </button>
-      <div class="mobile-menu-btn">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </header>
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">
+                <i class="fas fa-briefcase"></i>
+                OnlyWork
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Success Stories</a></li>
+                <li class="divider"></li>
+                <li><a href="/studnet.html">For Students</a></li>
+                <li><a href="/index.html">For Employers</a></li>
+            </ul>
+            <a href="/employer_register.html" class="cta-button">Start Hiring</a>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
 
   <section class="hero">
     <div class="container hero-content">
