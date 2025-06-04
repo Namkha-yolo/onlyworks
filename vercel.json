@@ -3,6 +3,8 @@
   "outputDirectory": ".",
   "installCommand": "npm install",
   "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "functions": {
     "api/roast.js": {
       "memory": 1024,
