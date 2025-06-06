@@ -1,361 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlyWork - Hire Talented Students</title>
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%238a2be2'/><path d='M30 30 L45 70 L55 45 L65 70 L80 30' stroke='black' stroke-width='8' fill='none'/></svg>" type="image/svg+xml">
-    <link rel="stylesheet" href="css/unified-theme.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnlyWork | Work Your Way</title>
+
+  <!-- Google Fonts + Font Awesome -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-ku9kS2VvHGKcSJklbSTxNfZb6buYsQZfVjWLUYl0F2pZ+UcQZ+g9Unu9cxUQD+XbJz5W4KczWcKyPNij1hYyKA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Favicon (inline SVG) -->
+  <link
+    rel="icon"
+    href="data:image/svg+xml,
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+        <circle cx='50' cy='50' r='45' fill='%238a2be2'/>
+        <path d='M30 30 L45 70 L55 45 L65 70 L80 30' stroke='black' stroke-width='8' fill='none'/>
+      </svg>"
+    type="image/svg+xml"
+  />
+
+  <!-- Unified Theme CSS -->
+  <link rel="stylesheet" href="css/unified-theme.css" />
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <a href="/" class="logo">
-                <i class="fas fa-briefcase"></i>
-                OnlyWork
-            </a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <!--<li><a href="#pricing">Pricing</a></li>-->
-                <li><a href="#testimonials">Success Stories</a></li>
-                <li class="divider"></li>
-                <li><a href="/student.html">For Students</a></li>
-                <li><a href="/index.html">For Employers</a></li>
-            </ul>
-            <a href="/employer_register.html" class="cta-button">Start Hiring</a>
-            <div class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
+  <!-- ========== HEADER ========== -->
+  <header id="header">
+    <nav class="container">
+      <a href="/" class="logo">
+        <i class="fas fa-briefcase"></i>
+        OnlyWorks
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#testimonials">Success Stories</a></li>
+        <li class="divider"></li>
+        <li><a href="/student.html">For Students</a></li>
+        <li><a href="/index.html">For Employers</a></li>
+      </ul>
+      <a href="/register.html" class="cta-button">Apply Now</a>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Hire Talented Students Instantly</h1>
-                    <p>Connect with motivated students ready to work flexible hours. Post jobs, review applications, and hire the perfect candidates for your campus or local business needs.</p>
-                    <div class="hero-buttons">
-                        <a href="/employer-register" class="button-primary">Post Your First Job</a>
-                        <a href="#demo" class="button-secondary">Watch Demo</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="features" id="features">
-            <div class="container">
-                <h2 class="section-title">Everything You Need to Hire Students</h2>
-                <p class="section-subtitle">Streamlined hiring process designed specifically for employers who want to connect with student talent</p>
-                
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📝</div>
-                        <h3>Easy Job Posting</h3>
-                        <p>Create detailed job postings in minutes. Set requirements, schedules, and compensation. Our system automatically matches your needs with qualified students.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3>Smart Matching</h3>
-                        <p>Our algorithm connects you with students whose skills, availability, and academic schedules align perfectly with your job requirements.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">💬</div>
-                        <h3>Direct Communication</h3>
-                        <p>Chat directly with candidates, schedule interviews, and manage the entire hiring process through our integrated messaging system.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">⏰</div>
-                        <h3>Schedule Integration</h3>
-                        <p>Students' class schedules are automatically considered to ensure they're only matched with jobs during their available hours.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">💳</div>
-                        <h3>Secure Payments</h3>
-                        <p>Handle payroll seamlessly with our integrated payment system. Track hours, approve timesheets, and process payments automatically.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>Performance Analytics</h3>
-                        <p>Monitor hiring success, track employee performance, and optimize your recruitment strategy with detailed analytics and insights.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <h3>15,000+</h3>
-                        <p>Active Student Workers</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>500+</h3>
-                        <p>Campus Employers</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>95%</h3>
-                        <p>Successful Hires</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>24hrs</h3>
-                        <p>Average Time to Hire</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-       <!-- <section class="pricing" id="pricing">
-            <div class="container">
-                <h2 class="section-title">Simple, Transparent Pricing</h2>
-                <p class="section-subtitle">Choose the plan that fits your hiring needs. No hidden fees, no long-term contracts.</p>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <h3>Starter</h3>
-                        <div class="price">$29</div>
-                        <div class="price-period">per month</div>
-                        <ul class="features-list">
-                            <li>Up to 3 active job postings</li>
-                            <li>Basic candidate matching</li>
-                            <li>Standard messaging</li>
-                            <li>Payment processing</li>
-                            <li>Email support</li>
-                        </ul>
-                        <a href="/employer-register" class="cta-button">Get Started</a>
-                    </div>
-                    
-                    <div class="pricing-card popular">
-                        <h3>Professional</h3>
-                        <div class="price">$89</div>
-                        <div class="price-period">per month</div>
-                        <ul class="features-list">
-                            <li>Up to 10 active job postings</li>
-                            <li>Advanced candidate matching</li>
-                            <li>Priority messaging</li>
-                            <li>Advanced analytics</li>
-                            <li>Phone & email support</li>
-                            <li>Custom branding</li>
-                        </ul>
-                        <a href="/employer-register" class="cta-button">Get Started</a>
-                    </div>
-                    
-                    <div class="pricing-card">
-                        <h3>Enterprise</h3>
-                        <div class="price">Custom</div>
-                        <div class="price-period">pricing</div>
-                        <ul class="features-list">
-                            <li>Unlimited job postings</li>
-                            <li>AI-powered matching</li>
-                            <li>Dedicated account manager</li>
-                            <li>Custom integrations</li>
-                            <li>24/7 priority support</li>
-                            <li>Advanced reporting</li>
-                        </ul>
-                        <a href="#contact" class="cta-button">Contact Sales</a>
-                    </div>
-                </div>
-            </div>
-        </section> -->
-
-        <section class="testimonials" id="testimonials">
-            <div class="container">
-                <h2 class="section-title">What Employers Are Saying</h2>
-                <p class="section-subtitle">Join hundreds of satisfied employers who have found their perfect student workers</p>
-                
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">OnlyWork helped us find reliable student assistants for our campus bookstore. The scheduling integration is brilliant - we never have conflicts with their classes!</p>
-                        <div class="testimonial-author">- Sarah Chen, Campus Bookstore Manager</div>
-                    </div>
-                    
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">As a local coffee shop owner, I struggled to find part-time workers who understood the student lifestyle. OnlyWork connected me with amazing student baristas who fit perfectly with our flexible needs.</p>
-                        <div class="testimonial-author">- Mike Rodriguez, Bean There Coffee</div>
-                    </div>
-                    
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">The quality of candidates we get through OnlyWork is exceptional. Students are motivated, reliable, and the platform makes managing their schedules and payments so easy.</p>
-                        <div class="testimonial-author">- Dr. Jennifer Liu, Research Lab Director</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="final-cta">
-            <div class="container">
-                <h2>Ready to Find Your Next Great Hire?</h2>
-                <p>Join thousands of employers who trust OnlyWork to connect them with talented, motivated students.</p>
-                <div class="hero-buttons">
-                    <a href="/employer-register" class="button-primary">Start Hiring Today</a>
-                    <a href="#demo" class="button-secondary">Schedule a Demo</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>For Employers</h3>
-                    <ul>
-                        <li><a href="/employer-register">Post a Job</a></li>
-                        <li><a href="#browse-candidates">Browse Candidates</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#resources">Resources</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>For Students</h3>
-                    <ul>
-                        <li><a href="/">Student Home</a></li>
-                        <li><a href="/register">Find Jobs</a></li>
-                        <li><a href="#guide">Student Guide</a></li>
-                        <li><a href="#safety">Safety Tips</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Support</h3>
-                    <ul>
-                        <li><a href="#help">Help Center</a></li>
-                        <li><a href="#guidelines">Hiring Guidelines</a></li>
-                        <li><a href="#safety">Safety & Trust</a></li>
-                        <li><a href="#contact">Contact Us</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Company</h3>
-                    <ul>
-                        <li><a href="#about">About OnlyWork</a></li>
-                        <li><a href="#careers">Careers</a></li>
-                        <li><a href="#press">Press</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 OnlyWork. All rights reserved. Connecting students with opportunities since 2024.</p>
-            </div>
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Work On Your Terms</h1>
+        <p class="hero-subtitle">
+          Discover flexible, campus-based and local part-time jobs that fit
+          your schedule. Apply instantly and connect directly with employers.
+        </p>
+        <div class="hero-btns">
+          <button class="btn btn-primary" onclick="location.href='register.html'">
+            <i class="fas fa-rocket"></i>
+            Start Now
+          </button>
+          <button
+            class="btn btn-secondary"
+            onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})"
+          >
+            <i class="fas fa-info-circle"></i>
+            Learn More
+          </button>
         </div>
-    </footer>
+      </div>
+      <div class="hero-img">
+        <img
+          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1471&amp;q=80"
+          alt="Students working on campus"
+        />
+      </div>
+    </div>
+  </section>
 
-    <!-- Firebase configuration -->
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBjuFREFHDRe70efEwp-8RHRN0atLp6gjo",
-            authDomain: "partime-389b2.firebaseapp.com",
-            projectId: "partime-389b2",
-            storageBucket: "partime-389b2.appspot.com",
-            messagingSenderId: "481270697427",
-            appId: "1:481270697427:web:a4c357f69fd5d5f8257326",
-            measurementId: "G-V1WY1KYZYL"
-        };
+  <!-- ========== FEATURES ========== -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Smart Features For Smart Students</h2>
+      <p class="section-subtitle">
+        Everything you need to find and manage part-time work while focusing on
+        your studies
+      </p>
 
-        // Initialize Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-            console.log("Firebase initialized successfully!");
-            
-            // Get stats from Firebase
-            updateStatsFromFirebase();
-        } catch (error) {
-            console.error("Error initializing Firebase:", error);
-        }
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h3 class="feature-title">Easy Sign Up</h3>
+          <p class="feature-desc">
+            Create your student profile in minutes and start discovering jobs
+            tailored to your skills and availability.
+          </p>
+        </div>
 
-        // Function to update stats from Firebase
-        async function updateStatsFromFirebase() {
-            try {
-                // Get student count
-                const studentsSnapshot = await firebase.firestore().collection('registrations').get();
-                const studentCount = studentsSnapshot.size;
-                
-                // Get employer count
-                const employersSnapshot = await firebase.firestore().collection('employers').get();
-                const employerCount = employersSnapshot.size;
-                
-                // Update stats in UI
-                const statItems = document.querySelectorAll('.stat-item h3');
-                if (statItems[0]) statItems[0].textContent = studentCount.toLocaleString() + '+';
-                if (statItems[1]) statItems[1].textContent = employerCount.toLocaleString() + '+';
-                
-            } catch (error) {
-                console.error("Error fetching stats:", error);
-            }
-        }
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="feature-title">Discover Jobs</h3>
+          <p class="feature-desc">
+            Browse verified on-campus and local positions that match your
+            schedule and academic interests.
+          </p>
+        </div>
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <h3 class="feature-title">Direct Chat</h3>
+          <p class="feature-desc">
+            Communicate with employers in real-time and schedule interviews
+            without leaving the app.
+          </p>
+        </div>
 
-        // Header background change on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-            }
-        });
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3 class="feature-title">Fast Payments</h3>
+          <p class="feature-desc">
+            Track hours and get paid securely through our integrated payment
+            system with no delays.
+          </p>
+        </div>
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function() {
-                // Implementation for mobile menu
-                console.log('Mobile menu clicked');
-            });
-        }
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3 class="feature-title">Smart Scheduling</h3>
+          <p class="feature-desc">
+            Integrate with your class schedule to find work opportunities during
+            your free time.
+          </p>
+        </div>
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Earnings Tracker</h3>
+          <p class="feature-desc">
+            Monitor your income, working hours, and progress toward financial
+            goals.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+  <!-- ========== JOB PREVIEW ========== -->
+  <section class="job-preview">
+    <div class="container">
+      <h2 class="section-title">Find Jobs That Match Your Skills</h2>
+      <p class="section-subtitle">
+        Here are some of the most popular positions on campus
+      </p>
 
-        // Observe all cards for animation
-        document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
-        });
-    </script>
-    <script src="js/unified-theme.js"></script>
+      <div class="job-cards">
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Library Assistant</h3>
+            <div class="job-company">University Library</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $15/hour</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 10-15 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">
+              Apply Now
+            </button>
+          </div>
+        </div>
+
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Research Assistant</h3>
+            <div class="job-company">Department of Science</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $18/hour</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 15-20 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">
+              Apply Now
+            </button>
+          </div>
+        </div>
+
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">Café Barista</h3>
+            <div class="job-company">Campus Coffee</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> On Campus</div>
+            <div class="job-detail"><i class="fas fa-dollar-sign"></i> $16/hour + tips</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 10-25 hrs/week</div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary btn-sm" onclick="location.href='register.html'">
+              Apply Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Students Say</h2>
+      <p class="section-subtitle">
+        Hear from students who have found their perfect campus job
+      </p>
+
+      <div class="testimonial-wrapper">
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>
+              "OnlyWork helped me find a job at the campus library that
+              perfectly fits around my schedule. The application process was
+              super easy!"
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Jessica Miller</h4>
+              <p>Biology Major, Junior</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>
+              "I was able to find a research assistant position in my
+              department through OnlyWork. It's relevant to my major and the
+              flexible hours are perfect!"
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Michael Johnson</h4>
+              <p>Computer Science, Senior</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CALL TO ACTION ========== -->
+  <section class="cta" id="cta">
+    <div class="container">
+      <h2 class="cta-title">Ready to Start Earning?</h2>
+      <p class="cta-subtitle">
+        Join thousands of students who are balancing studies and work on their
+        own terms
+      </p>
+      <button class="btn btn-cta" onclick="location.href='register.html'">
+        <i class="fas fa-rocket"></i>
+        Get Started Now
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-briefcase logo-icon"></i>
+            OnlyWork
+          </div>
+          <p class="footer-desc">
+            OnlyWork helps students find flexible part-time work that fits their schedule, connecting them directly with employers on campus and in their local communities.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.linkedin.com/company/only-jobs-students/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">About Us</a></li>
+            <li><a href="#" class="footer-menu-item">Careers</a></li>
+            <li><a href="#" class="footer-menu-item">Blog</a></li>
+            <li><a href="#" class="footer-menu-item">Press</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Help Center</a></li>
+            <li><a href="#" class="footer-menu-item">Student Guide</a></li>
+            <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
+            <li><a href="#" class="footer-menu-item">API Documentation</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Terms of Service</a></li>
+            <li><a href="#" class="footer-menu-item">Privacy Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Cookie Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 OnlyWork All rights reserved.</p>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Firebase Config + Initialization -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Unified Theme JS -->
+  <script src="js/unified-theme.js"></script>
 </body>
 </html>
