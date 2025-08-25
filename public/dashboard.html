@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlyWorks Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="header">
+    <nav class="container">
+      <a href="/" class="logo">
+        <i class="fas fa-briefcase"></i>
+        OnlyWorks
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/profile.html">Profile</a></li>
+        <li><a href="/auth/logout">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="dashboard-container">
+    <div class="container">
+      <!-- Dashboard Header -->
+      <div class="dashboard-header">
+        <div class="user-welcome">
+          <img id="user-avatar" src="" alt="User Avatar" class="user-avatar">
+          <div>
+            <h1 id="welcome-title">Welcome back!</h1>
+            <p id="user-role" class="user-role"></p>
+          </div>
+        </div>
+        
+        <div class="dashboard-actions">
+          <button class="btn btn-primary" id="main-action">
+            <i class="fas fa-plus"></i>
+            <span id="action-text">Get Started</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Stats -->
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Profile Complete</h3>
+            <p class="stat-value">100%</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-calendar"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Member Since</h3>
+            <p class="stat-value" id="member-since">Today</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Connections</h3>
+            <p class="stat-value">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dashboard Content -->
+      <div class="dashboard-content">
+        <div class="content-section">
+          <h2>Getting Started</h2>
+          <div class="quick-actions">
+            <div class="action-card" id="student-actions" style="display: none;">
+              <div class="action-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <div class="action-content">
+                <h3>Find Jobs</h3>
+                <p>Browse available part-time positions that match your skills and schedule.</p>
+                <button class="btn btn-outline">Browse Jobs</button>
+              </div>
+            </div>
+            
+            <div class="action-card" id="employer-actions" style="display: none;">
+              <div class="action-icon">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <div class="action-content">
+                <h3>Post a Job</h3>
+                <p>Create job listings to attract talented students to your business.</p>
+                <button class="btn btn-outline">Post Job</button>
+              </div>
+            </div>
+            
+            <div class="action-card">
+              <div class="action-icon">
+                <i class="fas fa-user-edit"></i>
+              </div>
+              <div class="action-content">
+                <h3>Complete Profile</h3>
+                <p>Add more details to your profile to attract better matches.</p>
+                <button class="btn btn-outline" onclick="location.href='/profile.html'">Edit Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="content-section">
+          <h2>Recent Activity</h2>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="activity-content">
+                <p><strong>Profile completed</strong></p>
+                <small>Welcome to OnlyWorks! Your profile is now live.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    
+    // Load user information and customize dashboard
+    fetch('/api/user', { credentials: 'include' })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Not authenticated');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success && data.user) {
+          currentUser = data.user;
+          updateDashboard(data.user);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading user:', error);
+        window.location.href = '/?error=auth_required';
+      });
+    
+    function updateDashboard(user) {
+      // Update user info
+      document.getElementById('user-avatar').src = user.avatar || '/default-avatar.png';
+      document.getElementById('welcome-title').textContent = `Welcome back, ${user.name}!`;
+      
+      // Update role-specific content
+      const role = user.profile && user.profile.role;
+      if (role) {
+        const roleText = role === 'student' ? 'Student' : 'Employer';
+        document.getElementById('user-role').textContent = roleText;
+        
+        // Show role-specific actions
+        if (role === 'student') {
+          document.getElementById('student-actions').style.display = 'block';
+          document.getElementById('main-action').innerHTML = '<i class="fas fa-search"></i> Find Jobs';
+        } else if (role === 'employer') {
+          document.getElementById('employer-actions').style.display = 'block';
+          document.getElementById('main-action').innerHTML = '<i class="fas fa-plus"></i> Post a Job';
+        }
+      }
+      
+      // Update member since date
+      if (user.createdAt) {
+        const memberDate = new Date(user.createdAt);
+        const options = { year: 'numeric', month: 'short' };
+        document.getElementById('member-since').textContent = memberDate.toLocaleDateString('en-US', options);
+      }
+      
+      // Show profile completion status
+      const profileComplete = user.isOnboardingComplete;
+      if (profileComplete) {
+        document.querySelector('.stat-value').textContent = '100%';
+      }
+    }
+    
+    // Handle main action button
+    document.getElementById('main-action').addEventListener('click', () => {
+      if (currentUser && currentUser.profile) {
+        if (currentUser.profile.role === 'student') {
+          // Future: Navigate to job search
+          alert('Job search feature coming soon!');
+        } else if (currentUser.profile.role === 'employer') {
+          // Future: Navigate to job posting
+          alert('Job posting feature coming soon!');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
