@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - OnlyWorks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/logo.png">
+  <link rel="shortcut icon" href="/logo.png" type="image/x-icon">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <a href="/" class="auth-logo">
+        <img src="logo.png" alt="OnlyWorks Logo">
+        <span>OnlyWorks</span>
+      </a>
+      
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to your account to continue</p>
+      
+      <div class="auth-methods">
+        <button class="auth-button google-auth" onclick="location.href='/auth/google'">
+          <i class="fab fa-google"></i>
+          <span>Continue with Google</span>
+        </button>
+        
+        <button class="auth-button github-auth" onclick="location.href='/auth/github'">
+          <i class="fab fa-github"></i>
+          <span>Continue with GitHub</span>
+        </button>
+        
+        <div class="divider">
+          <span>or</span>
+        </div>
+        
+        <form class="email-form" id="emailForm">
+          <div class="form-group">
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+          <button type="submit" class="auth-button email-auth">
+            <i class="fas fa-envelope"></i>
+            <span>Continue with Email</span>
+          </button>
+        </form>
+      </div>
+      
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="#" class="signup-link">Sign up here</a></p>
+        <p class="terms-text">
+          By continuing, you agree to our 
+          <a href="#" class="terms-link">Terms of Service</a> and 
+          <a href="#" class="privacy-link">Privacy Policy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const emailForm = document.getElementById('emailForm');
+      
+      emailForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        
+        // For now, redirect to email auth endpoint
+        // You'll need to implement this in your backend
+        window.location.href = `/auth/email?email=${encodeURIComponent(email)}`;
+      });
+    });
+  </script>
+</body>
+</html>
