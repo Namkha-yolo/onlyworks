@@ -144,7 +144,7 @@ nav {
 .nav-links {
   display: flex;
   list-style: none;
-  align-items: center;
+  margin-left: auto;
   gap: var(--space-xl);
 }
 
