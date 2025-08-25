@@ -1,8 +1,6 @@
 {
     "name": "onlyworks-oauth",
     "version": "1.0.0",
-    "description": "OnlyWorks OAuth Authentication System",
-    "main": "server.js",
     "scripts": {
       "start": "node server.js",
       "dev": "nodemon server.js"

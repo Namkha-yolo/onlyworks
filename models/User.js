@@ -1,15 +1,11 @@
-// models/User.js - User database schema
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  // OAuth provider IDs
   googleId: {
     type: String,
     unique: true,
-    sparse: true  // Allows null values to be non-unique
+    sparse: true
   },
-  
-  // Basic user info from OAuth
   email: {
     type: String,
     required: true,
@@ -23,21 +19,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  
-  // Which OAuth provider they used
   provider: {
     type: String,
     enum: ['google', 'github'],
     required: true
   },
-  
-  // Onboarding status
   isOnboardingComplete: {
     type: Boolean,
     default: false
   },
-  
-  // Additional profile data (collected during onboarding)
   profile: {
     role: {
       type: String,
@@ -64,8 +54,6 @@ const userSchema = new mongoose.Schema({
       default: ''
     }
   },
-  
-  // User preferences
   settings: {
     notifications: {
       type: Boolean,
@@ -78,8 +66,7 @@ const userSchema = new mongoose.Schema({
     }
   }
 }, {
-  timestamps: true  // Adds createdAt and updatedAt fields
+  timestamps: true
 });
 
-// Export the model
 module.exports = mongoose.model('User', userSchema);
