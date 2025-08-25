@@ -11,14 +11,14 @@
 
 :root {
   /* Purple primary palette */
-  --primary-color: #5b70f8ff;
+  --primary-color: #6b46c1;
   --primary-light: #8b5cf6;
   --primary-dark: #553c9a;
   --secondary-color: #0066cc;
   --secondary-dark: #0052a3;
   
   /* Pure neutral colors */
-  --text-primary: #5b70f8ff;
+  --text-primary: #6b46c1;
   --text-secondary: #666666;
   --text-muted: #999999;
   --white: #ffffff;
