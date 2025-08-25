@@ -759,3 +759,235 @@ body.mobile-menu-open .mobile-menu {
     padding: var(--space-lg);
   }
 }
+
+/* Add these styles to your existing style.css file */
+
+/* Parse.gl-style Pricing Section */
+.pricing-section {
+  padding: var(--space-3xl) 0;
+  background: var(--white);
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.pricing-title {
+  font-size: var(--font-size-5xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.03em;
+}
+
+.pricing-subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  padding: var(--space-xl);
+  position: relative;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--primary-color);
+  transform: scale(1.02);
+  position: relative;
+}
+
+.pricing-card.featured::before {
+  content: "Most Popular";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.plan-name {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.01em;
+}
+
+.plan-price {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.plan-price .currency {
+  font-size: 2rem;
+}
+
+.plan-price .period {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.plan-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}
+
+.plan-description {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+  line-height: 1.6;
+  font-size: var(--font-size-base);
+}
+
+.feature-list {
+  list-style: none;
+  margin-bottom: var(--space-xl);
+  padding: 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-base);
+}
+
+.feature-icon {
+  color: var(--success);
+  margin-top: 2px;
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.feature-text {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.feature-highlight {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.plan-button {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-primary);
+}
+
+.plan-button.primary {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.plan-button.primary:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.plan-button.secondary {
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.plan-button.outline {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--gray-300);
+}
+
+.plan-button.outline:hover {
+  background: var(--gray-50);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments for pricing */
+@media (max-width: 768px) {
+  .pricing-title {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .pricing-subtitle {
+    font-size: var(--font-size-lg);
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .pricing-card.featured {
+    transform: none;
+  }
+  
+  .pricing-card.featured::before {
+    top: -10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .pricing-card {
+    padding: var(--space-lg);
+  }
+  
+  .plan-price {
+    font-size: 2.5rem;
+  }
+  
+  .plan-price .currency {
+    font-size: 1.8rem;
+  }
+}
