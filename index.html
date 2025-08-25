@@ -9,296 +9,362 @@
   <link rel="icon" href="logo.png" type="image/png">
   <link rel="shortcut icon" href="logo.png" type="image/png">
   <link rel="apple-touch-icon" href="logo.png">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlyWorks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/unified-theme.css">
   
-  <style>
-    /* OnlyWorks Clean Minimal Theme CSS - Parse.com Style */
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="shortcut icon" href="logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="logo.png">
+</head>
+<body>
+  <header id="header">
+    <nav class="container">
+      <a href="/" class="logo">
+        <img src="logo.png" alt="OnlyWorks Logo">
+        OnlyWorks
+      </a>
+      <ul class="nav-links">
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="#testimonials">About Us</a></li>
+        <li class="divider"></li>
+      </ul>
+      <a href="/register.html" class="cta-button">Start recording</a>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+      <a href="/register.html" class="cta-button">Sign in</a>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Work Smarter</h1>
+        <p class="hero-subtitle">OnlyWorks allows you to track your progress and efficiency.</p>
+        <div class="hero-btns">
+          
+          <button class="btn btn-primary" onclick="location.href='https://onlyworks-llm.vercel.app/'">
+            <i class="fas fa-graduation-cap"></i>
+            Start recording now
+          </button>
+          <button class="btn btn-secondary" onclick="location.href='https://onlyworks-llm.vercel.app/'">
+            <i class="fas fa-building"></i>
+            Learn more
+          </button>
 
-    :root {
-      /* Clean minimal palette inspired by Parse.com */
-      --primary-color: #1a1a1a;
-      --primary-light: #333333;
-      --secondary-color: #0066cc;
-      --secondary-dark: #0052a3;
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" alt="Students and employers connecting">
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Perfect For Everyone</h2>
+      <p class="section-subtitle">Whether you're a student looking for work or an employer seeking talent, we've got you covered</p>
       
-      /* Pure neutral colors */
-      --text-primary: #1a1a1a;
-      --text-secondary: #666666;
-      --text-muted: #999999;
-      --white: #ffffff;
-      --gray-50: #fafafa;
-      --gray-100: #f5f5f5;
-      --gray-200: #e1e1e1;
-      --gray-300: #d0d0d0;
-      --gray-800: #2a2a2a;
-      --gray-900: #1a1a1a;
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3 class="feature-title">Premium Product</h3>
+          <p class="feature-desc">Try our premium product for free! Advanced features and enhanced functionality.</p>
+          <button class="btn btn-primary btn-sm" onclick="location.href='https://onlyworks-llm.vercel.app/'">
+            <i class="fas fa-arrow-right"></i>
+            Try Our Product
+          </button>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <h3 class="feature-title">Perfect Match</h3>
+          <p class="feature-desc">Our smart matching system connects the right students with the right opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="job-preview">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Simple steps to connect students and employers</p>
       
-      /* Accent colors */
-      --success: #00a86b;
-      --warning: #ff9500;
-      --error: #ff3b30;
+      <div class="job-cards">
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">1. Choose Your Role</h3>
+            <div class="job-company">Student or Employer</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-user-check"></i> Quick Registration</div>
+            <div class="job-detail"><i class="fas fa-shield-alt"></i> Verified Profiles</div>
+            <div class="job-detail"><i class="fas fa-mobile-alt"></i> Mobile Friendly</div>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">2. Post or Browse</h3>
+            <div class="job-company">Jobs & Applications</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-search"></i> Smart Matching</div>
+            <div class="job-detail"><i class="fas fa-calendar-alt"></i> Schedule Integration</div>
+            <div class="job-detail"><i class="fas fa-bell"></i> Instant Notifications</div>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">3. Connect & Work</h3>
+            <div class="job-company">Start Earning</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-comments"></i> Direct Messaging</div>
+            <div class="job-detail"><i class="fas fa-credit-card"></i> Secure Payments</div>
+            <div class="job-detail"><i class="fas fa-chart-line"></i> Track Progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section-title">Trusted by Students & Employers</h2>
+      <p class="section-subtitle">Join thousands who have found success with OnlyWorks</p>
       
-      /* Minimal effects */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+      <div class="testimonial-wrapper">
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"OnlyWorks helped me find a perfect campus job that fits around my classes. The application process was so easy!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Sarah Chen</h4>
+              <p>Computer Science Student</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"Finding reliable student workers has never been easier. OnlyWorks' matching system is brilliant!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Mike Rodriguez</h4>
+              <p>Campus Bookstore Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container">
+      <h2 class="cta-title">Ready to Get Started?</h2>
+      <p class="cta-subtitle">Join the OnlyWorks community today and discover new opportunities</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-cta" onclick="location.href='student.html'">
+          <i class="fas fa-graduation-cap"></i>
+          Student Portal
+        </button>
+        <button class="btn btn-cta" onclick="location.href='index.html'">
+          <i class="fas fa-building"></i>
+          Employer Portal
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-briefcase logo-icon"></i>
+            OnlyWorks
+          </div>
+          <p class="footer-desc">
+            OnlyWorks helps students find flexible part-time work that fits their schedule, connecting them directly with employers on campus and in their local communities.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.linkedin.com/company/only-jobs-students/" class="social-icon">
+              <span style="font-weight: bold; font-size: 0.9em;">in</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">About Us</a></li>
+            <li><a href="#" class="footer-menu-item">Careers</a></li>
+            <li><a href="#" class="footer-menu-item">Blog</a></li>
+            <li><a href="#" class="footer-menu-item">Press</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Help Center</a></li>
+            <li><a href="#" class="footer-menu-item">Student Guide</a></li>
+            <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
+            <li><a href="#" class="footer-menu-item">API Documentation</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Terms of Service</a></li>
+            <li><a href="#" class="footer-menu-item">Privacy Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Cookie Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Security</a></li>
+          </ul>
+        </div>
+      </div>
       
-      /* No rounded corners for ultra-clean look */
-      --radius-sm: 0px;
-      --radius-md: 0px;
-      --radius-lg: 4px;
+      <div class="footer-bottom">
+        <p>&copy; 2025 OnlyWorks. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize page functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate feature cards on scroll
+      const featureCards = document.querySelectorAll('.feature-card');
       
-      /* Clean spacing */
-      --space-xs: 0.5rem;
-      --space-sm: 1rem;
-      --space-md: 1.5rem;
-      --space-lg: 2rem;
-      --space-xl: 3rem;
-      --space-2xl: 4rem;
-      --space-3xl: 6rem;
+      // Function to check if element is in viewport
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+          rect.bottom >= 0
+        );
+      }
       
-      /* System fonts like Parse.com */
-      --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      --font-serif: 'Times New Roman', Georgia, serif;
+      // Function to add animation classes when scrolling
+      function animateOnScroll() {
+        featureCards.forEach((card, index) => {
+          if (isInViewport(card)) {
+            // Add a delay based on index
+            setTimeout(() => {
+              card.classList.add('animate');
+            }, index * 100);
+          }
+        });
+      }
       
-      --font-size-xs: 0.75rem;
-      --font-size-sm: 0.875rem;
-      --font-size-base: 1rem;
-      --font-size-lg: 1.125rem;
-      --font-size-xl: 1.25rem;
-      --font-size-2xl: 1.5rem;
-      --font-size-3xl: 2rem;
-      --font-size-4xl: 2.5rem;
-      --font-size-5xl: 3rem;
-      --font-size-6xl: 4rem;
+      // Run on scroll
+      window.addEventListener('scroll', animateOnScroll);
+      // Initial check
+      setTimeout(animateOnScroll, 500);
       
-      /* Subtle transitions */
-      --transition: 0.2s ease;
-    }
-
-    /* Base styles - Clean system fonts */
-    body {
-      font-family: var(--font-system);
-      line-height: 1.5;
-      color: var(--text-primary);
-      background: var(--white);
-      font-size: var(--font-size-base);
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Clean headings */
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-system);
-      font-weight: 700;
-      line-height: 1.2;
-      color: var(--text-primary);
-    }
-
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
-    }
-
-    /* Header - Parse.com style clean header */
-    #header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    #header.scrolled {
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* Clean navigation layout - Fixed structure */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-sm) 0;
-      min-height: 64px;
-    }
-
-    /* Logo - clean and simple */
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: var(--font-size-lg);
-      font-weight: 700;
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .logo img {
-      width: 28px;
-      height: 28px;
-      margin-right: var(--space-xs);
-    }
-
-    .logo:hover {
-      color: var(--secondary-color);
-    }
-
-    /* Navigation center and right sections */
-    .nav-center {
-      display: flex;
-      list-style: none;
-      align-items: center;
-      gap: var(--space-xl);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-    }
-
-    .nav-center a, .nav-right a:not(.cta-button) {
-      text-decoration: none;
-      color: var(--text-secondary);
-      font-weight: 500;
-      font-size: var(--font-size-base);
-      transition: var(--transition);
-    }
-
-    .nav-center a:hover, .nav-right a:not(.cta-button):hover {
-      color: var(--text-primary);
-    }
-
-    /* Clean CTA buttons */
-    .cta-button {
-      background: var(--text-primary);
-      color: var(--white);
-      padding: 10px 20px;
-      border-radius: var(--radius-lg);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: var(--font-size-sm);
-      transition: var(--transition);
-      border: none;
-      cursor: pointer;
-    }
-
-    .cta-button:hover {
-      background: var(--primary-light);
-    }
-
-    .cta-button.secondary {
-      background: transparent;
-      color: var(--text-primary);
-      border: 1px solid var(--gray-300);
-    }
-
-    .cta-button.secondary:hover {
-      background: var(--gray-50);
-      border-color: var(--text-primary);
-    }
-
-    /* Mobile menu button */
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: var(--font-size-xl);
-      color: var(--text-primary);
-      cursor: pointer;
-      padding: var(--space-xs);
-    }
-
-    /* Clean minimal buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-xs);
-      padding: 12px 24px;
-      border: 1px solid transparent;
-      border-radius: var(--radius-lg);
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: var(--font-size-base);
-      font-family: var(--font-system);
-      line-height: 1;
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: var(--text-primary);
-      color: var(--white);
-      border-color: var(--text-primary);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-light);
-      border-color: var(--primary-light);
-    }
-
-    .btn-secondary {
-      background: var(--white);
-      color: var(--text-primary);
-      border-color: var(--gray-300);
-    }
-
-    .btn-secondary:hover {
-      background: var(--gray-50);
-      border-color: var(--text-primary);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text-primary);
-      border-color: var(--gray-300);
-    }
-
-    .btn-outline:hover {
-      background: var(--gray-50);
-      border-color: var(--text-primary);
-    }
-
-    .btn-sm {
-      padding: 8px 16px;
-      font-size: var(--font-size-sm);
-    }
-
-    .btn-lg {
-      padding: 16px 32px;
-      font-size: var(--font-size-lg);
-    }
-
-    /* Hero section - clean and simple */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      background: var(--white);
-      padding-top: 64px;
-    }
-
-    .hero-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-3xl);
-      align-items: center;
-      width: 100%;
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+          document.body.classList.toggle('mobile-menu-open');
+          
+          // Create mobile menu if it doesn't exist
+          if (!document.querySelector('.mobile-menu')) {
+            const mobileMenu = document.createElement('div');
+            mobileMenu.className = 'mobile-menu';
+            
+            const mobileMenuContent = document.createElement('div');
+            mobileMenuContent.className = 'mobile-menu-content';
+            
+            // Clone nav links
+            const navLinks = document.querySelectorAll('nav .nav-links a');
+            navLinks.forEach(link => {
+              const clonedLink = link.cloneNode(true);
+              clonedLink.style.display = 'block';
+              clonedLink.style.padding = '12px 0';
+              clonedLink.style.borderBottom = '1px solid #e5e7eb';
+              mobileMenuContent.appendChild(clonedLink);
+            });
+            
+            // Add sign up button
+            const signUpBtn = document.createElement('button');
+            signUpBtn.className = 'btn btn-primary';
+            signUpBtn.innerHTML = '<i class="fas fa-user-plus"></i> Get Started';
+            signUpBtn.style.marginTop = '20px';
+            signUpBtn.onclick = function() {
+              location.href = '/register.html';
+            };
+            mobileMenuContent.appendChild(signUpBtn);
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'mobile-menu-close';
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            closeBtn.onclick = function() {
+              document.body.classList.remove('mobile-menu-open');
+            };
+            mobileMenuContent.appendChild(closeBtn);
+            
+            mobileMenu.appendChild(mobileMenuContent);
+            document.body.appendChild(mobileMenu);
+          }
+        });
+      }
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>: 100%;
     }
 
     .hero-text {
