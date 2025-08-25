@@ -1,5 +1,11 @@
 {
   "buildCommand": null,
   "outputDirectory": "public",
-  "installCommand": null
+  "installCommand": null,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
