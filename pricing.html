@@ -33,41 +33,166 @@
     </nav>
   </header>
 
-  <section class="features" id="features">
-  
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-user-plus"></i>
+  <!-- Parse.gl style pricing section -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <h2 class="pricing-title">Simple, transparent pricing</h2>
+        <p class="pricing-subtitle">Plans to suit all types of students and employers</p>
+      </div>
+      
+      <div class="pricing-grid">
+        <!-- Individual Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Individual</div>
+          <div class="plan-price">
+            <span class="currency">$</span>15<span class="period">/mo</span>
           </div>
-          <h3 class="feature-title">Individual Plan</h3>
-          <p class="feature-desc">$15/month</p>
+          <div class="plan-description">Perfect for individual students looking for part-time work opportunities</div>
+          
+          <ul class="feature-list">
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Access to <span class="feature-highlight">unlimited</span> job postings</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Profile optimization tools</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Application tracking</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Interview scheduling</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Standard support</span>
+            </li>
+          </ul>
+          
+          <button class="plan-button primary" onclick="location.href='register.html'">Get Started</button>
         </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-search"></i>
+
+        <!-- Student Plan -->
+        <div class="pricing-card featured">
+          <div class="plan-name">Student</div>
+          <div class="plan-price">
+            <span class="currency">$</span>10<span class="period">/mo</span>
           </div>
-          <h3 class="feature-title">Student</h3>
-          <p class="feature-desc">$10/month keep the price if you stay with us after university</p>
+          <div class="plan-subtitle">Keep this price after university if you stay with us</div>
+          <div class="plan-description">Special pricing for students with exclusive campus opportunities</div>
+          
+          <ul class="feature-list">
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Everything in Individual +</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text"><span class="feature-highlight">Campus-exclusive</span> job listings</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Student verification badge</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Priority application review</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Career guidance resources</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Price lock guarantee</span>
+            </li>
+          </ul>
+          
+          <button class="plan-button primary" onclick="location.href='register.html'">Start Student Plan</button>
         </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-comment-dots"></i>
+
+        <!-- Business/Employers Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Business</div>
+          <div class="plan-price">
+            <span class="currency">$</span>70<span class="period">/mo</span>
           </div>
-          <h3 class="feature-title">Business/Employers</h3>
-          <p class="feature-desc">$70 (1 - 6 people on a team)</p>
+          <div class="plan-subtitle">For teams of 1-6 people</div>
+          <div class="plan-description">Complete hiring solution for small businesses and departments</div>
+          
+          <ul class="feature-list">
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text"><span class="feature-highlight">Unlimited</span> job postings</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Advanced candidate filtering</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Team collaboration tools</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Interview scheduling system</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Analytics dashboard</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Priority support</span>
+            </li>
+          </ul>
+          
+          <button class="plan-button outline" onclick="location.href='register.html'">Start Free Trial</button>
         </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-wallet"></i>
+
+        <!-- University Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">University</div>
+          <div class="plan-price">
+            Custom
           </div>
-          <h3 class="feature-title">University</h3>
-          <p class="feature-desc">Custom pricing</p>
+          <div class="plan-description">Comprehensive solution for educational institutions</div>
+          
+          <ul class="feature-list">
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Everything in Business +</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text"><span class="feature-highlight">Campus-wide</span> integration</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Student success tracking</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Custom branding</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">API access</span>
+            </li>
+            <li class="feature-item">
+              <i class="fas fa-check feature-icon"></i>
+              <span class="feature-text">Dedicated account manager</span>
+            </li>
+          </ul>
+          
+          <button class="plan-button outline" onclick="location.href='register.html'">Contact Sales</button>
         </div>
-        
+      </div>
+    </div>
   </section>
 
   <section class="job-preview">
@@ -175,73 +300,6 @@
       </button>
     </div>
   </section>
-
-<!-- Resume Roaster Section - Corrected -->
-<!-- <section class="resume-roaster" id="resume-roaster">
-  <div class="container">
-    <h2 class="section-title">Resume Roaster</h2>
-    <p class="section-subtitle">Get brutally honest feedback on your resume. We don't sugarcoat.</p>
-    
-    <div class="resume-roaster-grid">
-      <div class="upload-area" id="uploadArea">
-        <i class="fas fa-file-upload"></i>
-        <h3>Drag & Drop your resume here</h3>
-        <p>or</p>
-        <label for="resumeUpload" class="btn btn-secondary btn-sm">Browse Files</label>
-        <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden>
-        <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
-      </div>
-      
-      <div class="roast-options">
-        <h3>Roasting Options</h3>
-        <div class="option-item">
-          <input type="checkbox" id="brutalMode" checked>
-          <label for="brutalMode">Brutal Mode (No mercy)</label>
-        </div>
-        <div class="option-item">
-          <input type="checkbox" id="improveSuggestions" checked>
-          <label for="improveSuggestions">Include improvement suggestions</label>
-        </div>
-        <div class="option-item">
-          <input type="checkbox" id="professionalRewrite">
-          <label for="professionalRewrite">Request professional rewrite ($29.99)</label>
-        </div>
-        
-        <button id="roastBtn" class="btn btn-primary" disabled>Roast My Resume</button>
-      </div>
-    </div>
-    
-    <div id="loadingRoast" class="loading-roast" style="display:none;">
-      <div class="spinner"></div>
-      <p>Preparing your roast... This could take a minute. Our AI is sharpening its wit.</p>
-    </div>
-    
-    <div id="roastResults" class="roast-results" style="display:none;">
-      <h3>Your Resume Roast</h3>
-      <div class="roast-content">
-        <div class="score-section">
-          <div class="score-circle">
-            <span id="resumeScore">0</span>/10
-          </div>
-          <p id="scoreVerdict">Loading verdict...</p>
-        </div>
-        
-        <div class="feedback-section">
-          <h4>Brutal Feedback</h4>
-          <div id="brutalFeedback" class="feedback-box"></div>
-          
-          <h4>Areas to Improve</h4>
-          <div id="improvementAreas" class="feedback-box"></div>
-        </div>
-        
-        <div class="roast-actions">
-          <button id="downloadReport" class="btn btn-secondary">Download Full Report</button>
-          <button id="requestRewrite" class="btn btn-primary">Get Professional Rewrite</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>  -->
   
 <footer>
     <div class="container">
@@ -296,13 +354,14 @@
     </div>
 
   </footer>
+  
   <!-- JavaScript -->
   <script src="js/firebase-config.js"></script>
   <script>
     // Initialize Firebase
     document.addEventListener('DOMContentLoaded', function() {
       // Animate feature cards on scroll
-      const featureCards = document.querySelectorAll('.feature-card');
+      const pricingCards = document.querySelectorAll('.pricing-card');
       
       // Function to check if element is in viewport
       function isInViewport(element) {
@@ -315,7 +374,7 @@
       
       // Function to add animation classes when scrolling
       function animateOnScroll() {
-        featureCards.forEach((card, index) => {
+        pricingCards.forEach((card, index) => {
           if (isInViewport(card)) {
             // Add a delay based on index
             setTimeout(() => {
@@ -386,18 +445,8 @@
       }
     });
   </script>
-  
 
   <script src="js/roaster.js"></script>
-
-<script>
-  console.log("Document ready state:", document.readyState);
-  window.addEventListener('load', function() {
-    console.log("Window fully loaded");
-    console.log("Resume upload element:", document.getElementById('resumeUpload'));
-    console.log("Test upload element:", document.getElementById('testFileInput'));
-  });
-</script>
   <script src="js/unified-theme.js"></script>
 </body>
 </html>
