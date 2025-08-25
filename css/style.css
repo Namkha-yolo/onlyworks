@@ -1,4 +1,4 @@
-/* OnlyWorks Clean Minimal Theme CSS - Parse.com Style */
+/* OnlyWorks Clean Minimal Theme CSS - Parse.com Style with Purple Primary */
 
 * {
   margin: 0;
@@ -7,14 +7,15 @@
 }
 
 :root {
-  /* Clean minimal palette inspired by Parse.com */
-  --primary-color: #1a1a1a;
-  --primary-light: #333333;
+  /* Purple primary palette */
+  --primary-color: #6b46c1;
+  --primary-light: #8b5cf6;
+  --primary-dark: #553c9a;
   --secondary-color: #0066cc;
   --secondary-dark: #0052a3;
   
   /* Pure neutral colors */
-  --text-primary: #1a1a1a;
+  --text-primary: #6b46c1;
   --text-secondary: #666666;
   --text-muted: #999999;
   --white: #ffffff;
@@ -137,7 +138,7 @@ nav {
 }
 
 .logo:hover {
-  color: var(--secondary-color);
+  color: var(--primary-light);
 }
 
 /* Navigation links - right aligned */
@@ -167,7 +168,7 @@ nav {
 
 /* Clean CTA button */
 .cta-button {
-  background: var(--text-primary);
+  background: var(--primary-color);
   color: var(--white);
   padding: 10px 20px;
   border-radius: var(--radius-lg);
@@ -215,9 +216,9 @@ nav {
 }
 
 .btn-primary {
-  background: var(--text-primary);
+  background: var(--primary-color);
   color: var(--white);
-  border-color: var(--text-primary);
+  border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
@@ -357,7 +358,7 @@ section {
 }
 
 .feature-card:hover {
-  border-color: var(--secondary-color);
+  border-color: var(--primary-color);
   box-shadow: var(--shadow-md);
 }
 
@@ -370,7 +371,7 @@ section {
 .feature-icon {
   width: 48px;
   height: 48px;
-  background: var(--secondary-color);
+  background: var(--primary-color);
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -413,7 +414,7 @@ section {
 }
 
 .job-card:hover {
-  border-color: var(--secondary-color);
+  border-color: var(--primary-color);
   box-shadow: var(--shadow-md);
 }
 
@@ -448,7 +449,7 @@ section {
 }
 
 .job-detail i {
-  color: var(--secondary-color);
+  color: var(--primary-color);
   width: 16px;
 }
 
@@ -491,7 +492,7 @@ section {
 .author-avatar {
   width: 48px;
   height: 48px;
-  background: var(--secondary-color);
+  background: var(--primary-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -513,7 +514,7 @@ section {
 
 /* Clean CTA section */
 .cta {
-  background: var(--text-primary);
+  background: var(--primary-color);
   color: var(--white);
   text-align: center;
 }
@@ -532,7 +533,7 @@ section {
 
 .btn-cta {
   background: var(--white);
-  color: var(--text-primary);
+  color: var(--primary-color);
   border-color: var(--white);
 }
 
@@ -594,7 +595,7 @@ footer {
 }
 
 .social-icon:hover {
-  background: var(--secondary-color);
+  background: var(--primary-color);
   color: var(--white);
 }
 
