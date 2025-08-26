@@ -3,110 +3,260 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OnlyWorks - Connect Students with Employers</title>
+  <title>OnlyWorks</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/logo.png">
+  <link rel="shortcut icon" href="/logo.png" type="image/x-icon">
+  
 </head>
 <body>
   <header id="header">
     <nav class="container">
       <a href="/" class="logo">
-        <i class="fas fa-briefcase"></i>
+        <img src="logo.png" alt="OnlyWorks Logo">
         OnlyWorks
       </a>
       <ul class="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#about">About</a></li>
-        <li id="nav-auth-link"><a href="/auth/google" class="cta-button">Sign In</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="team.html">Meet The team</a></li>
+        <li><a href="/auth/google">Sign in</a></li>
+        <li class="divider"></li>
       </ul>
+      <a href="/auth/google" class="cta-button">Start recording</a>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
     </nav>
   </header>
 
   <section class="hero">
     <div class="container hero-content">
       <div class="hero-text">
-        <h1 class="hero-title">Connect Students with Employers</h1>
-        <p class="hero-subtitle">
-          Find flexible part-time jobs that fit your schedule, or discover talented students ready to contribute to your business.
-        </p>
+        <h1 class="hero-title">Work Smarter</h1>
+        <p class="hero-subtitle">OnlyWorks allows you to track your progress and efficiency. We work directly with businesses to understand their needs, then match them with reliable student talent who are ready to contribute. Our goal is to streamline the hiring process no more ghosting, no more unqualified matches just the right fit, faster. We believe every student deserves the chance to earn and grow. And every business deserves talent they can count on.
+</p>
         <div class="hero-btns">
-          <button class="btn btn-primary" onclick="startAuth()">
-            <i class="fab fa-google"></i>
-            Sign in with Google
+          <button class="btn btn-primary" onclick="location.href='/auth/google'">
+            <i class="fas fa-arrow-right"></i>
+            Start recording now
+          </button>
+          <button class="btn btn-secondary" onclick="location.href='https://onlyworks-llm.vercel.app/'">
+            <i class="fas fa-play"></i>
+            Try Demo
           </button>
         </div>
-        
-        <!-- Show auth errors if any -->
-        <div id="auth-error" class="error-message" style="display: none;">
-          <i class="fas fa-exclamation-circle"></i>
-          <span id="error-text"></span>
-        </div>
       </div>
-      
       <div class="hero-img">
-        <div class="hero-visual">
-          <i class="fas fa-users hero-icon"></i>
-          <p>Students & Employers Together</p>
-        </div>
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" alt="Students and employers connecting">
       </div>
     </div>
   </section>
 
   <section class="features" id="features">
     <div class="container">
-      <h2 class="section-title">How It Works</h2>
+      <h2 class="section-title">Perfect For Everyone</h2>
+      <p class="section-subtitle">Whether you're a student looking for work or an employer seeking talent, we've got you covered</p>
       
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <h3 class="feature-title">For Students</h3>
+          <p class="feature-desc">Find flexible part-time jobs that fit your schedule. Build your resume while earning money.</p>
+          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google?role=student'">
             <i class="fab fa-google"></i>
-          </div>
-          <h3 class="feature-title">1. Sign In Securely</h3>
-          <p class="feature-desc">Use your Google account for quick, secure authentication.</p>
+            Join as Student
+          </button>
         </div>
         
         <div class="feature-card">
           <div class="feature-icon">
-            <i class="fas fa-user-edit"></i>
+            <i class="fas fa-building"></i>
           </div>
-          <h3 class="feature-title">2. Complete Your Profile</h3>
-          <p class="feature-desc">Tell us whether you're a student or employer and add your details.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-handshake"></i>
-          </div>
-          <h3 class="feature-title">3. Start Connecting</h3>
-          <p class="feature-desc">Find the perfect match for your needs.</p>
+          <h3 class="feature-title">For Employers</h3>
+          <p class="feature-desc">Connect with talented, motivated students ready to contribute to your business.</p>
+          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google?role=employer'">
+            <i class="fab fa-google"></i>
+            Join as Employer
+          </button>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="job-preview">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Simple steps to connect students and employers</p>
+      
+      <div class="job-cards">
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">1. Sign Up with Google</h3>
+            <div class="job-company">Quick & Secure</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fab fa-google"></i> Google OAuth</div>
+            <div class="job-detail"><i class="fas fa-shield-alt"></i> Secure Login</div>
+            <div class="job-detail"><i class="fas fa-clock"></i> 30 Second Setup</div>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">2. Complete Your Profile</h3>
+            <div class="job-company">Tell Us About Yourself</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-user-edit"></i> Profile Setup</div>
+            <div class="job-detail"><i class="fas fa-tags"></i> Skills & Interests</div>
+            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> Location Preferences</div>
+          </div>
+        </div>
+        
+        <div class="job-card">
+          <div class="job-header">
+            <h3 class="job-title">3. Start Connecting</h3>
+            <div class="job-company">Find Your Match</div>
+          </div>
+          <div class="job-details">
+            <div class="job-detail"><i class="fas fa-search"></i> Smart Matching</div>
+            <div class="job-detail"><i class="fas fa-comments"></i> Direct Messaging</div>
+            <div class="job-detail"><i class="fas fa-handshake"></i> Get Hired</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section-title">Trusted by Students & Employers</h2>
+      <p class="section-subtitle">Join thousands who have found success with OnlyWorks</p>
+      
+      <div class="testimonial-wrapper">
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"OnlyWorks helped me find a perfect campus job that fits around my classes. The Google sign-up made it so easy!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Sarah Chen</h4>
+              <p>Computer Science Student</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial">
+          <div class="testimonial-quote">
+            <i class="fas fa-quote-left"></i>
+            <p>"Finding reliable student workers has never been easier. The platform is intuitive and the matching system works!"</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <h4>Mike Rodriguez</h4>
+              <p>Campus Bookstore Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container">
+      <h2 class="cta-title">Ready to Get Started?</h2>
+      <p class="cta-subtitle">Join the OnlyWorks community today and discover new opportunities</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-cta" onclick="location.href='/auth/google?role=student'">
+          <i class="fas fa-graduation-cap"></i>
+          <i class="fab fa-google" style="margin-left: 4px;"></i>
+          Student Sign Up
+        </button>
+        <button class="btn btn-cta" onclick="location.href='/auth/google?role=employer'">
+          <i class="fas fa-building"></i>
+          <i class="fab fa-google" style="margin-left: 4px;"></i>
+          Employer Sign Up
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-briefcase logo-icon"></i>
+            OnlyWorks
+          </div>
+          <p class="footer-desc">
+            OnlyWorks helps students find flexible part-time work that fits their schedule, connecting them directly with employers on campus and in their local communities.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.linkedin.com/company/only-jobs-students/" class="social-icon">
+              <span style="font-weight: bold; font-size: 0.9em;">in</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul class="footer-menu">
+            <li><a href="aboutus.html" class="footer-menu-item">About Us</a></li>
+            <li><a href="team.html" class="footer-menu-item">Our Team</a></li>
+            <li><a href="#" class="footer-menu-item">Careers</a></li>
+            <li><a href="#" class="footer-menu-item">Press</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Help Center</a></li>
+            <li><a href="#" class="footer-menu-item">Student Guide</a></li>
+            <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
+            <li><a href="https://onlyworks-llm.vercel.app/" class="footer-menu-item">Try Demo</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul class="footer-menu">
+            <li><a href="#" class="footer-menu-item">Terms of Service</a></li>
+            <li><a href="#" class="footer-menu-item">Privacy Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Cookie Policy</a></li>
+            <li><a href="#" class="footer-menu-item">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 OnlyWorks. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    // Check URL parameters for errors
-    const urlParams = new URLSearchParams(window.location.search);
-    const error = urlParams.get('error');
-    
-    if (error) {
-      const errorDiv = document.getElementById('auth-error');
-      const errorText = document.getElementById('error-text');
-      
-      let message = 'Authentication failed. Please try again.';
-      if (error === 'oauth_failed') {
-        message = 'Google sign-in failed. Please try again.';
-      } else if (error === 'auth_required') {
-        message = 'Please sign in to access that page.';
-      }
-      
-      errorText.textContent = message;
-      errorDiv.style.display = 'block';
-    }
-    
-    // Check if user is already logged in
-    fetch('/api/user', { credentials: 'include' })
+    // Initialize page functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is already authenticated
+      fetch('/api/user', {
+        credentials: 'include'
+      })
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -118,31 +268,141 @@
         updateUIForLoggedInUser(data.user);
       })
       .catch(error => {
-        // User not logged in, keep default UI
+        // User is not logged in, keep default UI
         console.log('User not authenticated');
       });
-    
-    function updateUIForLoggedInUser(user) {
-      const navAuthLink = document.getElementById('nav-auth-link');
-      const heroBtn = document.querySelector('.hero-btns .btn-primary');
+
+      // Function to update UI when user is logged in
+      function updateUIForLoggedInUser(user) {
+        const navLinks = document.querySelector('.nav-links');
+        const ctaButton = document.querySelector('.cta-button');
+        
+        // Update nav sign in link
+        const signInLink = navLinks.querySelector('.nav-sign-in');
+        if (signInLink) {
+          signInLink.innerHTML = `
+            <img src="${user.avatar}" alt="${user.name}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;">
+            Dashboard
+          `;
+          signInLink.href = '/dashboard.html';
+        }
+        
+        // Update CTA button
+        if (ctaButton) {
+          ctaButton.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
+          ctaButton.href = '/dashboard.html';
+        }
+        
+        // Update hero buttons
+        const heroBtn = document.querySelector('.hero-btns .btn-primary');
+        if (heroBtn) {
+          heroBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
+          heroBtn.onclick = () => location.href = '/dashboard.html';
+        }
+      }
       
-      // Update navigation
-      navAuthLink.innerHTML = `
-        <a href="/dashboard.html" class="cta-button">
-          <img src="${user.avatar}" alt="${user.name}" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 8px;">
-          Dashboard
-        </a>
-      `;
+      // Animate feature cards on scroll
+      const featureCards = document.querySelectorAll('.feature-card');
       
-      // Update hero button
-      heroBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
-      heroBtn.onclick = () => location.href = '/dashboard.html';
-    }
-    
-    function startAuth() {
-      console.log('Starting OAuth flow...');
-      window.location.href = '/auth/google';
-    }
+      // Function to check if element is in viewport
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+          rect.bottom >= 0
+        );
+      }
+      
+      // Function to add animation classes when scrolling
+      function animateOnScroll() {
+        featureCards.forEach((card, index) => {
+          if (isInViewport(card)) {
+            // Add a delay based on index
+            setTimeout(() => {
+              card.classList.add('animate');
+            }, index * 100);
+          }
+        });
+      }
+      
+      // Run on scroll
+      window.addEventListener('scroll', animateOnScroll);
+      // Initial check
+      setTimeout(animateOnScroll, 500);
+      
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+          document.body.classList.toggle('mobile-menu-open');
+          
+          // Create mobile menu if it doesn't exist
+          if (!document.querySelector('.mobile-menu')) {
+            const mobileMenu = document.createElement('div');
+            mobileMenu.className = 'mobile-menu';
+            
+            const mobileMenuContent = document.createElement('div');
+            mobileMenuContent.className = 'mobile-menu-content';
+            
+            // Clone nav links
+            const navLinks = document.querySelectorAll('nav .nav-links a');
+            navLinks.forEach(link => {
+              const clonedLink = link.cloneNode(true);
+              clonedLink.style.display = 'block';
+              clonedLink.style.padding = '12px 0';
+              clonedLink.style.borderBottom = '1px solid #e5e7eb';
+              mobileMenuContent.appendChild(clonedLink);
+            });
+            
+            // Add sign up button
+            const signUpBtn = document.createElement('button');
+            signUpBtn.className = 'btn btn-primary';
+            signUpBtn.innerHTML = '<i class="fab fa-google"></i> Sign up with Google';
+            signUpBtn.style.marginTop = '20px';
+            signUpBtn.onclick = function() {
+              location.href = '/auth/google';
+            };
+            mobileMenuContent.appendChild(signUpBtn);
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'mobile-menu-close';
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            closeBtn.onclick = function() {
+              document.body.classList.remove('mobile-menu-open');
+            };
+            mobileMenuContent.appendChild(closeBtn);
+            
+            mobileMenu.appendChild(mobileMenuContent);
+            document.body.appendChild(mobileMenu);
+          }
+        });
+      }
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
