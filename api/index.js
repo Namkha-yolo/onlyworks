@@ -60,13 +60,18 @@ const connectToDatabase = async () => {
   }
 };
 
+
+console.log('OAuth callback URL will be:', process.env.NODE_ENV === 'production' 
+  ? `https://${process.env.VERCEL_URL || 'www.only-works.com'}/auth/google/callback`
+  : "/auth/google/callback");
+console.log('VERCEL_URL:', process.env.VERCEL_URL);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 // Google OAuth Strategy
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.NODE_ENV === 'production' 
-    ? `https://${process.env.VERCEL_URL || 'www.only-works.com'}/auth/google/callback`
-    : "/auth/google/callback"
+  callbackURL: "https://onlyworks-abv3-git-ai-tracker-4a4bf1-namkhas-projects-849ad78f.vercel.app/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     await connectToDatabase();
