@@ -272,20 +272,19 @@ app.use((error, req, res, next) => {
 
 // Catch-all route - serve index.html for client-side routing
 
+// Catch-all route - serve index.html for client-side routing
 app.get('*', (req, res) => {
   // Don't intercept requests for static files
   if (req.path.includes('.')) {
     return res.status(404).send('File not found');
   }
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  
+  try {
+    // Use path.resolve instead of __dirname for Vercel compatibility
+    res.sendFile(path.resolve('./public/index.html'));
+  } catch (error) {
+    console.error('Error serving index.html:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
-const port = process.env.PORT || 3000;
-
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log('Environment:', process.env.NODE_ENV || 'development');
-  });
-}
-
 module.exports = app;
