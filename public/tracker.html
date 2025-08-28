@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Productivity Tracker - OnlyWorks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="header">
+    <nav class="container">
+      <a href="/" class="logo">
+        <img src="logo.png" alt="OnlyWorks Logo">
+        OnlyWorks
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/tracker.html" class="active">AI Tracker</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="dashboard-container">
+    <div class="container">
+      
+      <!-- API Key Setup Modal -->
+      <div id="apiKeyModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+          <div class="onboarding-header">
+            <h2>AI Vision Setup</h2>
+            <p>Configure OpenAI API for real-time productivity analysis</p>
+          </div>
+          
+          <div class="form-group">
+            <label>OpenAI API Key</label>
+            <input type="password" id="apiKeyInput" placeholder="sk-..." />
+            <small>Get your API key from platform.openai.com/api-keys</small>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="setApiKey()">
+              <i class="fas fa-key"></i>
+              Use My API Key
+            </button>
+            <button class="btn btn-secondary" onclick="useServerKey()">
+              <i class="fas fa-server"></i>
+              Use Server Key (Free)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Tracker Interface -->
+      <div id="trackerInterface" style="display: none;">
+        
+        <!-- Header Section -->
+        <div class="content-section">
+          <div class="tracker-header">
+            <div>
+              <h1><i class="fas fa-eye"></i> AI Productivity Tracker</h1>
+              <p>Real-time AI analysis of your work session</p>
+            </div>
+            <div class="session-timer">
+              <i class="fas fa-clock"></i>
+              <span id="sessionTime">00:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Goal Setting -->
+        <div class="content-section">
+          <div class="form-group">
+            <label>Session Goal</label>
+            <input type="text" id="goalInput" placeholder="What are you working on today?" value="Complete project documentation" />
+          </div>
+        </div>
+
+        <!-- Recording Controls -->
+        <div class="content-section text-center">
+          <button id="recordButton" class="btn btn-primary btn-lg" onclick="toggleRecording()">
+            <i class="fas fa-play"></i>
+            Start AI Session
+          </button>
+          <div id="analysisStatus" class="analysis-status" style="display: none;">
+            <i class="fas fa-brain"></i>
+            AI Processing...
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div id="captureStats" class="dashboard-stats" style="display: none;">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-mouse"></i></div>
+            <div class="stat-info">
+              <h3>Clicks</h3>
+              <div class="stat-value" id="clickCount">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-keyboard"></i></div>
+            <div class="stat-info">
+              <h3>Keystrokes</h3>
+              <div class="stat-value" id="keystrokeCount">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-window-maximize"></i></div>
+            <div class="stat-info">
+              <h3>Focus Changes</h3>
+              <div class="stat-value" id="windowChanges">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-camera"></i></div>
+            <div class="stat-info">
+              <h3>Screenshots</h3>
+              <div class="stat-value" id="screenshotCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Analysis Feed -->
+        <div id="analysisSection" class="content-section" style="display: none;">
+          <h2><i class="fas fa-brain"></i> Live AI Analysis</h2>
+          <div id="analysisFeed" class="analysis-feed"></div>
+        </div>
+
+        <!-- Progress Metrics -->
+        <div id="progressSection" class="content-section" style="display: none;">
+          <h2><i class="fas fa-chart-line"></i> AI Progress Metrics</h2>
+          <div class="progress-grid">
+            <div class="progress-item">
+              <label>Goal Completion</label>
+              <div class="progress-bar">
+                <div id="goalProgress" class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span id="goalProgressText">0%</span>
+            </div>
+            <div class="progress-item">
+              <label>AI Efficiency Score</label>
+              <div class="progress-bar">
+                <div id="efficiencyProgress" class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span id="efficiencyProgressText">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Gallery -->
+        <div id="gallerySection" class="content-section" style="display: none;">
+          <h2><i class="fas fa-images"></i> AI Vision Gallery</h2>
+          <div id="screenshotGallery" class="screenshot-gallery"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/tracker.js"></script>
+</body>
+</html>

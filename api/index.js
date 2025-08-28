@@ -1,4 +1,4 @@
-// api/index.js - Vercel serverless function with Google OAuth
+// api/index.js - Vercel serverless function with Google OAuth and AI Tracker
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -236,6 +236,31 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+// Tracker route - serve tracker page for authenticated users
+app.get('/tracker', authenticateToken, (req, res) => {
+  res.sendFile(path.resolve('public/tracker.html'));
+});
+
+// API endpoint for AI analysis (if you want server-side processing)
+app.post('/api/analyze-screenshot', authenticateToken, async (req, res) => {
+  try {
+    const { base64Image, goal } = req.body;
+    
+    // You could add server-side OpenAI processing here
+    // For now, let client handle it directly
+    
+    res.json({
+      success: true,
+      message: 'Analysis endpoint available'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Analysis failed'
+    });
+  }
+});
+
 // Health check with database status
 app.get('/api/health', async (req, res) => {
   try {
@@ -266,13 +291,27 @@ app.get('/api/test', (req, res) => {
 
 // Serve static files and handle client-side routing
 app.get('*', (req, res) => {
-  // Don't intercept static file requests
+  // Don't intercept requests for static files
   if (req.path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
     return res.status(404).send('File not found');
   }
   
   // Serve index.html for all other routes
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  try {
+    res.sendFile(path.resolve('public/index.html'));
+  } catch (error) {
+    console.error('Error serving index.html:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
+const port = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+    console.log('Environment:', process.env.NODE_ENV || 'development');
+  });
+}
 
 module.exports = app;
