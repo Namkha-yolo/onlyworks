@@ -24,10 +24,10 @@
         <li><a href="pricing.html">Pricing</a></li>
         <li><a href="aboutus.html">About Us</a></li>
         <li><a href="team.html">Meet The team</a></li>
-        <li><a href="https://onlyworks-llm.vercel.app/">Sign in</a></li>
+        <li><a href="/auth/google" class="nav-sign-in">Sign in</a></li>
         <li class="divider"></li>
       </ul>
-      <a href="https://onlyworks-llm.vercel.app/" class="cta-button">Start recording</a>
+      <a href="/auth/google" class="cta-button">Get Started</a>
       <div class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
       </div>
@@ -41,13 +41,13 @@
         <p class="hero-subtitle">OnlyWorks allows you to track your progress and efficiency. We work directly with businesses to understand their needs, then match them with reliable student talent who are ready to contribute. Our goal is to streamline the hiring process no more ghosting, no more unqualified matches just the right fit, faster. We believe every student deserves the chance to earn and grow. And every business deserves talent they can count on.
 </p>
         <div class="hero-btns">
-          <button class="btn btn-primary" onclick="location.href='https://onlyworks-llm.vercel.app/'">
+          <button class="btn btn-primary" onclick="location.href='/auth/google'">
             <i class="fas fa-arrow-right"></i>
-            Start recording now
+            Get Started Now
           </button>
-          <button class="btn btn-secondary" onclick="location.href='https://onlyworks-llm.vercel.app/'">
-            <i class="fas fa-play"></i>
-            Try Demo
+          <button class="btn btn-secondary" onclick="location.href='#features'">
+            <i class="fas fa-info-circle"></i>
+            Learn More
           </button>
         </div>
       </div>
@@ -69,7 +69,7 @@
           </div>
           <h3 class="feature-title">For Students</h3>
           <p class="feature-desc">Find flexible part-time jobs that fit your schedule. Build your resume while earning money.</p>
-          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google?role=student'">
+          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google'">
             <i class="fab fa-google"></i>
             Join as Student
           </button>
@@ -81,7 +81,7 @@
           </div>
           <h3 class="feature-title">For Employers</h3>
           <p class="feature-desc">Connect with talented, motivated students ready to contribute to your business.</p>
-          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google?role=employer'">
+          <button class="btn btn-primary btn-sm" onclick="location.href='/auth/google'">
             <i class="fab fa-google"></i>
             Join as Employer
           </button>
@@ -181,12 +181,12 @@
       <h2 class="cta-title">Ready to Get Started?</h2>
       <p class="cta-subtitle">Join the OnlyWorks community today and discover new opportunities</p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="btn btn-cta" onclick="location.href='/auth/google?role=student'">
+        <button class="btn btn-cta" onclick="location.href='/auth/google'">
           <i class="fas fa-graduation-cap"></i>
           <i class="fab fa-google" style="margin-left: 4px;"></i>
           Student Sign Up
         </button>
-        <button class="btn btn-cta" onclick="location.href='/auth/google?role=employer'">
+        <button class="btn btn-cta" onclick="location.href='/auth/google'">
           <i class="fas fa-building"></i>
           <i class="fab fa-google" style="margin-left: 4px;"></i>
           Employer Sign Up
@@ -229,7 +229,7 @@
             <li><a href="#" class="footer-menu-item">Help Center</a></li>
             <li><a href="#" class="footer-menu-item">Student Guide</a></li>
             <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
-            <li><a href="https://onlyworks-llm.vercel.app/" class="footer-menu-item">Try Demo</a></li>
+            <li><a href="#" class="footer-menu-item">API Docs</a></li>
           </ul>
         </div>
         
@@ -299,6 +299,13 @@
           heroBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
           heroBtn.onclick = () => location.href = '/dashboard.html';
         }
+        
+        // Update CTA section buttons
+        const ctaButtons = document.querySelectorAll('#cta .btn-cta');
+        ctaButtons.forEach(btn => {
+          btn.innerHTML = '<i class="fas fa-tachometer-alt"></i> Go to Dashboard';
+          btn.onclick = () => location.href = '/dashboard.html';
+        });
       }
       
       // Animate feature cards on scroll
