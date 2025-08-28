@@ -7,6 +7,21 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+// Debug environment variables
+console.log('Environment check:', {
+  hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID,
+  hasGoogleSecret: !!process.env.GOOGLE_CLIENT_SECRET,
+  hasJwtSecret: !!process.env.JWT_SECRET,
+  hasMongoUri: !!process.env.MONGODB_URI,
+  nodeEnv: process.env.NODE_ENV
+});
+
+// Log first few characters of each variable (for debugging without exposing secrets)
+console.log('Variable preview:', {
+  clientIdStart: process.env.GOOGLE_CLIENT_ID?.substring(0, 10) + '...',
+  secretStart: process.env.GOOGLE_CLIENT_SECRET?.substring(0, 10) + '...',
+  jwtStart: process.env.JWT_SECRET?.substring(0, 10) + '...'
+});
 
 // Import User model
 const User = require('../models/User');
