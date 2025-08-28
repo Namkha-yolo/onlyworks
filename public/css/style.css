@@ -686,7 +686,7 @@ body.mobile-menu-open .mobile-menu {
   .hero-content {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
-    text-align: left;
+    text-align: center;
   }
   
   .hero-title {
