@@ -19,6 +19,12 @@ app.use(passport.initialize());
 // JWT secret - make sure to set this in your .env file
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-this-in-production';
 
+// Add this at the top of your server.js to catch missing env vars
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  console.error('Missing required environment variables');
+  process.exit(1);
+}
+
 // Debug logging for development
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
@@ -35,7 +41,7 @@ passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.NODE_ENV === 'production' 
-    ? `${process.env.VERCEL_URL || 'https://your-app.vercel.app'}/auth/google/callback`
+    ? `${process.env.VERCEL_URL || 'https://only-works.com'}/auth/google/callback`
     : "/auth/google/callback"
 }, (accessToken, refreshToken, profile, done) => {
   console.log('Google OAuth success for:', profile.displayName);
@@ -287,4 +293,6 @@ app.get('*', (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 module.exports = app;
