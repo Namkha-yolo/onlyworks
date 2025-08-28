@@ -1,59 +1,25 @@
 {
-<<<<<<< HEAD
-    "name": "onlyworks-oauth",
-    "version": "1.0.0",
-    "description": "OnlyWorks job matching platform",
-    "main": "api/index.js",
-    "scripts": {
-      "start": "node api/index.js",
-      "dev": "nodemon api/index.js"
-    },
-    "dependencies": {
-      "express": "^4.18.2",
-      "mongoose": "^8.0.0",
-      "dotenv": "^16.3.1",
-      "passport": "^0.6.0",
-      "passport-google-oauth20": "^2.0.0",
-      "jsonwebtoken": "^9.0.0",
-      "cookie-parser": "^1.4.6"
-    },
-    "devDependencies": {
-      "nodemon": "^3.0.1"
-    },
-    "engines": {
-      "node": ">=18.0.0"
-=======
-    "name": "onlyworks",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-      "react": "^18.2.0",
-      "react-dom": "^18.2.0",
-      "react-scripts": "5.0.1",
-      "lucide-react": "^0.263.1"
-    },
-    "scripts": {
-      "start": "react-scripts start",
-      "build": "react-scripts build",
-      "test": "react-scripts test",
-      "eject": "react-scripts eject"
-    },
-    "devDependencies": {
-      "tailwindcss": "^3.3.0",
-      "autoprefixer": "^10.4.14",
-      "postcss": "^8.4.24"
-    },
-    "browserslist": {
-      "production": [
-        ">0.2%",
-        "not dead",
-        "not op_mini all"
-      ],
-      "development": [
-        "last 1 chrome version",
-        "last 1 firefox version",
-        "last 1 safari version"
-      ]
->>>>>>> llm/main
-    }
+  "name": "onlyworks-oauth",
+  "version": "1.0.0",
+  "description": "OnlyWorks job matching platform with AI tracker",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.3.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "cookie-parser": "^1.4.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
+}
