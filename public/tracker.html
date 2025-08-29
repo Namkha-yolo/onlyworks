@@ -3,163 +3,641 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Productivity Tracker - OnlyWorks</title>
+  <title>AI Progress Tracker - OnlyWorks</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Header -->
   <header id="header">
     <nav class="container">
       <a href="/" class="logo">
-        <img src="logo.png" alt="OnlyWorks Logo">
+        <i class="fas fa-briefcase"></i>
         OnlyWorks
       </a>
       <ul class="nav-links">
         <li><a href="/dashboard.html">Dashboard</a></li>
-        <li><a href="/tracker.html" class="active">AI Tracker</a></li>
-        <li><a href="/logout">Logout</a></li>
+        <li><a href="/profile.html">Profile</a></li>
+        <li><a href="#" onclick="logout()" class="cta-button">Logout</a></li>
       </ul>
     </nav>
   </header>
 
-  <div class="dashboard-container">
-    <div class="container">
+  <!-- API Setup Modal -->
+  <div id="api-setup" class="modal-overlay">
+    <div class="modal-content">
+      <div style="text-align: center; margin-bottom: var(--space-xl);">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: var(--primary-color); border-radius: var(--radius-lg); margin-bottom: var(--space-lg);">
+          <i class="fas fa-brain" style="color: white; font-size: var(--font-size-xl);"></i>
+        </div>
+        <h2 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-sm);">AI Vision Setup</h2>
+        <p style="color: var(--text-secondary);">Enable real-time AI analysis with OpenAI's Vision API</p>
+      </div>
       
-      <!-- API Key Setup Modal -->
-      <div id="apiKeyModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-          <div class="onboarding-header">
-            <h2>AI Vision Setup</h2>
-            <p>Configure OpenAI API for real-time productivity analysis</p>
-          </div>
-          
-          <div class="form-group">
-            <label>OpenAI API Key</label>
-            <input type="password" id="apiKeyInput" placeholder="sk-..." />
-            <small>Get your API key from platform.openai.com/api-keys</small>
-          </div>
-          
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="setApiKey()">
-              <i class="fas fa-key"></i>
-              Use My API Key
-            </button>
-            <button class="btn btn-secondary" onclick="useServerKey()">
-              <i class="fas fa-server"></i>
-              Use Server Key (Free)
-            </button>
-          </div>
+      <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+        <div class="form-group">
+          <input type="password" id="api-key-input" placeholder="Enter your OpenAI API key (sk-...)">
         </div>
-      </div>
-
-      <!-- Main Tracker Interface -->
-      <div id="trackerInterface" style="display: none;">
         
-        <!-- Header Section -->
-        <div class="content-section">
-          <div class="tracker-header">
-            <div>
-              <h1><i class="fas fa-eye"></i> AI Productivity Tracker</h1>
-              <p>Real-time AI analysis of your work session</p>
-            </div>
-            <div class="session-timer">
-              <i class="fas fa-clock"></i>
-              <span id="sessionTime">00:00</span>
-            </div>
+        <button onclick="setApiKey()" class="btn btn-primary">
+          <i class="fas fa-key"></i>
+          Use My API Key
+        </button>
+
+        <div style="text-align: center; position: relative;">
+          <div style="position: absolute; inset: 0; display: flex; items: center;">
+            <div style="width: 100%; border-top: 1px solid var(--gray-200);"></div>
           </div>
+          <span style="background: white; padding: 0 var(--space-md); color: var(--text-secondary);">or</span>
         </div>
 
-        <!-- Goal Setting -->
-        <div class="content-section">
-          <div class="form-group">
-            <label>Session Goal</label>
-            <input type="text" id="goalInput" placeholder="What are you working on today?" value="Complete project documentation" />
-          </div>
-        </div>
-
-        <!-- Recording Controls -->
-        <div class="content-section text-center">
-          <button id="recordButton" class="btn btn-primary btn-lg" onclick="toggleRecording()">
-            <i class="fas fa-play"></i>
-            Start AI Session
-          </button>
-          <div id="analysisStatus" class="analysis-status" style="display: none;">
-            <i class="fas fa-brain"></i>
-            AI Processing...
-          </div>
-        </div>
-
-        <!-- Stats Grid -->
-        <div id="captureStats" class="dashboard-stats" style="display: none;">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-mouse"></i></div>
-            <div class="stat-info">
-              <h3>Clicks</h3>
-              <div class="stat-value" id="clickCount">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-keyboard"></i></div>
-            <div class="stat-info">
-              <h3>Keystrokes</h3>
-              <div class="stat-value" id="keystrokeCount">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-window-maximize"></i></div>
-            <div class="stat-info">
-              <h3>Focus Changes</h3>
-              <div class="stat-value" id="windowChanges">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-camera"></i></div>
-            <div class="stat-info">
-              <h3>Screenshots</h3>
-              <div class="stat-value" id="screenshotCount">0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Analysis Feed -->
-        <div id="analysisSection" class="content-section" style="display: none;">
-          <h2><i class="fas fa-brain"></i> Live AI Analysis</h2>
-          <div id="analysisFeed" class="analysis-feed"></div>
-        </div>
-
-        <!-- Progress Metrics -->
-        <div id="progressSection" class="content-section" style="display: none;">
-          <h2><i class="fas fa-chart-line"></i> AI Progress Metrics</h2>
-          <div class="progress-grid">
-            <div class="progress-item">
-              <label>Goal Completion</label>
-              <div class="progress-bar">
-                <div id="goalProgress" class="progress-fill" style="width: 0%"></div>
-              </div>
-              <span id="goalProgressText">0%</span>
-            </div>
-            <div class="progress-item">
-              <label>AI Efficiency Score</label>
-              <div class="progress-bar">
-                <div id="efficiencyProgress" class="progress-fill" style="width: 0%"></div>
-              </div>
-              <span id="efficiencyProgressText">0%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Screenshot Gallery -->
-        <div id="gallerySection" class="content-section" style="display: none;">
-          <h2><i class="fas fa-images"></i> AI Vision Gallery</h2>
-          <div id="screenshotGallery" class="screenshot-gallery"></div>
-        </div>
-
+        <button onclick="useServerKey()" class="btn btn-secondary">
+          <i class="fas fa-server"></i>
+          Use Server Key
+        </button>
       </div>
-
+      
+      <div style="margin-top: var(--space-lg); text-align: center;">
+        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">
+          Get your API key from platform.openai.com/api-keys
+        </p>
+      </div>
     </div>
   </div>
 
-  <script src="js/tracker.js"></script>
+  <!-- Main Tracker Interface -->
+  <div id="tracker-interface" class="dashboard-container hidden">
+    <div class="container">
+      <div class="dashboard-header">
+        <div class="tracker-header">
+          <div>
+            <h1>AI Progress Tracker</h1>
+            <p>Real-time AI Vision Analysis & Productivity Insights</p>
+          </div>
+          <div class="session-timer">
+            <i class="fas fa-clock"></i>
+            <span id="timer">00:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goal Setting -->
+      <div class="content-section" style="margin-bottom: var(--space-xl);">
+        <div class="form-group">
+          <label for="goal-input">Session Goal:</label>
+          <input type="text" id="goal-input" placeholder="What are you working on today?" value="Complete project documentation">
+        </div>
+
+        <!-- Recording Controls -->
+        <div style="text-align: center; margin: var(--space-xl) 0;">
+          <button id="record-btn" class="btn btn-primary" onclick="toggleRecording()" style="width: 120px; height: 120px; border-radius: 50%; font-size: var(--font-size-2xl);">
+            <i class="fas fa-play"></i>
+          </button>
+          <div id="analysis-status" class="analysis-status hidden">
+            <i class="fas fa-brain"></i>
+            <span>AI Processing...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-mouse-pointer"></i>
+          </div>
+          <div class="stat-info">
+            <h3>App Clicks</h3>
+            <div class="stat-value" id="clicks-count">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-keyboard"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Keystrokes</h3>
+            <div class="stat-value" id="keystrokes-count">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-camera"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Screenshots</h3>
+            <div class="stat-value" id="screenshots-count">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Productivity</h3>
+            <div class="stat-value" id="productivity-score">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Metrics -->
+      <div class="content-section">
+        <h2>AI Progress Metrics</h2>
+        <div class="progress-grid">
+          <div class="progress-item">
+            <label>Goal Completion</label>
+            <div class="progress-bar">
+              <div class="progress-fill" id="goal-progress" style="width: 0%"></div>
+            </div>
+            <span id="goal-percentage">0%</span>
+          </div>
+          <div class="progress-item">
+            <label>Session Efficiency</label>
+            <div class="progress-bar">
+              <div class="progress-fill" id="efficiency-progress" style="width: 0%"></div>
+            </div>
+            <span id="efficiency-percentage">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis Feed -->
+      <div class="content-section">
+        <h2>Real-time AI Analysis</h2>
+        <div id="analysis-feed" class="analysis-feed">
+          <div style="text-align: center; color: var(--text-secondary); padding: var(--space-xl);">
+            Start recording to see AI analysis...
+          </div>
+        </div>
+      </div>
+
+      <!-- Screenshots Gallery -->
+      <div class="content-section">
+        <h2>AI Vision Gallery</h2>
+        <div id="screenshots-gallery" class="screenshot-gallery">
+          <!-- Screenshots will be added here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let isRecording = false;
+    let sessionTime = 0;
+    let screenshots = [];
+    let apiKey = '';
+    let useServerApiKey = false;
+    let captureStats = { clicks: 0, keystrokes: 0, windowChanges: 0 };
+    let analysisLog = [];
+    let streamRef = null;
+    let timerInterval = null;
+    let keystrokeCount = 0;
+
+    // Check authentication
+    fetch('/api/user', { credentials: 'include' })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success || !data.user) {
+          window.location.href = '/';
+        }
+      })
+      .catch(() => {
+        window.location.href = '/';
+      });
+
+    // API Setup Functions
+    function setApiKey() {
+      const input = document.getElementById('api-key-input');
+      if (input.value.trim().startsWith('sk-')) {
+        apiKey = input.value.trim();
+        useServerApiKey = false;
+        showTrackerInterface();
+      } else {
+        alert('Please enter a valid OpenAI API key (starts with sk-)');
+      }
+    }
+
+    function useServerKey() {
+      useServerApiKey = true;
+      showTrackerInterface();
+    }
+
+    function showTrackerInterface() {
+      document.getElementById('api-setup').classList.add('hidden');
+      document.getElementById('tracker-interface').classList.remove('hidden');
+    }
+
+    // Recording Functions
+    async function toggleRecording() {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        await startRecording();
+      }
+    }
+
+    async function startRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { mediaSource: 'screen' },
+          audio: false
+        });
+        
+        streamRef = stream;
+        isRecording = true;
+        sessionTime = 0;
+        screenshots = [];
+        analysisLog = [];
+        captureStats = { clicks: 0, keystrokes: 0, windowChanges: 0 };
+        keystrokeCount = 0;
+
+        updateRecordButton();
+        startTimer();
+        setupEventListeners();
+        startPeriodicCapture();
+
+        stream.getVideoTracks()[0].addEventListener('ended', () => {
+          stopRecording();
+        });
+
+      } catch (error) {
+        alert('Screen sharing permission required for tracking');
+        console.error('Screen share error:', error);
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      
+      if (streamRef) {
+        streamRef.getTracks().forEach(track => track.stop());
+        streamRef = null;
+      }
+      
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+
+      updateRecordButton();
+      removeEventListeners();
+      generateSessionSummary();
+    }
+
+    function updateRecordButton() {
+      const btn = document.getElementById('record-btn');
+      if (isRecording) {
+        btn.className = 'btn btn-error';
+        btn.innerHTML = '<i class="fas fa-pause"></i>';
+        btn.style.background = 'var(--error)';
+      } else {
+        btn.className = 'btn btn-primary';
+        btn.innerHTML = '<i class="fas fa-play"></i>';
+        btn.style.background = 'var(--primary-color)';
+      }
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        sessionTime++;
+        const mins = Math.floor(sessionTime / 60);
+        const secs = sessionTime % 60;
+        document.getElementById('timer').textContent = 
+          `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    // Event Listeners
+    function setupEventListeners() {
+      document.addEventListener('click', handleClick, true);
+      document.addEventListener('keydown', handleKeydown, true);
+      window.addEventListener('focus', handleFocus);
+      window.addEventListener('blur', handleBlur);
+    }
+
+    function removeEventListeners() {
+      document.removeEventListener('click', handleClick, true);
+      document.removeEventListener('keydown', handleKeydown, true);
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+    }
+
+    function handleClick(e) {
+      if (!isRecording) return;
+      captureStats.clicks++;
+      updateStats();
+      triggerScreenshot('click');
+    }
+
+    function handleKeydown(e) {
+      if (!isRecording) return;
+      const isValidKey = e.key.length === 1 || ['Backspace', 'Delete', 'Enter', 'Tab', 'Space'].includes(e.key);
+      if (isValidKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        captureStats.keystrokes++;
+        keystrokeCount++;
+        updateStats();
+        
+        if (keystrokeCount >= 20) {
+          keystrokeCount = 0;
+          triggerScreenshot('keystrokes');
+        }
+      }
+    }
+
+    function handleFocus() {
+      if (!isRecording) return;
+      captureStats.windowChanges++;
+      updateStats();
+      triggerScreenshot('focus');
+    }
+
+    function handleBlur() {
+      if (!isRecording) return;
+      captureStats.windowChanges++;
+      updateStats();
+      triggerScreenshot('blur');
+    }
+
+    function updateStats() {
+      document.getElementById('clicks-count').textContent = captureStats.clicks;
+      document.getElementById('keystrokes-count').textContent = captureStats.keystrokes;
+      document.getElementById('screenshots-count').textContent = screenshots.length;
+    }
+
+    // Screenshot Functions
+    function startPeriodicCapture() {
+      if (isRecording) {
+        setTimeout(() => {
+          if (isRecording) {
+            triggerScreenshot('periodic');
+            startPeriodicCapture();
+          }
+        }, 30000);
+      }
+    }
+
+    async function triggerScreenshot(trigger) {
+      if (!streamRef || !isRecording) return;
+
+      try {
+        document.getElementById('analysis-status').classList.remove('hidden');
+        
+        const canvas = document.createElement('canvas');
+        const video = document.createElement('video');
+        video.srcObject = streamRef;
+        
+        await new Promise((resolve) => {
+          video.onloadedmetadata = resolve;
+          video.play();
+        });
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+        
+        const blob = await new Promise((resolve) => {
+          canvas.toBlob(resolve, 'image/jpeg', 0.9);
+        });
+        
+        const imageUrl = URL.createObjectURL(blob);
+        const timestamp = new Date().toLocaleTimeString();
+        
+        const screenshot = {
+          id: Date.now(),
+          timestamp,
+          url: imageUrl,
+          blob: blob,
+          trigger: trigger,
+          analyzed: false
+        };
+        
+        screenshots.push(screenshot);
+        updateStats();
+        displayScreenshot(screenshot);
+        
+        if (apiKey || useServerApiKey) {
+          await analyzeScreenshot(screenshot);
+        }
+        
+      } catch (error) {
+        console.error('Screenshot failed:', error);
+        addToAnalysisLog({
+          timestamp: new Date().toLocaleTimeString(),
+          trigger: trigger,
+          activity: 'Capture Failed',
+          productivity: 0,
+          insights: ['Screenshot capture failed: ' + error.message]
+        });
+      } finally {
+        document.getElementById('analysis-status').classList.add('hidden');
+      }
+    }
+
+    function displayScreenshot(screenshot) {
+      const gallery = document.getElementById('screenshots-gallery');
+      const item = document.createElement('div');
+      item.className = 'screenshot-item';
+      item.innerHTML = `
+        <img src="${screenshot.url}" alt="Screenshot">
+        <div class="screenshot-trigger">${screenshot.trigger}</div>
+        <div class="screenshot-time">${screenshot.timestamp}</div>
+        <div class="screenshot-analyzing">AI Processing...</div>
+      `;
+      gallery.appendChild(item);
+    }
+
+    // AI Analysis
+    async function analyzeScreenshot(screenshot) {
+      try {
+        const base64 = await blobToBase64(screenshot.blob);
+        const goal = document.getElementById('goal-input').value;
+        
+        const analysis = await callOpenAIVision(base64, goal);
+        
+        screenshot.analyzed = true;
+        screenshot.aiAnalysis = analysis;
+        
+        // Update screenshot display
+        const gallery = document.getElementById('screenshots-gallery');
+        const items = gallery.children;
+        const item = items[items.length - 1]; // Get last added item
+        const analyzingDiv = item.querySelector('.screenshot-analyzing');
+        if (analyzingDiv) {
+          analyzingDiv.remove();
+          const scoreDiv = document.createElement('div');
+          scoreDiv.className = `screenshot-score ${getScoreClass(analysis.productivityScore)}`;
+          scoreDiv.textContent = analysis.productivityScore + '%';
+          item.appendChild(scoreDiv);
+        }
+        
+        addToAnalysisLog({
+          timestamp: screenshot.timestamp,
+          trigger: screenshot.trigger,
+          activity: analysis.activity,
+          productivity: analysis.productivityScore,
+          insights: analysis.insights
+        });
+        
+        updateProductivityScore(analysis.productivityScore);
+        
+      } catch (error) {
+        console.error('AI analysis failed:', error);
+        addToAnalysisLog({
+          timestamp: screenshot.timestamp,
+          trigger: screenshot.trigger,
+          activity: 'Analysis Failed',
+          productivity: 0,
+          insights: ['AI analysis failed: ' + error.message]
+        });
+      }
+    }
+
+    async function callOpenAIVision(base64Image, goal) {
+      const endpoint = useServerApiKey ? '/api/ai-analyze' : 'https://api.openai.com/v1/chat/completions';
+      
+      if (useServerApiKey) {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ imageData: base64Image, goal: goal })
+        });
+        
+        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+        const data = await response.json();
+        return data.analysis;
+        
+      } else {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o',
+            messages: [{
+              role: 'user',
+              content: [{
+                type: 'text',
+                text: `Analyze this screenshot for productivity. Goal: "${goal}". Return JSON: {"productivityScore": 0-100, "activity": "activity type", "insights": ["insight1", "insight2"]}`
+              }, {
+                type: 'image_url',
+                image_url: { url: base64Image }
+              }]
+            }],
+            max_tokens: 300
+          })
+        });
+
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+        const data = await response.json();
+        const content = data.choices[0].message.content;
+        
+        try {
+          return JSON.parse(content);
+        } catch {
+          return {
+            productivityScore: 50,
+            activity: 'General Work',
+            insights: ['Analysis completed']
+          };
+        }
+      }
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function getScoreClass(score) {
+      if (score >= 80) return 'score-high';
+      if (score >= 60) return 'score-medium';
+      return 'score-low';
+    }
+
+    function addToAnalysisLog(entry) {
+      analysisLog.push(entry);
+      
+      const feed = document.getElementById('analysis-feed');
+      
+      // Clear placeholder text
+      if (feed.children.length === 1 && feed.children[0].textContent.includes('Start recording')) {
+        feed.innerHTML = '';
+      }
+      
+      const logEntry = document.createElement('div');
+      logEntry.className = 'analysis-entry';
+      logEntry.innerHTML = `
+        <div class="analysis-header">
+          <div class="activity">${entry.activity}</div>
+          <div class="trigger-badge">${entry.trigger}</div>
+          <div class="productivity-score ${getScoreClass(entry.productivity)}">
+            ${entry.productivity}%
+          </div>
+        </div>
+        <div class="analysis-insights">${entry.insights[0] || ''}</div>
+        <div class="analysis-time">
+          <i class="fas fa-clock"></i>
+          ${entry.timestamp}
+        </div>
+      `;
+      
+      feed.appendChild(logEntry);
+      feed.scrollTop = feed.scrollHeight;
+      
+      // Keep only last 10 entries
+      while (feed.children.length > 10) {
+        feed.removeChild(feed.firstChild);
+      }
+    }
+
+    function updateProductivityScore(score) {
+      document.getElementById('productivity-score').textContent = Math.round(score) + '%';
+      
+      // Update progress bars
+      document.getElementById('goal-progress').style.width = score + '%';
+      document.getElementById('goal-percentage').textContent = Math.round(score) + '%';
+      
+      const efficiency = Math.min(score + 10, 100); // Slight boost for efficiency
+      document.getElementById('efficiency-progress').style.width = efficiency + '%';
+      document.getElementById('efficiency-percentage').textContent = Math.round(efficiency) + '%';
+    }
+
+    function generateSessionSummary() {
+      if (analysisLog.length === 0) return;
+      
+      const avgProductivity = analysisLog.reduce((sum, log) => sum + log.productivity, 0) / analysisLog.length;
+      
+      addToAnalysisLog({
+        timestamp: new Date().toLocaleTimeString(),
+        trigger: 'session_end',
+        activity: 'Session Complete',
+        productivity: Math.round(avgProductivity),
+        insights: [`Session completed with ${Math.round(avgProductivity)}% average productivity`, 
+                  `Analyzed ${screenshots.length} screenshots over ${Math.floor(sessionTime / 60)} minutes`]
+      });
+    }
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', { 
+        method: 'POST', 
+        credentials: 'include' 
+      }).then(() => {
+        window.location.href = '/';
+      });
+    }
+
+    console.log('AI Progress Tracker loaded');
+  </script>
 </body>
 </html>

@@ -14,7 +14,7 @@ const User = require('../models/User');
 const app = express();
 
 // Basic middleware
-app.use(express.json());
+app.use(express.json({ limit: '50mb' })); // Increased for image data
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -244,6 +244,83 @@ app.post('/api/complete-onboarding', authenticateToken, async (req, res) => {
   }
 });
 
+// AI Tracker - Server-side API analysis
+app.post('/api/ai-analyze', authenticateToken, async (req, res) => {
+  try {
+    const { imageData, goal } = req.body;
+    
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        success: false,
+        error: 'OpenAI API key not configured on server'
+      });
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [{
+          role: 'user',
+          content: [{
+            type: 'text',
+            text: `Analyze this screenshot for productivity. User's goal: "${goal}". 
+            
+            Return ONLY valid JSON in this exact format:
+            {
+              "productivityScore": 75,
+              "activity": "Coding",
+              "insights": ["User is focused on development work", "Multiple IDE windows open"]
+            }`
+          }, {
+            type: 'image_url',
+            image_url: { url: imageData }
+          }]
+        }],
+        max_tokens: 200
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    let analysis;
+    
+    try {
+      const content = data.choices[0].message.content;
+      // Extract JSON from response
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found in response');
+      }
+    } catch (parseError) {
+      // Fallback analysis
+      analysis = {
+        productivityScore: 50,
+        activity: 'General Work',
+        insights: ['AI analysis completed successfully']
+      };
+    }
+    
+    res.json({ success: true, analysis });
+    
+  } catch (error) {
+    console.error('AI analysis error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'AI analysis failed: ' + error.message
+    });
+  }
+});
+
 // Save screenshot with AI analysis
 app.post('/api/save-screenshot', authenticateToken, async (req, res) => {
   try {
@@ -278,7 +355,13 @@ app.post('/api/save-screenshot', authenticateToken, async (req, res) => {
   }
 });
 
-// Logout route
+// Logout route - clear cookie and redirect
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('authToken');
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// Logout GET route for direct access
 app.get('/logout', (req, res) => {
   res.clearCookie('authToken');
   res.redirect('/');

@@ -16,13 +16,18 @@
         OnlyWorks
       </a>
       <ul class="nav-links">
+        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/tracker">AI Tracker</a></li>
         <li><a href="pricing.html">Pricing</a></li>
         <li><a href="aboutus.html">About Us</a></li>
         <li><a href="team.html">Meet The team</a></li>
-        <li><a href="/auth/google">Sign in</a></li>
         <li class="divider"></li>
+        <li><a href="#" onclick="logout()" class="nav-sign-out">Sign out</a></li>
       </ul>
-      <a href="/auth/google" class="cta-button">Start recording</a>
+      <div class="user-nav">
+        <img id="nav-avatar" src="" alt="User Avatar" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
+        <span id="nav-username"></span>
+      </div>
       <div class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
       </div>
@@ -42,6 +47,10 @@
         </div>
         
         <div class="dashboard-actions">
+          <button class="btn btn-secondary" onclick="location.href='/tracker'">
+            <i class="fas fa-brain"></i>
+            AI Tracker
+          </button>
           <button class="btn btn-primary" id="main-action">
             <i class="fas fa-plus"></i>
             <span id="action-text">Get Started</span>
@@ -73,6 +82,16 @@
         
         <div class="stat-card">
           <div class="stat-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="stat-info">
+            <h3>AI Sessions</h3>
+            <p class="stat-value">0</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
             <i class="fas fa-handshake"></i>
           </div>
           <div class="stat-info">
@@ -87,6 +106,18 @@
         <div class="content-section">
           <h2>Getting Started</h2>
           <div class="quick-actions">
+            <!-- AI Tracker Card - Always visible -->
+            <div class="action-card" onclick="location.href='/tracker'">
+              <div class="action-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="action-content">
+                <h3>AI Progress Tracker</h3>
+                <p>Track your productivity with real-time AI analysis and insights.</p>
+                <button class="btn btn-primary btn-sm">Launch Tracker</button>
+              </div>
+            </div>
+            
             <div class="action-card" id="student-actions" style="display: none;">
               <div class="action-icon">
                 <i class="fas fa-search"></i>
@@ -135,6 +166,15 @@
                 <small>Welcome to OnlyWorks! Your profile is now live.</small>
               </div>
             </div>
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="activity-content">
+                <p><strong>AI Tracker Available</strong></p>
+                <small>Try our new AI productivity tracker to monitor your work efficiency.</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -164,7 +204,11 @@
       });
     
     function updateDashboard(user) {
-      // Update user info
+      // Update user info in header nav
+      document.getElementById('nav-avatar').src = user.avatar || '/default-avatar.png';
+      document.getElementById('nav-username').textContent = user.name.split(' ')[0]; // First name only
+      
+      // Update user info in dashboard
       document.getElementById('user-avatar').src = user.avatar || '/default-avatar.png';
       document.getElementById('welcome-title').textContent = `Welcome back, ${user.name}!`;
       
@@ -210,7 +254,24 @@
         }
       }
     });
+    
+    // Logout function
+    function logout() {
+      if (confirm('Are you sure you want to sign out?')) {
+        fetch('/api/logout', { 
+          method: 'POST', 
+          credentials: 'include' 
+        }).then(() => {
+          window.location.href = '/';
+        }).catch(() => {
+          // Fallback
+          document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          window.location.href = '/';
+        });
+      }
+    }
   </script>
+  
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -245,7 +306,7 @@
             <li><a href="#" class="footer-menu-item">Help Center</a></li>
             <li><a href="#" class="footer-menu-item">Student Guide</a></li>
             <li><a href="#" class="footer-menu-item">Employer Guide</a></li>
-            <li><a href="https://onlyworks-llm.vercel.app/" class="footer-menu-item">Try Demo</a></li>
+            <li><a href="/tracker" class="footer-menu-item">AI Tracker</a></li>
           </ul>
         </div>
         
