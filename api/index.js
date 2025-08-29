@@ -71,7 +71,7 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "https://onlyworks-abv3-git-ai-tracker-4a4bf1-namkhas-projects-849ad78f.vercel.app/auth/google/callback"
+  callbackURL: "https://www.only-works.com/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     await connectToDatabase();
