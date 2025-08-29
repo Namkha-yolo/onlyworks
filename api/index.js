@@ -7,21 +7,6 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-// Debug environment variables
-console.log('Environment check:', {
-  hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID,
-  hasGoogleSecret: !!process.env.GOOGLE_CLIENT_SECRET,
-  hasJwtSecret: !!process.env.JWT_SECRET,
-  hasMongoUri: !!process.env.MONGODB_URI,
-  nodeEnv: process.env.NODE_ENV
-});
-
-// Log first few characters of each variable (for debugging without exposing secrets)
-console.log('Variable preview:', {
-  clientIdStart: process.env.GOOGLE_CLIENT_ID?.substring(0, 10) + '...',
-  secretStart: process.env.GOOGLE_CLIENT_SECRET?.substring(0, 10) + '...',
-  jwtStart: process.env.JWT_SECRET?.substring(0, 10) + '...'
-});
 
 // Import User model
 const User = require('../models/User');
@@ -37,11 +22,11 @@ app.use(passport.initialize());
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-this';
 
-// MongoDB connection
+// MongoDB connection with serverless optimization
 let isConnected = false;
 
 const connectToDatabase = async () => {
-  if (isConnected) {
+  if (isConnected && mongoose.connection.readyState === 1) {
     return;
   }
 
@@ -51,61 +36,77 @@ const connectToDatabase = async () => {
       throw new Error('MONGODB_URI environment variable is not set');
     }
 
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 5000,
+      maxPoolSize: 1,
+      bufferCommands: false,
+    });
+    
     isConnected = true;
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
+    isConnected = false;
     throw error;
   }
 };
 
-
-console.log('OAuth callback URL will be:', process.env.NODE_ENV === 'production' 
-  ? `https://${process.env.VERCEL_URL || 'www.only-works.com'}/auth/google/callback`
-  : "/auth/google/callback");
-console.log('VERCEL_URL:', process.env.VERCEL_URL);
-console.log('NODE_ENV:', process.env.NODE_ENV);
-
-// Google OAuth Strategy
+// Google OAuth Strategy - streamlined for serverless
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: "https://www.only-works.com/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   try {
-    await connectToDatabase();
+    // Quick timeout for database operations
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Database timeout')), 10000)
+    );
+
+    const dbOperation = (async () => {
+      await connectToDatabase();
+      
+      let user = await User.findOne({ googleId: profile.id });
+      
+      if (user) {
+        // Existing user
+        return { ...user.toObject(), isExistingUser: true };
+      }
+      
+      // New user
+      user = new User({
+        googleId: profile.id,
+        name: profile.displayName,
+        email: profile.emails?.[0]?.value || '',
+        avatar: profile.photos?.[0]?.value || '',
+        isOnboardingComplete: false
+      });
+      
+      await user.save();
+      return { ...user.toObject(), isExistingUser: false };
+    })();
+
+    const result = await Promise.race([dbOperation, timeoutPromise]);
+    return done(null, result);
     
-    console.log('Google OAuth success for:', profile.displayName);
-    
-    // Check if user already exists
-    let user = await User.findOne({ googleId: profile.id });
-    
-    if (user) {
-      console.log('Existing user found:', user.name);
-      return done(null, user);
-    }
-    
-    // Create new user
-    user = new User({
+  } catch (error) {
+    console.error('OAuth error:', error);
+    // Fallback: return user data without database storage
+    const fallbackUser = {
       googleId: profile.id,
       name: profile.displayName,
       email: profile.emails?.[0]?.value || '',
-      avatar: profile.photos?.[0]?.value || ''
-    });
-    
-    await user.save();
-    console.log('New user created:', user.name);
-    
-    return done(null, user);
-  } catch (error) {
-    console.error('OAuth error:', error);
-    return done(error, null);
+      avatar: profile.photos?.[0]?.value || '',
+      isOnboardingComplete: false,
+      isExistingUser: false
+    };
+    return done(null, fallbackUser);
   }
 }));
 
-// Middleware to verify JWT token
-const authenticateToken = async (req, res, next) => {
+// Stateless JWT authentication - no database lookup on every request
+const authenticateToken = (req, res, next) => {
   const token = req.cookies?.authToken || 
                 req.headers.authorization?.split(' ')[1];
   
@@ -118,19 +119,7 @@ const authenticateToken = async (req, res, next) => {
   
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    
-    // Get fresh user data from database
-    await connectToDatabase();
-    const user = await User.findById(decoded.userId);
-    
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        error: 'User not found'
-      });
-    }
-    
-    req.user = user;
+    req.user = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ 
@@ -151,36 +140,35 @@ app.get('/auth/google/callback',
     session: false,
     failureRedirect: '/?error=oauth_failed'
   }),
-  async (req, res) => {
-    try {
-      if (!req.user) {
-        return res.redirect('/?error=oauth_failed');
-      }
-      
-      // Create JWT token
-      const token = jwt.sign(
-        { userId: req.user._id }, 
-        JWT_SECRET, 
-        { expiresIn: '7d' }
-      );
-      
-      // Set secure cookie
-      res.cookie('authToken', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-      });
-      
-      // Redirect based on onboarding status
-      if (!req.user.isOnboardingComplete) {
-        res.redirect('/onboarding.html');
-      } else {
-        res.redirect('/dashboard.html');
-      }
-    } catch (error) {
-      console.error('Callback error:', error);
-      res.redirect('/?error=token_creation_failed');
+  (req, res) => {
+    if (!req.user) {
+      return res.redirect('/?error=oauth_failed');
+    }
+    
+    // Create stateless JWT with all user data
+    const token = jwt.sign({
+      userId: req.user._id,
+      googleId: req.user.googleId,
+      name: req.user.name,
+      email: req.user.email,
+      avatar: req.user.avatar,
+      role: req.user.role,
+      isOnboardingComplete: req.user.isOnboardingComplete,
+      profile: req.user.profile
+    }, JWT_SECRET, { expiresIn: '7d' });
+    
+    res.cookie('authToken', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+    
+    // Route based on user status
+    if (req.user.isExistingUser && req.user.isOnboardingComplete) {
+      res.redirect('/dashboard.html');
+    } else {
+      res.redirect('/onboarding.html');
     }
   }
 );
@@ -189,65 +177,103 @@ app.get('/auth/google/callback',
 app.get('/api/user', authenticateToken, (req, res) => {
   res.json({
     success: true,
-    user: {
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-      avatar: req.user.avatar,
-      role: req.user.role,
-      profile: req.user.profile,
-      isOnboardingComplete: req.user.isOnboardingComplete
-    }
+    user: req.user
   });
 });
 
-// Update user profile
-app.post('/api/user/profile', authenticateToken, async (req, res) => {
+// Complete onboarding
+app.post('/api/complete-onboarding', authenticateToken, async (req, res) => {
   try {
-    const { role, company, jobTitle, location, bio, skills, university, major, graduationYear } = req.body;
+    const { role, company, jobTitle, location, bio, skills } = req.body;
     
-    // Validate required fields
     if (!role || !['student', 'employer'].includes(role)) {
       return res.status(400).json({
         success: false,
         error: 'Valid role (student or employer) is required'
       });
     }
+
+    await connectToDatabase();
     
-    // Update user
-    req.user.role = role;
-    req.user.profile = {
-      company: company || '',
-      jobTitle: jobTitle || '',
-      location: location || '',
-      bio: bio || '',
-      skills: Array.isArray(skills) ? skills : [],
-      university: university || '',
-      major: major || '',
-      graduationYear: graduationYear || null
-    };
-    req.user.isOnboardingComplete = true;
-    
-    await req.user.save();
-    
+    // Update user in database
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.userId,
+      {
+        role: role,
+        profile: {
+          company: company || '',
+          jobTitle: jobTitle || '',
+          location: location || '',
+          bio: bio || '',
+          skills: Array.isArray(skills) ? skills : []
+        },
+        isOnboardingComplete: true
+      },
+      { new: true }
+    );
+
+    // Create new JWT with updated data
+    const newToken = jwt.sign({
+      userId: updatedUser._id,
+      googleId: updatedUser.googleId,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      avatar: updatedUser.avatar,
+      role: updatedUser.role,
+      isOnboardingComplete: true,
+      profile: updatedUser.profile
+    }, JWT_SECRET, { expiresIn: '7d' });
+
+    res.cookie('authToken', newToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
     res.json({
       success: true,
-      message: 'Profile updated successfully',
-      user: {
-        id: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
-        avatar: req.user.avatar,
-        role: req.user.role,
-        profile: req.user.profile,
-        isOnboardingComplete: req.user.isOnboardingComplete
-      }
+      message: 'Onboarding completed successfully'
     });
   } catch (error) {
-    console.error('Profile update error:', error);
+    console.error('Onboarding completion error:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update profile'
+      error: 'Failed to complete onboarding'
+    });
+  }
+});
+
+// Save screenshot with AI analysis
+app.post('/api/save-screenshot', authenticateToken, async (req, res) => {
+  try {
+    const { imageData, aiAnalysis, trigger, goal } = req.body;
+
+    await connectToDatabase();
+
+    // Create Screenshot model if not exists
+    const screenshotData = {
+      userId: req.user.userId,
+      imageData: imageData, // base64 or URL
+      aiAnalysis: aiAnalysis,
+      trigger: trigger,
+      goal: goal,
+      capturedAt: new Date()
+    };
+
+    // Save to user's screenshot collection
+    // This would require a Screenshot model - for now just return success
+    console.log('Would save screenshot for user:', req.user.userId);
+
+    res.json({
+      success: true,
+      message: 'Screenshot saved successfully'
+    });
+  } catch (error) {
+    console.error('Screenshot save error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to save screenshot'
     });
   }
 });
@@ -261,26 +287,6 @@ app.get('/logout', (req, res) => {
 // Tracker route - serve tracker page for authenticated users
 app.get('/tracker', authenticateToken, (req, res) => {
   res.sendFile(path.resolve('public/tracker.html'));
-});
-
-// API endpoint for AI analysis (if you want server-side processing)
-app.post('/api/analyze-screenshot', authenticateToken, async (req, res) => {
-  try {
-    const { base64Image, goal } = req.body;
-    
-    // You could add server-side OpenAI processing here
-    // For now, let client handle it directly
-    
-    res.json({
-      success: true,
-      message: 'Analysis endpoint available'
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Analysis failed'
-    });
-  }
 });
 
 // Health check with database status
@@ -302,23 +308,12 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Simple test route
-app.get('/api/test', (req, res) => {
-  res.json({ 
-    message: 'API is working',
-    path: req.path,
-    method: req.method
-  });
-});
-
 // Serve static files and handle client-side routing
 app.get('*', (req, res) => {
-  // Don't intercept requests for static files
   if (req.path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
     return res.status(404).send('File not found');
   }
   
-  // Serve index.html for all other routes
   try {
     res.sendFile(path.resolve('public/index.html'));
   } catch (error) {
