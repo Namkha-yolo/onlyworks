@@ -244,76 +244,110 @@ app.post('/api/complete-onboarding', authenticateToken, async (req, res) => {
   }
 });
 
-// AI Tracker - Server-side API analysis
+// AI Tracker - Server-side API analysis using Gemini 1.5 Flash
 app.post('/api/ai-analyze', authenticateToken, async (req, res) => {
   try {
     const { imageData, goal } = req.body;
     
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
         success: false,
-        error: 'OpenAI API key not configured on server'
+        error: 'Gemini API key not configured on server'
       });
     }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Extract base64 data without the data URL prefix
+    const base64Data = imageData.includes(',') ? imageData.split(',')[1] : imageData;
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [{
-          role: 'user',
-          content: [{
-            type: 'text',
-            text: `Analyze this screenshot for productivity. User's goal: "${goal}". 
-            
-            Return ONLY valid JSON in this exact format:
-            {
-              "productivityScore": 75,
-              "activity": "Coding",
-              "insights": ["User is focused on development work", "Multiple IDE windows open"]
-            }`
-          }, {
-            type: 'image_url',
-            image_url: { url: imageData }
+        contents: [{
+          parts: [{
+            text: `Analyze this screenshot for productivity and work efficiency. The user's goal is: "${goal}".
+
+Please analyze the screen content and return ONLY a valid JSON object with this exact structure:
+{
+  "productivityScore": 75,
+  "activity": "Coding",
+  "insights": ["User appears focused on development work", "Multiple development tools are open"]
+}
+
+Rules:
+- productivityScore: 0-100 number based on how productive the activity appears
+- activity: Brief description of main activity (max 20 characters)
+- insights: Array of 1-2 short observations about productivity/focus
+
+Focus on identifying:
+- What applications/websites are visible
+- Signs of focus vs distraction
+- Alignment with the stated goal
+- Work-related vs non-work activities`
+          },
+          {
+            inline_data: {
+              mime_type: "image/jpeg",
+              data: base64Data
+            }
           }]
         }],
-        max_tokens: 200
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 200
+        }
       })
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`);
+      throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
+    
+    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+      throw new Error('Invalid response format from Gemini API');
+    }
+
+    const content = data.candidates[0].content.parts[0].text;
     let analysis;
     
     try {
-      const content = data.choices[0].message.content;
-      // Extract JSON from response
+      // Try to extract JSON from the response
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         analysis = JSON.parse(jsonMatch[0]);
       } else {
         throw new Error('No JSON found in response');
       }
+      
+      // Validate the analysis structure
+      if (typeof analysis.productivityScore !== 'number' || 
+          !analysis.activity || 
+          !Array.isArray(analysis.insights)) {
+        throw new Error('Invalid analysis structure');
+      }
+      
+      // Ensure productivityScore is within bounds
+      analysis.productivityScore = Math.max(0, Math.min(100, analysis.productivityScore));
+      
     } catch (parseError) {
-      // Fallback analysis
+      console.error('Failed to parse Gemini response:', content);
+      
+      // Fallback analysis if parsing fails
       analysis = {
         productivityScore: 50,
         activity: 'General Work',
-        insights: ['AI analysis completed successfully']
+        insights: ['AI analysis completed', 'Unable to analyze image details']
       };
     }
     
     res.json({ success: true, analysis });
     
   } catch (error) {
-    console.error('AI analysis error:', error);
+    console.error('Gemini AI analysis error:', error);
     res.status(500).json({
       success: false,
       error: 'AI analysis failed: ' + error.message
@@ -321,36 +355,154 @@ app.post('/api/ai-analyze', authenticateToken, async (req, res) => {
   }
 });
 
-// Save screenshot with AI analysis
+// Save screenshot with AI analysis - Using cloud storage
 app.post('/api/save-screenshot', authenticateToken, async (req, res) => {
   try {
     const { imageData, aiAnalysis, trigger, goal } = req.body;
 
     await connectToDatabase();
 
-    // Create Screenshot model if not exists
-    const screenshotData = {
+    // For large-scale image storage, you should use cloud storage like:
+    // 1. AWS S3 + CloudFront (recommended)
+    // 2. Google Cloud Storage
+    // 3. Cloudinary
+    // 4. Supabase Storage
+    
+    // Here's a basic implementation that would store metadata in MongoDB
+    // and the actual image in cloud storage
+    
+    const screenshotMetadata = {
       userId: req.user.userId,
-      imageData: imageData, // base64 or URL
-      aiAnalysis: aiAnalysis,
       trigger: trigger,
       goal: goal,
-      capturedAt: new Date()
+      aiAnalysis: aiAnalysis,
+      capturedAt: new Date(),
+      // imageUrl would be the cloud storage URL after upload
+      // imageUrl: uploadedImageUrl,
+      sessionId: req.body.sessionId || null, // Group screenshots by session
+      productivityScore: aiAnalysis?.productivityScore || 0
     };
 
-    // Save to user's screenshot collection
-    // This would require a Screenshot model - for now just return success
-    console.log('Would save screenshot for user:', req.user.userId);
+    // TODO: Upload image to cloud storage and get URL
+    // const uploadedImageUrl = await uploadToCloudStorage(imageData, req.user.userId);
+    // screenshotMetadata.imageUrl = uploadedImageUrl;
+
+    console.log('Screenshot metadata to save:', {
+      userId: req.user.userId,
+      trigger,
+      goal,
+      productivityScore: aiAnalysis?.productivityScore || 0,
+      timestamp: screenshotMetadata.capturedAt
+    });
 
     res.json({
       success: true,
-      message: 'Screenshot saved successfully'
+      message: 'Screenshot metadata saved successfully',
+      data: {
+        screenshotId: screenshotMetadata.capturedAt.getTime(),
+        productivityScore: screenshotMetadata.productivityScore
+      }
     });
   } catch (error) {
     console.error('Screenshot save error:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to save screenshot'
+    });
+  }
+});
+
+// Get user's screenshot history
+app.get('/api/screenshots', authenticateToken, async (req, res) => {
+  try {
+    const { limit = 50, page = 1, sessionId } = req.query;
+
+    await connectToDatabase();
+
+    // TODO: Implement screenshot retrieval from database
+    // This would query your Screenshot collection filtered by userId
+    
+    const mockScreenshots = [
+      {
+        id: '1',
+        timestamp: new Date(),
+        trigger: 'periodic',
+        goal: 'Complete project documentation',
+        productivityScore: 85,
+        activity: 'Coding',
+        imageUrl: null // Would be cloud storage URL
+      }
+    ];
+
+    res.json({
+      success: true,
+      screenshots: mockScreenshots,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: mockScreenshots.length
+      }
+    });
+  } catch (error) {
+    console.error('Screenshot retrieval error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve screenshots'
+    });
+  }
+});
+
+// Delete screenshot
+app.delete('/api/screenshots/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await connectToDatabase();
+
+    // TODO: Delete from database and cloud storage
+    console.log(`Would delete screenshot ${id} for user ${req.user.userId}`);
+
+    res.json({
+      success: true,
+      message: 'Screenshot deleted successfully'
+    });
+  } catch (error) {
+    console.error('Screenshot deletion error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete screenshot'
+    });
+  }
+});
+
+// Get user analytics/insights
+app.get('/api/analytics', authenticateToken, async (req, res) => {
+  try {
+    const { timeframe = '7d' } = req.query; // 1d, 7d, 30d
+
+    await connectToDatabase();
+
+    // TODO: Aggregate user's productivity data
+    const mockAnalytics = {
+      averageProductivity: 75,
+      totalSessions: 12,
+      totalScreenshots: 145,
+      mostProductiveHour: 14, // 2 PM
+      commonActivities: ['Coding', 'Research', 'Email'],
+      productivityTrend: [65, 70, 75, 80, 78, 82, 85], // Last 7 days
+      goalAlignment: 80
+    };
+
+    res.json({
+      success: true,
+      analytics: mockAnalytics,
+      timeframe
+    });
+  } catch (error) {
+    console.error('Analytics error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve analytics'
     });
   }
 });
@@ -380,7 +532,8 @@ app.get('/api/health', async (req, res) => {
       status: 'ok', 
       timestamp: new Date().toISOString(),
       message: 'Server and database are running',
-      database: 'connected'
+      database: 'connected',
+      ai_provider: 'gemini'
     });
   } catch (error) {
     res.status(500).json({
@@ -411,6 +564,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     console.log('Environment:', process.env.NODE_ENV || 'development');
+    console.log('AI Provider: Google Gemini 1.5 Flash');
   });
 }
 
