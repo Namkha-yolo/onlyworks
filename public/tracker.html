@@ -13,61 +13,30 @@
   <header id="header">
     <nav class="container">
       <a href="/" class="logo">
-        <i class="fas fa-briefcase"></i>
+        <img src="logo.png" alt="OnlyWorks Logo">
         OnlyWorks
       </a>
       <ul class="nav-links">
         <li><a href="/dashboard.html">Dashboard</a></li>
-        <li><a href="/profile.html">Profile</a></li>
-        <li><a href="#" onclick="logout()" class="cta-button">Logout</a></li>
+        <li><a href="/tracker">AI Tracker</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="team.html">Meet The team</a></li>
+        <li class="divider"></li>
+        <li><a href="#" onclick="logout()" style="color: var(--error);">Sign out</a></li>
       </ul>
+      <div class="user-nav">
+        <img id="nav-avatar" src="" alt="User Avatar" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
+        <span id="nav-username"></span>
+      </div>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
     </nav>
   </header>
 
-  <!-- API Setup Modal -->
-  <div id="api-setup" class="modal-overlay">
-    <div class="modal-content">
-      <div style="text-align: center; margin-bottom: var(--space-xl);">
-        <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: var(--primary-color); border-radius: var(--radius-lg); margin-bottom: var(--space-lg);">
-          <i class="fas fa-brain" style="color: white; font-size: var(--font-size-xl);"></i>
-        </div>
-        <h2 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-sm);">AI Vision Setup</h2>
-        <p style="color: var(--text-secondary);">Enable real-time AI analysis with OpenAI's Vision API</p>
-      </div>
-      
-      <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
-        <div class="form-group">
-          <input type="password" id="api-key-input" placeholder="Enter your OpenAI API key (sk-...)">
-        </div>
-        
-        <button onclick="setApiKey()" class="btn btn-primary">
-          <i class="fas fa-key"></i>
-          Use My API Key
-        </button>
-
-        <div style="text-align: center; position: relative;">
-          <div style="position: absolute; inset: 0; display: flex; items: center;">
-            <div style="width: 100%; border-top: 1px solid var(--gray-200);"></div>
-          </div>
-          <span style="background: white; padding: 0 var(--space-md); color: var(--text-secondary);">or</span>
-        </div>
-
-        <button onclick="useServerKey()" class="btn btn-secondary">
-          <i class="fas fa-server"></i>
-          Use Server Key
-        </button>
-      </div>
-      
-      <div style="margin-top: var(--space-lg); text-align: center;">
-        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">
-          Get your API key from platform.openai.com/api-keys
-        </p>
-      </div>
-    </div>
-  </div>
-
   <!-- Main Tracker Interface -->
-  <div id="tracker-interface" class="dashboard-container hidden">
+  <div class="dashboard-container">
     <div class="container">
       <div class="dashboard-header">
         <div class="tracker-header">
@@ -187,46 +156,31 @@
     let isRecording = false;
     let sessionTime = 0;
     let screenshots = [];
-    let apiKey = '';
-    let useServerApiKey = false;
     let captureStats = { clicks: 0, keystrokes: 0, windowChanges: 0 };
     let analysisLog = [];
     let streamRef = null;
     let timerInterval = null;
     let keystrokeCount = 0;
+    let currentUser = null;
 
-    // Check authentication
+    // Check authentication and load user data
     fetch('/api/user', { credentials: 'include' })
       .then(response => response.json())
       .then(data => {
         if (!data.success || !data.user) {
           window.location.href = '/';
+        } else {
+          currentUser = data.user;
+          updateUserInfo(data.user);
         }
       })
       .catch(() => {
         window.location.href = '/';
       });
 
-    // API Setup Functions
-    function setApiKey() {
-      const input = document.getElementById('api-key-input');
-      if (input.value.trim().startsWith('sk-')) {
-        apiKey = input.value.trim();
-        useServerApiKey = false;
-        showTrackerInterface();
-      } else {
-        alert('Please enter a valid OpenAI API key (starts with sk-)');
-      }
-    }
-
-    function useServerKey() {
-      useServerApiKey = true;
-      showTrackerInterface();
-    }
-
-    function showTrackerInterface() {
-      document.getElementById('api-setup').classList.add('hidden');
-      document.getElementById('tracker-interface').classList.remove('hidden');
+    function updateUserInfo(user) {
+      document.getElementById('nav-avatar').src = user.avatar || '/default-avatar.png';
+      document.getElementById('nav-username').textContent = user.name.split(' ')[0];
     }
 
     // Recording Functions
@@ -419,9 +373,8 @@
         updateStats();
         displayScreenshot(screenshot);
         
-        if (apiKey || useServerApiKey) {
-          await analyzeScreenshot(screenshot);
-        }
+        // Always use server AI analysis
+        await analyzeScreenshot(screenshot);
         
       } catch (error) {
         console.error('Screenshot failed:', error);
@@ -450,13 +403,29 @@
       gallery.appendChild(item);
     }
 
-    // AI Analysis
+    // AI Analysis using server endpoint
     async function analyzeScreenshot(screenshot) {
       try {
         const base64 = await blobToBase64(screenshot.blob);
         const goal = document.getElementById('goal-input').value;
         
-        const analysis = await callOpenAIVision(base64, goal);
+        const response = await fetch('/api/ai-analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ imageData: base64, goal: goal })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Server Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Analysis failed');
+        }
+        
+        const analysis = data.analysis;
         
         screenshot.analyzed = true;
         screenshot.aiAnalysis = analysis;
@@ -486,6 +455,21 @@
         
       } catch (error) {
         console.error('AI analysis failed:', error);
+        
+        // Remove analyzing indicator and show error
+        const gallery = document.getElementById('screenshots-gallery');
+        const items = gallery.children;
+        const item = items[items.length - 1];
+        const analyzingDiv = item.querySelector('.screenshot-analyzing');
+        if (analyzingDiv) {
+          analyzingDiv.remove();
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'screenshot-error';
+          errorDiv.textContent = 'Analysis Failed';
+          errorDiv.style.cssText = 'position: absolute; top: 8px; right: 8px; background: var(--error); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;';
+          item.appendChild(errorDiv);
+        }
+        
         addToAnalysisLog({
           timestamp: screenshot.timestamp,
           trigger: screenshot.trigger,
@@ -493,60 +477,6 @@
           productivity: 0,
           insights: ['AI analysis failed: ' + error.message]
         });
-      }
-    }
-
-    async function callOpenAIVision(base64Image, goal) {
-      const endpoint = useServerApiKey ? '/api/ai-analyze' : 'https://api.openai.com/v1/chat/completions';
-      
-      if (useServerApiKey) {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ imageData: base64Image, goal: goal })
-        });
-        
-        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-        const data = await response.json();
-        return data.analysis;
-        
-      } else {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o',
-            messages: [{
-              role: 'user',
-              content: [{
-                type: 'text',
-                text: `Analyze this screenshot for productivity. Goal: "${goal}". Return JSON: {"productivityScore": 0-100, "activity": "activity type", "insights": ["insight1", "insight2"]}`
-              }, {
-                type: 'image_url',
-                image_url: { url: base64Image }
-              }]
-            }],
-            max_tokens: 300
-          })
-        });
-
-        if (!response.ok) throw new Error(`API Error: ${response.status}`);
-        const data = await response.json();
-        const content = data.choices[0].message.content;
-        
-        try {
-          return JSON.parse(content);
-        } catch {
-          return {
-            productivityScore: 50,
-            activity: 'General Work',
-            insights: ['Analysis completed']
-          };
-        }
       }
     }
 
@@ -629,15 +559,20 @@
 
     // Logout function
     function logout() {
-      fetch('/api/logout', { 
-        method: 'POST', 
-        credentials: 'include' 
-      }).then(() => {
-        window.location.href = '/';
-      });
+      if (confirm('Are you sure you want to sign out?')) {
+        fetch('/api/logout', { 
+          method: 'POST', 
+          credentials: 'include' 
+        }).then(() => {
+          window.location.href = '/';
+        }).catch(() => {
+          document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          window.location.href = '/';
+        });
+      }
     }
 
-    console.log('AI Progress Tracker loaded');
+    console.log('AI Progress Tracker loaded - Using server AI analysis');
   </script>
 </body>
 </html>
